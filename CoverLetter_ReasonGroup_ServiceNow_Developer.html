@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter — ServiceNow Developer, Reason Group — Ilia Shapiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15202b;
+    --muted: #4a5a6a;
+    --line: #c8d4e0;
+    --accent: #0d5c63;
+    --accent-soft: #e6f2f3;
+    --paper: #fbfcfe;
+    --bg-1: #dce8ef;
+    --bg-2: #e8f0e9;
+    --ok: #1a7a4a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(13, 92, 99, 0.12), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 90% 10%, rgba(40, 90, 140, 0.1), transparent 50%),
+      linear-gradient(165deg, var(--bg-1), var(--bg-2) 55%, #e4ebe8);
+    min-height: 100vh;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: rgba(251, 252, 254, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toolbar span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn:hover { filter: brightness(1.05); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent);
+    
+  }
+
+  .btn.copied {
+    color: var(--ok) !important;
+    border-color: var(--ok);
+  }
+
+  .sheet {
+    max-width: 820px;
+    margin: 32px auto 48px;
+    padding: 52px 56px 48px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 40px rgba(21, 32, 43, 0.08);
+  }
+
+  header.hero {
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+
+  header.hero h1 {
+    margin: 0;
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 2.85rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .role {
+    margin: 10px 0 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .meta-line {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .contact {
+    margin: 14px 0 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .contact a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .contact a:hover { text-decoration: underline; }
+
+  .salutation {
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .letter p {
+    margin: 0 0 16px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  h2 {
+    margin: 28px 0 14px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .themes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .themes li {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+
+  .themes li:last-child { margin-bottom: 0; }
+
+  .themes strong.num {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  .themes .body {
+    margin: 0;
+    font-size: 0.94rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .signoff {
+    margin-top: 28px;
+  }
+
+  .signoff .name {
+    margin-top: 28px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .attachments {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .sheet { margin: 16px 12px 32px; padding: 28px 20px; }
+    .letter p,
+    .themes .body { text-align: left; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet {
+      margin: 0;
+      max-width: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    .themes li {
+      background: transparent;
+      border-left-color: #999;
+      padding-left: 10px;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" type="button" id="copyBtn" onclick="copyLetter()">Copy letter text</button>
+  <button class="btn ghost" type="button" onclick="window.open('ilia_shapiro_cv.html', '_blank')">Open CV</button>
+  <span>Print outputs the letter only — toolbar is screen-only</span>
+</div>
+
+<article class="sheet" id="letter">
+  <header class="hero">
+    <h1>Ilia Shapiro</h1>
+   
+    <p class="meta-line">JavaScript Platform Development · Enterprise Integrations · Secure, Maintainable Delivery</p>
+    <div class="contact">
+      <span>Sydney, Australia <br>
+      0466 076 898<br>
+      <a href="mailto:reward2learn@gmail.com">reward2learn@gmail.com</a><br>
+      <a href="https://linkedin.com/in/iliashapiro" target="_blank" rel="noopener">linkedin.com/in/iliashapiro</a><br>
+      <a href="https://github.com/reward2learn" target="_blank" rel="noopener">github.com/reward2learn</a><br></span>
+    </div>
+  </header>
+
+  <div class="letter">
+    <p class="salutation">Dear Hiring Manager,</p>
+
+    <p>I am writing to apply for the ServiceNow Developer role at Reason Group. I will be direct about my profile: my platform experience is not in ServiceNow — it is nine years developing on IBM Planning Analytics / TM1, an enterprise platform with the same shape of challenges ServiceNow presents. Within that, the substance of your role is exactly what I have done throughout my career: JavaScript development on a proprietary platform, REST integrations in production, translating requirements into secure and maintainable components, and working directly with clients in agile teams. I am confident the transition to ServiceNow is short, and I am prepared to back that with certification. Reason Group's focus on government and regulated enterprises — and a culture that takes wellbeing seriously — makes it the kind of firm I want to do that work with.</p>
+
+    <h2>What I bring to the role</h2>
+    <ol class="themes">
+      <li>
+        <strong class="num">JavaScript and platform development on an enterprise product, for nine years.</strong>
+        <p class="body">At Cubewise I progressed from web development consultant to Lead AI Architect on Apliqo UX, an enterprise white-label platform delivered to clients including Westpac, Amazon, AWS, Optus and ZKB. That is nine years of JavaScript/TypeScript development inside a large, established codebase with its own APIs, extension model, security model and release cadence — the same discipline ServiceNow development demands. I know what it means to favour configuration and reusable patterns over unnecessary customisation, because on a platform product every non-standard choice is a debt your clients inherit at the next upgrade.</p>
+      </li>
+      <li>
+        <strong class="num">Integrations and automation in production, not just in theory.</strong>
+        <p class="body">I owned Apliqo UX's production integrations end to end — REST API design and consumption, authentication, rate limits, versioning and outage response — connecting the platform with TM1's REST API and third-party services. I have built the automation and workflow glue that enterprise teams depend on daily, and I have been the person troubleshooting it in production. The patterns behind Flow Designer and IntegrationHub — orchestrated workflows, spoke-style reusable integrations, event-driven automation — are ones I have implemented by other names.</p>
+      </li>
+      <li>
+        <strong class="num">Security, quality and development standards under regulated-client scrutiny.</strong>
+        <p class="body">Deploying into Amazon, AWS, ZKB and Westpac means security reviews, access controls, change discipline and confidentiality are not aspirations — they are the bar for shipping anything. I have written the technical documentation, run unit testing and peer reviews, managed defect resolution through releases and upgrades, and set the architecture and implementation standards other developers followed. I treat client information and compliance requirements as core to the craft, not overhead.</p>
+      </li>
+      <li>
+        <strong class="num">Responsible, productive use of AI tools — a stated priority in your advertisement.</strong>
+        <p class="body">You ask for curiosity about emerging technology and openness to using approved AI tools responsibly. This is a genuine differentiator for me: I established AI-assisted development practices (Claude, Cursor, Codex) across the Cubewise engineering team — prompting, iterating, validating and reviewing AI-produced code — and took an enterprise AI assistant from vision to production. I can help Reason Group use these tools to deliver faster without compromising security, quality or client trust.</p>
+      </li>
+      <li>
+        <strong class="num">Client-facing, agile, and willing to go beyond the ticket.</strong>
+        <p class="body">A decade of client-facing delivery means I communicate estimates, progress, dependencies and risks in plain language, and I am comfortable working directly with client stakeholders — including training and mentoring: I have trained 30+ consultants in application design and development. I work well remotely and asynchronously, manage competing priorities in changing environments, and have a long habit of supporting work beyond my immediate responsibilities when the team needs it.</p>
+      </li>
+    </ol>
+
+    <p>On the gap: I am not ServiceNow-certified today, but I have done exactly this before — I became an Apliqo UX Certified Professional by building complex analytics applications on that platform, and I would approach ServiceNow the same way, targeting the Certified Application Developer certification early. What cannot be taught quickly — judgement about maintainable platform development, secure integration practices, and working respectfully with clients — I bring on day one.</p>
+
+    <p>I am based in Sydney, hold unrestricted Australian work rights, and am fully set up for remote work within Australia, with flexibility for occasional travel to Canberra or client sites.</p>
+
+    <p>Thank you for your time and consideration. I would welcome the opportunity to discuss how my platform development experience and delivery track record can contribute to Reason Group's projects for government and regulated clients.</p>
+
+    <div class="signoff">
+      <p>Yours sincerely,</p>
+      <p class="name">Ilia Shapiro</p>
+    </div>
+
+    <div class="attachments">
+      Attached: Resume — Product Engineer &amp; Full-Stack Developer (Ilia Shapiro)
+    </div>
+  </div>
+</article>
+
+<script>
+async function copyLetter() {
+  const el = document.getElementById("letter");
+  const text = el.innerText.replace(/\n{3,}/g, "\n\n").trim();
+  const btn = document.getElementById("copyBtn");
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = "Copied";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy letter text";
+      btn.classList.remove("copied");
+    }, 2000);
+  } catch {
+    btn.textContent = "Copy failed";
+  }
+}
+</script>
+
+</body>
+</html>

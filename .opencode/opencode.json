@@ -1,0 +1,143 @@
+{
+  "$schema": "https://opencode.dev/schema.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "Application Generator",
+    "description": "AI-powered cover letter and CV generator with cognitive training games",
+    "root": "/Users/iliashapiro/JOB_APPLICATION"
+  },
+  "agent": {
+    "default": "director",
+    "agents": {
+      "director": {
+        "type": "director",
+        "description": "Central orchestrator - receives tasks, decomposes, delegates to sub-agents",
+        "tools": ["create_task", "list_tasks", "read_task", "update_task_progress", "run_background_process", "list_background_processes", "stop_background_process"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.md", "**/*.json", "**/*.yaml", "**/*.yml"]
+        }
+      },
+      "coder": {
+        "type": "coder",
+        "description": "Individual file implementation - precise, scoped code changes",
+        "tools": ["read", "write", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.html", "**/*.js", "**/*.css", "**/*.json", "**/*.ts", "**/*.tsx"]
+        }
+      },
+      "reviewer": {
+        "type": "reviewer",
+        "description": "Quality gate - reviews code against all project standards",
+        "tools": ["read", "glob", "grep", "bash"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "test-engineer": {
+        "type": "test-engineer",
+        "description": "Testing agent - runs, debugs, fixes test failures",
+        "tools": ["bash", "read", "write", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.test.*", "**/*.spec.*"]
+        }
+      },
+      "build": {
+        "type": "build",
+        "description": "Runs type-check, lint, production build on modified files",
+        "tools": ["bash"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "context-scout": {
+        "type": "context-scout",
+        "description": "Discovers all relevant context files for a given domain",
+        "tools": ["read", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "external-scout": {
+        "type": "external-scout",
+        "description": "Fetches live documentation from external sources",
+        "tools": ["bash", "websearch", "webfetch"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "doc-writer": {
+        "type": "doc-writer",
+        "description": "Generates migration patterns documentation, knowledge base entries",
+        "tools": ["read", "write", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.md", "**/*.txt"]
+        }
+      },
+      "db-admin": {
+        "type": "db-admin",
+        "description": "Database operations - schema management, migrations, seeding",
+        "tools": ["bash", "read", "write", "edit"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/migrations/**", "**/seed/**", "**/schema/**"]
+        }
+      },
+      "security-auditor": {
+        "type": "security-auditor",
+        "description": "Read-only security audit - vulnerability scanning and code review",
+        "tools": ["read", "glob", "grep", "bash"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "vercel": {
+        "command": "npx",
+        "args": ["-y", "@vercel/mcp-server"],
+        "env": {
+          "VERCEL_TOKEN": "${VERCEL_TOKEN}"
+        }
+      },
+      "xerj": {
+        "command": "xerj",
+        "args": ["mcp"],
+        "env": {}
+      }
+    }
+  },
+  "skills": {
+    "enabled": [
+      "cover-letter-cv-generator",
+      "deploy-to-vercel",
+      "stripe-best-practices",
+      "vercel-react-best-practices",
+      "web-design-guidelines",
+      "writing-guidelines",
+      "xerj"
+    ]
+  },
+  "hooks": {
+    "pre-commit": [
+      "bun run lint",
+      "bun run type-check"
+    ],
+    "pre-push": [
+      "bun run test"
+    ]
+  },
+  "validation": {
+    "commands": {
+      "type-check": "bun run type-check",
+      "lint": "bun run lint",
+      "test": "bun run test",
+      "build": "bun run build"
+    }
+  }
+}

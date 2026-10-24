@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Architect Interview Knowledge Base — Multi-Agent AI on GCP</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2333; --border:#2d3748;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --accent2:#7ee787;
+    --warn:#ffa657; --pink:#ff7b72; --purple:#d2a8ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+  a{color:var(--accent);text-decoration:none}
+  header{background:linear-gradient(135deg,#0d1117 60%,#1a2744);padding:36px 24px 24px;border-bottom:1px solid var(--border)}
+  header h1{margin:0 0 6px;font-size:26px}
+  header p{margin:0;color:var(--muted);max-width:900px}
+  .badge{display:inline-block;background:#23324d;color:var(--accent);border:1px solid #2f4a75;border-radius:20px;padding:2px 12px;font-size:12px;margin:10px 6px 0 0}
+  nav{position:sticky;top:0;background:#0d1117ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:10px 16px;z-index:50;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  nav a{font-size:13px;color:var(--muted)} nav a:hover{color:var(--accent)}
+  #search{margin-left:auto;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 12px;font-size:13px;width:220px}
+  main{max-width:1200px;margin:0 auto;padding:24px}
+  h2{font-size:20px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-top:44px}
+  h2 .hint{font-size:12px;color:var(--muted);font-weight:normal}
+  .diagram{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin:18px 0;overflow-x:auto}
+  .diagram h3{margin:0 0 10px;font-size:15px;color:var(--accent)}
+  .diagram p.note{font-size:12px;color:var(--muted);margin:8px 0 0}
+  .mermaid{background:#fff;border-radius:8px;padding:14px}
+  .cat{margin-top:34px}
+  .cat h3{font-size:17px;color:var(--purple);margin:26px 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;scroll-margin-top:80px}
+  .card h4{margin:0 0 4px;font-size:16px;color:var(--accent);cursor:pointer}
+  .card h4:hover{text-decoration:underline}
+  .card .tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .card section{margin-top:10px;font-size:13.5px}
+  .card section b{color:var(--accent2)}
+  .card ul{margin:6px 0 0;padding-left:18px}
+  .card li{margin:3px 0}
+  .rel{margin-top:10px}
+  .chip{display:inline-block;background:#212b3d;border:1px solid var(--border);color:var(--accent);border-radius:14px;padding:1px 10px;font-size:12px;margin:2px 4px 2px 0;cursor:pointer}
+  .chip:hover{background:#2b3a57}
+  details{margin-top:10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+  details summary{cursor:pointer;font-size:13px;color:var(--warn)}
+  details p{font-size:13px;margin:8px 0}
+  pre{background:#0a0e14;border:1px solid var(--border);border-radius:8px;padding:10px;overflow-x:auto;font-size:12px;color:#c9d1d9}
+  .qa h4{color:var(--warn);font-size:14px;margin:14px 0 4px}
+  .qa .a{font-size:13.5px;color:var(--text)}
+  .map{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:13.5px}
+  .map b{color:var(--accent2)}
+  footer{color:var(--muted);font-size:12px;padding:30px 24px;border-top:1px solid var(--border);margin-top:50px}
+  @media(max-width:700px){.grid{grid-template-columns:1fr}}
+  /* ---- Modal ---- */
+  .modal-overlay{position:fixed;inset:0;background:#000a;backdrop-filter:blur(3px);display:none;z-index:100;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--border);border-radius:14px;max-width:780px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px #000c;animation:pop .18s ease}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border)}
+  .modal-head .titles{flex:1;min-width:0}
+  .modal-head h3{margin:0;font-size:17px;color:var(--accent)}
+  .modal-head .tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .mbtn{background:#212b3d;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:5px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+  .mbtn:hover{background:#2b3a57}
+  .mbtn.back{color:var(--accent2)}
+  .modal-body{padding:16px 20px;overflow-y:auto;font-size:13.5px}
+  .modal-body section{margin-bottom:12px}
+  .modal-body b{color:var(--accent2)}
+  .modal-body ul{margin:6px 0 0;padding-left:18px}
+  .modal-body li{margin:3px 0}
+  .crumb{font-size:11px;color:var(--muted);margin:0 0 10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI Architect — Interview Knowledge Base</h1>
+  <p>Multi-Agent AI Solutions on Google Cloud · Vertex AI · LangChain / LangGraph / LlamaIndex · Advanced RAG · Evaluation &amp; Responsible AI</p>
+  <span class="badge">36 technologies</span><span class="badge">5 clickable architecture maps</span><span class="badge">12 interview Q&amp;A</span><span class="badge">Click a node → modal popup</span><span class="badge">Relates-to chips navigate inside the modal · Back returns</span>
+</header>
+
+<nav>
+  <a href="#maps">Architecture Maps</a>
+  <a href="#kb">Knowledge Base</a>
+  <a href="#story">Your Story Mapping</a>
+  <a href="#interview">Interview Q&amp;A</a>
+  <a href="#prep">Prep Checklist</a>
+  <input id="search" placeholder="Search technologies…" oninput="filterCards(this.value)">
+</nav>
+
+<main>
+  <h2 id="maps">Architecture Maps <span class="hint">— click any node to open its entry in a modal popup</span></h2>
+
+  <div class="diagram">
+    <h3>1 · Master Architecture — how the whole stack fits together</h3>
+    <pre class="mermaid">
+flowchart TB
+  user(["User / Stakeholder"]) --> app["Application Layer<br/>FastAPI · Pydantic · Cloud Run / GKE · Dialogflow CX"]
+  subgraph ORCH["Orchestration & Patterns"]
+    langchain["LangChain"]
+    langgraph["LangGraph"]
+    llamaindex["LlamaIndex"]
+    multiagent["Multi-agent patterns<br/>supervisor · sequential · handoffs"]
+  end
+  subgraph VAI["Vertex AI (GCP)"]
+    agentbuilder["Agent Builder"]
+    vsearch["Vertex AI Search"]
+    conv["Conversational Agents"]
+    gemini["Gemini / Model Garden"]
+  end
+  subgraph DATA["Data Layer"]
+    bigquery["BigQuery"]
+    cloudsql["Cloud SQL"]
+    dataflow["Dataflow"]
+    pubsub["Pub/Sub"]
+  end
+  subgraph EVAL["Evaluation & Responsible AI"]
+    ragas["Ragas"]
+    langsmith["LangSmith"]
+    rai["Guardrails · Grounding · PII"]
+  end
+  subgraph DEVOPS["DevOps"]
+    github["GitHub Actions"]
+    cloudbuild["Cloud Build"]
+    artifactregistry["Artifact Registry"]
+    cloudtasks["Cloud Tasks"]
+  end
+  python["Python"] --> ORCH
+  python --> app
+  pytorch["PyTorch / TensorFlow"] --> VAI
+  ORCH --> VAI
+  VAI <--> DATA
+  app --> ORCH
+  ORCH --> EVAL
+  EVAL --> DEVOPS
+  DEVOPS --> app
+  click python call showTech()
+  click pytorch call showTech()
+  click langchain call showTech()
+  click langgraph call showTech()
+  click llamaindex call showTech()
+  click multiagent call showTech()
+  click agentbuilder call showTech()
+  click vsearch call showTech()
+  click conv call showTech()
+  click gemini call showTech()
+  click bigquery call showTech()
+  click cloudsql call showTech()
+  click dataflow call showTech()
+  click pubsub call showTech()
+  click ragas call showTech()
+  click langsmith call showTech()
+  click rai call showTech()
+  click github call showTech()
+  click cloudbuild call showTech()
+  click artifactregistry call showTech()
+  click cloudtasks call showTech()
+  click app call showTech()
+    </pre>
+    <p class="note">Read it bottom-up: Python is the language everything speaks · Vertex AI is the managed AI layer · LangChain/LangGraph/LlamaIndex orchestrate on top · FastAPI/Cloud Run serve it · Ragas/LangSmith keep it honest · CI/CD ships it.</p>
+  </div>
+
+  <div class="diagram">
+    <h3>2 · Advanced RAG Pipeline</h3>
+    <pre class="mermaid">
+flowchart LR
+  docs["Documents<br/>PDF · HTML · DB"] --> chunking["Chunking<br/>semantic · parent-child"]
+  chunking --> embeddings["Embeddings<br/>Voyage · text-embedding"]
+  embeddings --> vsearch[("Vector Store<br/>Vertex AI Search · pgvector")]
+  query["User Query"] --> qtransform["Query Transformation<br/>multi-query · HyDE · decomposition"]
+  qtransform --> retrieval["Retrieval<br/>hybrid: dense + BM25"]
+  vsearch --> retrieval
+  retrieval --> rerank["Reranking<br/>cross-encoder"]
+  rerank --> prompt["Prompt Assembly<br/>+ citations"]
+  prompt --> gemini["LLM · Gemini"]
+  gemini --> rai["Guardrails<br/>grounding · PII · injection"]
+  rai --> answer["Answer + Citations"]
+  answer --> ragas["Evaluate<br/>Ragas · LangSmith"]
+  ragas -. "regression feedback" .-> chunking
+  click vsearch call showTech()
+  click ragas call showTech()
+  click rai call showTech()
+  click gemini call showTech()
+    </pre>
+    <p class="note">Naive RAG = docs → store → LLM. Advanced RAG adds transformation, hybrid retrieval, reranking, guardrails — and a measured feedback loop.</p>
+  </div>
+
+  <div class="diagram">
+    <h3>3 · Multi-Agent Architecture (Supervisor Pattern)</h3>
+    <pre class="mermaid">
+flowchart TB
+  user["User"] --> langgraph["Supervisor Agent<br/>routes · sequences · aggregates"]
+  langgraph --> researcher["Researcher Agent<br/>retrieval specialist"]
+  langgraph --> analyst["Analyst Agent<br/>data / BigQuery"]
+  langgraph --> writer["Writer Agent<br/>drafting · formatting"]
+  langgraph --> toolagent["Tool Agent<br/>APIs · actions"]
+  researcher --> vsearch[("Vector Store")]
+  analyst --> bigquery[("BigQuery")]
+  toolagent --> apis["External APIs"]
+  langgraph --> hitl{"Human-in-the-loop<br/>irreversible actions?"}
+  hitl -->|approved| answer["Final Answer"]
+  hitl -->|rejected| langgraph
+  click langgraph call showTech()
+  click vsearch call showTech()
+  click bigquery call showTech()
+  click hitl call showTech()
+    </pre>
+    <p class="note">Supervisor = one entry point, auditable routing — the enterprise default. Specialists stay narrow; the graph holds the state.</p>
+  </div>
+
+  <div class="diagram">
+    <h3>4 · Evaluation &amp; Release Loop</h3>
+    <pre class="mermaid">
+flowchart LR
+  dataset["Golden Dataset<br/>+ Ragas synthetic tests"] --> run["Run Pipeline<br/>dev / CI"]
+  run --> ragas["Metrics<br/>faithfulness · relevancy<br/>context precision / recall"]
+  ragas --> gate{"Thresholds met?"}
+  gate -->|No| fix["Fix: prompts · retrieval<br/>model · chunking"]
+  fix --> run
+  gate -->|Yes| cloudbuild["Deploy<br/>Cloud Build → Cloud Run"]
+  cloudbuild --> langsmith["LangSmith Monitoring<br/>production sampling"]
+  langsmith -. "regression found" .-> dataset
+  click dataset call showTech()
+  click ragas call showTech()
+  click cloudbuild call showTech()
+  click langsmith call showTech()
+    </pre>
+    <p class="note">LLM apps are never "done" — they're held between an eval floor and a monitoring ceiling.</p>
+  </div>
+
+  <div class="diagram">
+    <h3>5 · Deployment Topology on GCP</h3>
+    <pre class="mermaid">
+flowchart TB
+  users["Users"] --> gateway["API Gateway / LB"]
+  gateway --> cloudrun["Cloud Run<br/>FastAPI container"]
+  cloudrun --> vertexai["Vertex AI Endpoints<br/>Gemini · custom models"]
+  cloudrun --> cloudsql[("Cloud SQL<br/>metadata · checkpoints")]
+  cloudrun --> pubsub["Pub/Sub"]
+  pubsub --> dataflow["Dataflow<br/>embedding pipelines"]
+  dataflow --> bigquery[("BigQuery")]
+  gke["GKE<br/>GPU inference · vLLM"]
+  github["GitHub Actions"] --> cloudbuild["Cloud Build"]
+  cloudbuild --> artifactregistry["Artifact Registry"]
+  artifactregistry --> cloudrun
+  artifactregistry --> gke
+  click cloudrun call showTech()
+  click vertexai call showTech()
+  click cloudsql call showTech()
+  click pubsub call showTech()
+  click dataflow call showTech()
+  click bigquery call showTech()
+  click gke call showTech()
+  click github call showTech()
+  click cloudbuild call showTech()
+  click artifactregistry call showTech()
+    </pre>
+    <p class="note">Default: Cloud Run for AI APIs (scale-to-zero, fast deploys). GKE only when you need GPUs, custom runtimes or fine-grained control.</p>
+  </div>
+
+  <h2 id="kb">Knowledge Base <span class="hint">— every technology in the job description · click a title to open it in the modal</span></h2>
+  <div id="kb-root"></div>
+
+  <h2 id="story">Your Story → This Stack</h2>
+  <div class="map">
+    <p><b>AVA (Apliqo UX AI assistant)</b> maps directly onto this stack's concepts: LLM + RAG + agentic workflows ↔ LangChain/LangGraph patterns; your model evaluation work ↔ Ragas/LangSmith discipline; governance-designed-in ↔ Responsible AI &amp; guardrails; production rollout to Amazon, AWS, ZKB ↔ enterprise deployment at scale.</p>
+    <p><b>Apliqo UX / TokenizMyApp (multi-tenant SaaS)</b> ↔ multi-tenant agent design, tenant-isolated retrieval, role-based access — the same patterns MongoDB/Vertex multi-tenant RAG architectures use.</p>
+    <p><b>Model selection &amp; AI standards</b> ↔ Model Garden choice, routing small-vs-large models, evaluation gates — the architect's daily tradeoff matrix.</p>
+    <p style="color:var(--warn)"><b>Honest prep list</b> — do not claim hands-on depth you don't have; build it this week: (1) Vertex AI console — Agent Builder + Search walkthrough; (2) LangGraph quickstart — build a 2-node supervisor graph; (3) Ragas quickstart — evaluate one RAG chain; (4) FastAPI SSE streaming endpoint; (5) GCP free-tier basics — project, IAM, Cloud Run deploy. Each is a half-day. Then every claim in your letter is defensible.</p>
+  </div>
+
+  <h2 id="interview">Interview Q&amp;A <span class="hint">— the twelve questions most likely to be asked</span></h2>
+  <div id="qa-root"></div>
+
+  <h2 id="prep">Prep Checklist</h2>
+  <div class="map">
+    <ul>
+      <li><b>Day 1:</b> GCP project + Vertex AI enabled → run Agent Builder "grounded agent" over a sample doc store; note the UI flow (you'll be asked "have you used Vertex?").</li>
+      <li><b>Day 2:</b> LangGraph quickstart → supervisor graph with 2 specialist nodes + a conditional edge; add Postgres checkpointer.</li>
+      <li><b>Day 3:</b> Ragas quickstart → evaluate a small RAG chain (faithfulness, context precision/recall); wire into pytest.</li>
+      <li><b>Day 4:</b> FastAPI + SSE streaming endpoint backed by Gemini streaming; Pydantic structured output with retry-on-invalid.</li>
+      <li><b>Day 5:</b> Cloud Run deploy of the above; Cloud Build trigger from GitHub; read Vertex AI Search grounding docs end-to-end.</li>
+      <li><b>Story prep:</b> 3 STAR stories — (1) AVA vision→production; (2) model evaluation framework you led; (3) multi-tenant SaaS delivery. Each should name a tradeoff and a number.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>Interactive knowledge base for interview preparation · Mermaid diagrams require an internet connection (CDN) · Click diagram nodes, card titles or relation chips → modal popup · "Relates to" chips navigate inside the modal · ← Back returns through your click history · ESC or overlay click closes.</footer>
+
+<!-- ---- Modal ---- -->
+<div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <button class="mbtn back" id="backBtn" onclick="goBack()" style="display:none">← Back</button>
+      <div class="titles">
+        <div class="tag" id="mTag"></div>
+        <h3 id="mTitle"></h3>
+      </div>
+      <button class="mbtn" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+var NODE_MAP = { conv:"convagents", gemini:"vertexai", rai:"responsible-ai", app:"fastapi", hitl:"responsible-ai", dataset:"evaluation" };
+
+var TECHS = [
+ {id:"python", name:"Python", cat:"Foundations", icon:"🐍",
+  what:"The primary language of the AI/ML ecosystem. Every framework in this stack — LangChain, LangGraph, LlamaIndex, PyTorch, TensorFlow, FastAPI, Ragas — exposes Python-first APIs.",
+  why:"Listed first in must-haves. As the architect, you set Python standards: typing, async patterns, packaging, and how LLM I/O flows through the codebase.",
+  use:["async/await for concurrent LLM + API calls (agents wait on many tools)","Generators for token streaming (yield partial completions to SSE)","Type hints + Pydantic for contracts between agents, tools and services","Decorators for caching, retries, tracing hooks","Packaging: venv/uv/pip, pinned dependencies, reproducible environments"],
+  rel:["pydantic","fastapi","langchain","langgraph"],
+  qa:[{q:"How do you stream LLM output to a web client in Python?",a:"Async generator pattern: the LLM SDK yields partial tokens; an async generator transforms them; FastAPI wraps it in a StreamingResponse with media-type text/event-stream. The browser reads SSE. Backpressure is handled by the ASGI server; each chunk is a small JSON event (token or tool event)."},
+     {q:"Where does the GIL bite in AI services?",a:"CPU-bound Python (parsing, chunking) blocks threads — offload to ProcessPoolExecutor or a queue worker. GPU work in PyTorch releases the GIL in native code, so training/inference threads coexist fine. The real fix architecturally: keep request handlers async and push heavy jobs to Cloud Tasks/Dataflow."}]},
+
+ {id:"pytorch", name:"PyTorch", cat:"Foundations", icon:"🔥",
+  what:"Dynamic-graph deep learning framework and the research-to-production standard: autograd, nn.Module, DataLoader, torch.compile — and the HuggingFace ecosystem is PyTorch-native.",
+  why:"Must-have ('PyTorch and/or TensorFlow'). You need it to fine-tune models (LoRA/PEFT), build custom embedding or reranking models, and understand what runs inside Vertex endpoints.",
+  use:["Fine-tuning LLMs/embedders with PEFT/LoRA on your domain data","Custom reranker or classifier heads for retrieval","Export to ONNX / TensorRT-LLM for cheap, fast inference","Quantization (int8/4-bit) to cut latency and cost"],
+  rel:["python","tensorflow","vertexai"],
+  qa:[{q:"PyTorch or TensorFlow — how do you decide for an enterprise team?",a:"Default PyTorch: it dominates research and the HuggingFace ecosystem, and is production-viable (torch.compile, ONNX, TorchServe). Choose TensorFlow where TPU training pipelines, TFX or TFLite edge deployment are already established. On GCP, Vertex AI serves both — the decision is team skills + serving path, not ideology."}]},
+
+ {id:"tensorflow", name:"TensorFlow / Keras", cat:"Foundations", icon:"🧠",
+  what:"Static-graph deep learning framework with strong production tooling: tf.data input pipelines, TFX for reproducible training pipelines, SavedModel serving, TFLite for edge, first-class TPU support. Keras 3 is now multi-backend.",
+  why:"The JD allows 'PyTorch and/or TensorFlow' — enterprises with existing TFX/TPU estates expect you to speak it.",
+  use:["TFX pipelines for governed, reproducible training","TPU training via Vertex AI for cost-efficient large jobs","TFLite for on-device inference where relevant"],
+  rel:["pytorch","vertexai","gcp"],
+  qa:[{q:"When would you pick TF over PyTorch on a greenfield project?",a:"Only when the deployment target demands it — TPU-heavy training economics, an existing TFX estate, or on-device TFLite. Otherwise PyTorch's ecosystem gravity wins. As architect I'd document the decision, not defend a religion."}]},
+
+ {id:"genai-patterns", name:"GenAI · ML · DL · Agentic AI", cat:"Foundations", icon:"🧩",
+  what:"The layered field: ML learns from data (classical models); DL is deep neural networks; GenAI generates content (transformers/LLMs, diffusion); Agentic AI is LLMs that plan, call tools, and act in loops with memory.",
+  why:"The JD asks expertise across all four layers — interviews probe whether you can place a business problem in the right layer and pick the right pattern instead of defaulting to 'add an agent'.",
+  use:["Pattern selection: classifier (ML) → fine-tune (DL) → RAG (GenAI) → agent (Agentic)","Core agentic patterns: ReAct (reason+act), plan-and-execute, reflection, supervisor/multi-agent, human-in-the-loop","Knowing when a plain LLM call or a deterministic pipeline beats an agent"],
+  rel:["langgraph","adv-rag","multiagent"],
+  qa:[{q:"When do you NOT need an agent?",a:"When the task is a single, predictable transformation — a chain or one LLM call is cheaper, faster and testable. Agents earn their place when the sequence of steps is unpredictable, tools are many, or recovery from partial failure matters. Every autonomy level must be justified with evaluation results, not enthusiasm."}]},
+
+ {id:"gcp", name:"Google Cloud Platform", cat:"Google Cloud & Vertex AI", icon:"☁️",
+  what:"The platform substrate: projects, IAM, VPC, regions — plus the AI services (Vertex AI), data services (BigQuery, Dataflow, Cloud SQL, Pub/Sub) and delivery services (Cloud Run, GKE, Cloud Build).",
+  why:"'Strong experience with GCP' is a must-have. The architect owns the decisions that are expensive to reverse: region strategy, IAM boundaries, network perimeters, cost structure.",
+  use:["Landing zone: project structure, service accounts with least privilege, IAM conditions","VPC Service Controls perimeters around data + no public endpoints","Region selection for latency and data residency","Cost hygiene: labels, budgets, committed-use where predictable"],
+  rel:["vertexai","bigquery","cloudrun","cloudbuild"],
+  qa:[{q:"How do you secure an AI platform on GCP?",a:"Least-privilege service accounts per workload; VPC-SC perimeter so data can't leave; CMEK encryption; private endpoints only; separate projects for dev/prod; audit logs on every AI call; and guardrails at the application layer (PII redaction before prompts). Security is architecture, not a checklist."}]},
+
+ {id:"vertexai", name:"Vertex AI", cat:"Google Cloud & Vertex AI", icon:"🎯",
+  what:"GCP's unified AI platform: Gemini + Model Garden, Agent Builder, Vertex AI Search, Conversational Agents, Pipelines, Endpoints, Model Registry, Feature Store, Evaluations — and Reasoning Engine, a managed runtime for LangGraph agents.",
+  why:"Named explicitly with three sub-products in the JD. It's the 'buy' option that lets teams ship governed AI without hand-rolling infrastructure.",
+  use:["Agent Builder: grounded enterprise agents over connected data stores","Vertex AI Search: managed RAG with citations over unstructured + structured data","Conversational Agents: dialog experiences with generative fallback","Endpoints: serve OSS/custom models (your PyTorch fine-tunes)","Pipelines: orchestrated training/eval workflows","Reasoning Engine: deploy LangGraph agents managed"],
+  rel:["gcp","agentbuilder","vsearch","convagents","langgraph"],
+  qa:[{q:"Build vs buy on Vertex AI — how do you decide?",a:"Default to managed (Agent Builder, Vertex AI Search) for speed, security posture and maintenance savings. Drop to custom (LangGraph on Cloud Run + your own retrieval) when you need control over retrieval logic, unit economics, or portability. The common enterprise answer is hybrid: managed grounding + custom orchestration."}]},
+
+ {id:"agentbuilder", name:"Vertex AI Agent Builder", cat:"Google Cloud & Vertex AI", icon:"🤖",
+  what:"Managed service for building agents grounded in enterprise data: data-store connectors (SharePoint, Confluence, BigQuery, websites), function tools, and natural-language agent configuration — now aligned with Gemini Enterprise agents.",
+  why:"The fastest governed path from 'we have documents' to 'we have a working assistant' — the buy option in every build-vs-buy discussion.",
+  use:["Ground agents on curated data stores with access-control inheritance","Register function tools that call internal APIs","Use groundedness metrics to prove answers are sourced"],
+  rel:["vertexai","vsearch","langgraph"],
+  qa:[{q:"When would you NOT use Agent Builder?",a:"When retrieval logic is the product — custom ranking, multi-hop reasoning, complex state — or when unit economics demand tighter control of tokens and compute. Then it's LangGraph on your own runtime with Vertex models behind it."}]},
+
+ {id:"vsearch", name:"Vertex AI Search", cat:"Google Cloud & Vertex AI", icon:"🔍",
+  what:"Enterprise search product: hybrid semantic search over unstructured documents, structured BigQuery data, and media — with grounding, citations, boosting and access-control-aware retrieval.",
+  why:"It's managed RAG: ingestion, chunking, embeddings and ranking are handled — the architect's job becomes data-store design, access policy and grounding quality.",
+  use:["Connect enterprise repositories as data stores","Ground Gemini responses with citations","Blend structured (BigQuery) and document search in one assistant","Evaluate with groundedness + custom relevance metrics"],
+  rel:["vertexai","adv-rag","llamaindex","bigquery"],
+  qa:[{q:"Managed Vertex AI Search vs self-built RAG — tradeoffs?",a:"Managed: days-to-production, built-in ACLs, less to operate — but less control over chunking, ranking and cost. Self-built: full control and portability, but you own ingestion, updates and quality. I decide by asking: is retrieval a differentiator for this business, or table stakes?"}]},
+
+ {id:"convagents", name:"Vertex AI Conversational Agents", cat:"Google Cloud & Vertex AI", icon:"💬",
+  what:"Managed conversational agent building (Dialogflow CX powered by Gemini): flows, pages, parameters, generative fallback, tool integration, telephony and chat channels.",
+  why:"Named in must-haves. Enterprises need dialog experiences that mix deterministic control with generative flexibility.",
+  use:["Deterministic flows for regulated paths + generative agent for open questions","Webhook fulfillment into your FastAPI services","Seamless handoff to human agents with full context"],
+  rel:["dialogflow","vertexai","fastapi"],
+  qa:[{q:"How do you blend deterministic and generative in one assistant?",a:"Route by intent confidence: known transactions (check balance, book leave) go down deterministic flows — testable, auditable; open questions escalate to the generative agent with grounding. The architecture makes the regulated path boring on purpose."}]},
+
+ {id:"langchain", name:"LangChain", cat:"Orchestration & RAG", icon:"⛓️",
+  what:"The broad LLM application framework: chat-model abstractions, prompt templates, output parsers, retrievers, tools, document loaders/splitters, and LCEL (LangChain Expression Language) for composable pipelines with streaming, async, retries and fallbacks built in.",
+  why:"Listed first among frameworks in the JD — it's the shared vocabulary of LLM engineering, and LangGraph/LangSmith come from the same team.",
+  use:["LCEL chains: retriever → prompt → LLM → parser, with streaming for free","Tool binding for function calling","Document loaders + splitters feeding your RAG ingestion","Vertex/Gemini integrations via langchain-google-vertexai"],
+  rel:["langgraph","llamaindex","ragas","langsmith"],
+  qa:[{q:"What does LCEL actually buy you?",a:"Declarative composition: every chain gets streaming, async, batch, retries and fallbacks uniformly, and every step is traceable in LangSmith. It turns pipeline plumbing into configuration — which is exactly what you want when prompts change weekly."}]},
+
+ {id:"langgraph", name:"LangGraph", cat:"Orchestration & RAG", icon:"🕸️",
+  what:"Graph-based orchestration for stateful agents: StateGraph with typed state, nodes, conditional edges, persistence (checkpointers), human-in-the-loop interrupts, streaming, time-travel debugging, and first-class multi-agent patterns (supervisor, network). Vertex AI Reasoning Engine runs LangGraph managed.",
+  why:"This is where 'multi-agent architectures' lives in production. If the interview goes deep on agents, it goes through LangGraph.",
+  use:["Supervisor pattern: router agent delegating to specialist agents","Conditional edges for policy ('is this irreversible? → human approval')","Checkpointers (Postgres/MongoDB) so long workflows survive restarts","Interrupts for human-in-the-loop; replay any state for debugging","Per-node evaluation — test agents like software, node by node"],
+  rel:["langchain","langsmith","multiagent","cloudsql","vertexai"],
+  code:"from langgraph.graph import StateGraph, END\n\nclass S(TypedDict): query: str; docs: list; answer: str\n\ng = StateGraph(S)\ng.add_node(\"retrieve\", retrieve_node)\ng.add_node(\"grade\", grade_node)\ng.add_node(\"generate\", generate_node)\ng.set_entry_point(\"retrieve\")\ng.add_edge(\"retrieve\", \"grade\")\ng.add_conditional_edges(\"grade\", lambda s: \"generate\" if s[\"docs\"] else \"retrieve\")\ng.add_edge(\"generate\", END)\napp = g.compile(checkpointer=PostgresSaver(conn))",
+  qa:[{q:"How do you make agents production-reliable?",a:"Typed, minimal state; deterministic edges wherever possible; bounded loops (recursion limits); checkpointing so failures resume instead of restart; evaluation per node, not just end-to-end; human-in-the-loop interrupts on irreversible actions; and full tracing so any bad run is replayable. Agents fail — the design decides whether failure is a bug or a handled case."}]},
+
+ {id:"llamaindex", name:"LlamaIndex", cat:"Orchestration & RAG", icon:"🦙",
+  what:"The data framework for RAG: LlamaHub connectors, ingestion pipelines, multiple index types (vector, summary, knowledge graph), query engines, routers, sub-question decomposition, and LlamaParse for complex documents.",
+  why:"Named explicitly in the JD. Where LangChain is general orchestration, LlamaIndex is deepest on data ingestion and index strategy — the hard 80% of enterprise RAG.",
+  use:["Enterprise connectors to Confluence, SharePoint, S3, databases","Parent-child / sentence-window chunking strategies","Router query engines across multiple indexes (docs + SQL + graph)","Sub-question query engine: decompose one hard question into many retrievals"],
+  rel:["adv-rag","vsearch","langchain","graphrag"],
+  qa:[{q:"LangChain vs LlamaIndex — do you need both?",a:"They overlap but optimize different layers: LlamaIndex for ingestion/index/retrieval depth, LangChain/LangGraph for application orchestration. Many production stacks use LlamaIndex as the retrieval engine inside a LangGraph agent. Use one framework per layer, not two frameworks per concern."}]},
+
+ {id:"adv-rag", name:"Advanced RAG", cat:"Orchestration & RAG", icon:"📚",
+  what:"Everything beyond naive RAG: chunking strategy (semantic, parent-child, sentence-window), embedding model choice, hybrid retrieval (dense + BM25), cross-encoder reranking, query transformation (multi-query, HyDE, decomposition), contextual compression, self-correcting RAG (CRAG), and GraphRAG.",
+  why:"'Advanced RAG' is explicit in the JD because naive RAG fails on real enterprise data — messy PDFs, stale content, access rules, multi-hop questions.",
+  use:["Measure first: context precision/recall before touching anything","Fix chunking for the document type (tables ≠ prose)","Hybrid retrieval + reranker for precision","Query rewriting/decomposition for multi-hop questions","Metadata filters for access control and freshness","Citations on every answer — grounding is a feature, not decoration"],
+  rel:["llamaindex","vsearch","ragas","graphrag","bigquery"],
+  qa:[{q:"Retrieval returns irrelevant chunks — walk me through your debug.",a:"Never tune blind: run Ragas context precision/recall to localize — is retrieval bad or generation bad? If retrieval: audit chunking (are answers being split across chunks?), add hybrid search + a cross-encoder reranker, rewrite queries (multi-query), add metadata filters, then consider a stronger embedding model. One change per experiment, measured against the golden set."}]},
+
+ {id:"graphrag", name:"Graph-based RAG (GraphRAG)", cat:"Orchestration & RAG", icon:"🔗",
+  what:"RAG over knowledge graphs: extract entities/relations with LLMs, build a graph, detect communities, generate summaries — then answer 'connective' questions (multi-hop, global themes) that vector similarity misses.",
+  why:"Named in nice-to-haves ('Graph-based RAG') and increasingly the answer for 'how does X relate to Y across 10,000 documents' questions.",
+  use:["Microsoft GraphRAG-style pipeline: extract → graph → community summaries","Hybrid retrieval: vector for local facts, graph for relationships","Neo4j, Spanner Graph or BigQuery-based graphs as the store"],
+  rel:["adv-rag","llamaindex","bigquery"],
+  qa:[{q:"When does GraphRAG beat vector RAG?",a:"When questions are relational or global: 'how do these suppliers connect?', 'summarize themes across all contracts'. Vector search finds similar text; graphs traverse relationships. Cost is higher (extraction is expensive), so I use graph indexing on the high-value corpus and vector for the long tail — hybrid by design."}]},
+
+ {id:"multiagent", name:"Multi-Agent Architectures", cat:"Orchestration & RAG", icon:"👥",
+  what:"Patterns for coordinating specialized agents: supervisor (router + specialists), hierarchical (teams of teams), network/peer handoffs, sequential pipelines, and shared-state vs message-passing designs.",
+  why:"Core JD responsibility: 'Design, develop, and implement multi-agent AI solutions for enterprise use cases.'",
+  use:["Supervisor: one auditable entry point routing to narrow specialists — the enterprise default","Sequential: document pipelines where each stage transforms state","Handoffs: domain escalation (billing → technical → human)","State design: typed, minimal, checkpointed; tools scoped per agent","Governance: every agent's permissions are the union of its tools — keep unions small"],
+  rel:["langgraph","genai-patterns","pubsub","responsible-ai"],
+  qa:[{q:"Supervisor vs swarm — how do you choose?",a:"Supervisor: controllable, auditable, single entry point — default for enterprise where someone must answer for decisions. Swarm/network: flexible and emergent but hard to debug and govern. Compliance requirements make this choice for you more often than not."}]},
+
+ {id:"ragas", name:"Ragas", cat:"Evaluation & Responsible AI", icon:"📏",
+  what:"RAG evaluation framework with reference-free metrics: faithfulness (answer entailed by context?), answer relevancy, context precision, context recall — plus synthetic test-set generation from your documents.",
+  why:"Named in the JD. Evaluation is a first-class architect duty — Ragas is how RAG quality becomes a number you can gate releases on.",
+  use:["Score pipelines in CI: block deploys on metric regressions","Generate golden test sets from real documents","Track metric trends per release, per data source"],
+  rel:["langchain","langsmith","evaluation","adv-rag"],
+  qa:[{q:"Which Ragas metric catches hallucinations?",a:"Faithfulness — it decomposes the answer into claims and checks each against retrieved context. Low faithfulness means the model is asserting beyond evidence. Pair it with context recall to know whether the fault is retrieval (missing evidence) or generation (ignoring evidence)."}]},
+
+ {id:"langsmith", name:"LangSmith", cat:"Evaluation & Responsible AI", icon:"🔬",
+  what:"Observability and evaluation platform for LLM apps: full tracing of every run (prompts, retrievals, tool calls, tokens, latency), datasets, experiments, evaluators (heuristic + LLM-as-judge), prompt playground, and production monitoring.",
+  why:"Named in the JD. It's the operational backbone: you cannot debug what you cannot trace, and you cannot ship prompts that you cannot regression-test.",
+  use:["Trace a multi-agent run to the exact failing node","Datasets + experiments: compare prompts/models side by side","LLM-as-judge evaluators for open-ended outputs","Production sampling with user feedback attached to traces"],
+  rel:["langchain","langgraph","ragas","evaluation"],
+  qa:[{q:"A multi-agent system gives wrong answers in production — first move?",a:"Pull the LangSmith trace for failing runs. Agents fail at a node, not 'in general' — find the node (bad retrieval? bad tool args? bad routing?), reproduce with the dataset, fix, add the case to the regression set. Debugging agents without tracing is folklore."}]},
+
+ {id:"evaluation", name:"Testing & Evaluation Frameworks", cat:"Evaluation & Responsible AI", icon:"✅",
+  what:"The discipline that makes LLM systems shippable: golden datasets, unit/integration tests for deterministic parts, LLM-as-judge for open-ended parts, regression gates in CI, online monitoring, A/B and shadow deployments.",
+  why:"JD: 'testing, and evaluation frameworks' plus 'code quality, testing'. Non-negotiable for enterprise AI.",
+  use:["pytest for parsing, tools, business logic — everything deterministic","Ragas for RAG quality; LangSmith experiments for prompt/model changes","CI gates: eval score below threshold = deploy blocked","Shadow deploy new prompts/models against live traffic before cutover"],
+  rel:["ragas","langsmith","cloudbuild","github"],
+  qa:[{q:"What belongs in CI for an LLM app?",a:"Everything deterministic: lint, types, unit tests, contract tests on tools/APIs. Plus an eval smoke suite: a small golden set scored with Ragas/LangSmith on every PR, with thresholds. Full eval suites run nightly. The gate isn't 'does it work' — it's 'is it not worse than the last version'."}]},
+
+ {id:"responsible-ai", name:"Responsible AI · Guardrails · Hallucination Mitigation", cat:"Evaluation & Responsible AI", icon:"🛡️",
+  what:"The governance layer: grounding with citations, input/output guardrails, content safety filters, prompt-injection defense, PII redaction, policy enforcement, human review paths, and audit trails.",
+  why:"Explicit JD line — and the difference between a demo and an enterprise system. 'Governed model and API services' is the same idea.",
+  use:["Ground every answer in retrieved context with citations","Vertex AI safety settings + Gemini grounding as the managed layer","Injection defense: separate system/user channels, validate tool arguments, least-privilege tools","PII redaction before prompts; policy checks on outputs","Abstain paths: 'I don't know' is a correct answer","Red-team suites + audit logging for every AI decision"],
+  rel:["evaluation","vertexai","multiagent","langsmith"],
+  qa:[{q:"How do you mitigate hallucination in an enterprise assistant?",a:"Layered: (1) ground in retrieval with citations so answers point at evidence; (2) constrain generation with structured outputs; (3) measure faithfulness in CI and block regressions; (4) design abstention — no evidence, no answer; (5) human review for high-stakes actions. You never eliminate hallucination; you make it detectable, measurable and rare."}]},
+
+ {id:"scale-cost", name:"Scale · Performance · Accuracy · Cost", cat:"Evaluation & Responsible AI", icon:"⚖️",
+  what:"The architect's tradeoff matrix: latency (streaming, caching, model sizing), throughput (autoscaling, batching), accuracy (evals, RAG vs fine-tune decisions), cost (token budgets, model routing, caching, batch APIs, quantization).",
+  why:"Explicit JD line: 'designing AI solutions for scale, performance, accuracy, and cost optimization.'",
+  use:["Model routing: small model first, escalate on low confidence — eval-verified","Semantic caching for repeated questions","Prompt compression and context trimming","Batch APIs for offline jobs; reserved endpoints vs autoscale economics","Per-feature SLOs: latency and cost targets per use case, not global"],
+  rel:["vertexai","cloudrun","gke","evaluation"],
+  qa:[{q:"Cut LLM cost 50% without hurting quality — how?",a:"Measure per-call cost by feature first. Then: route easy traffic to a smaller model (verified by evals, not vibes), add semantic caching for repeats, compress prompts, move batch work to batch APIs, and right-size endpoints. Routing alone typically delivers 30–60% with a measured quality floor."}]},
+
+ {id:"engineering", name:"Software Engineering Practices", cat:"Evaluation & Responsible AI", icon:"🧰",
+  what:"API integration done right (auth, retries with backoff, idempotency, rate-limit handling), code quality (typing, linting, review standards), the testing pyramid, and performance optimization (profiling, caching).",
+  why:"JD: 'Strong software engineering practices including API integration, code quality, testing, and optimization.' AI code is still code — it ships, pages people, and gets audited.",
+  use:["Typed contracts (Pydantic) at every boundary — LLM outputs included","Retry with exponential backoff + idempotency keys on provider APIs","Rate-limit budgets per provider; circuit breakers","Feature flags for prompt/model changes","Code review standards that treat prompts as reviewed artifacts"],
+  rel:["pydantic","fastapi","github","evaluation"],
+  qa:[{q:"An LLM provider API is flaky — how does the system cope?",a:"Retries with exponential backoff and jitter on 429/5xx, idempotency keys so retries are safe, timeouts everywhere, a circuit breaker that fails over to a secondary model, and a queue (Cloud Tasks) for async work so user requests never block on a degraded provider. Degradation is designed, not improvised."}]},
+
+ {id:"fastapi", name:"FastAPI", cat:"Serving & APIs", icon:"⚡",
+  what:"Modern async Python API framework: automatic OpenAPI docs, dependency injection, WebSockets and SSE streaming — the de-facto standard for serving LLM applications.",
+  why:"Nice-to-have in the JD but the practical standard for agent/RAG backends on Cloud Run.",
+  use:["SSE endpoints streaming tokens and agent events","Webhook receivers for Vertex/Dialogflow fulfillment","Background tasks + integration with Cloud Tasks queues","Auth middleware, rate limiting, structured error responses"],
+  rel:["pydantic","cloudrun","python","cloudtasks"],
+  code:"@app.post(\"/chat\")\nasync def chat(req: ChatRequest):\n    async def gen():\n        async for event in agent.astream(req.message):\n            yield f\"data: {event.json()}\\n\\n\"\n    return StreamingResponse(gen(), media_type=\"text/event-stream\")",
+  qa:[{q:"Why SSE over WebSockets for LLM streaming?",a:"SSE is one-way server→client, works over plain HTTP, survives proxies, and auto-reconnects — exactly the shape of token streaming. WebSockets earn their complexity only for bidirectional real-time (voice, collaborative state)."}]},
+
+ {id:"pydantic", name:"Pydantic", cat:"Serving & APIs", icon:"📐",
+  what:"Data validation and serialization via type hints (v2 core in Rust): request/response models, settings management, and — crucially for AI — structured outputs that force LLM responses into validated schemas.",
+  why:"Nice-to-have, but it's the contract layer between probabilistic LLM output and deterministic code.",
+  use:["Validate tool arguments and agent state transitions","Structured outputs: JSON schema → LLM → Pydantic validate → retry on invalid","Settings/secrets management per environment","FastAPI request/response models (same library, same contracts)"],
+  rel:["fastapi","langchain","langgraph","python"],
+  qa:[{q:"How do you guarantee valid JSON from an LLM?",a:"Three layers: ask for a schema-constrained output (Gemini responseSchema / function calling), validate with Pydantic, and retry with the validation error fed back into the prompt. Structured output + validation + bounded retry turns 'usually JSON' into 'always valid or explicitly failed'."}]},
+
+ {id:"gradio", name:"Gradio", cat:"Serving & APIs", icon:"🎛️",
+  what:"Fast UI framework for ML: chat interfaces, model demos, shareable links — one Python file to a working interface.",
+  why:"Nice-to-have; the fastest way to put a model in front of stakeholders for feedback.",
+  use:["Demo an agent or RAG chain to product owners in an afternoon","Internal evaluation UIs where humans grade outputs","HuggingFace Spaces hosting"],
+  rel:["streamlit","python"],
+  qa:[{q:"Gradio vs Streamlit for internal tools?",a:"Gradio for model-centric demos (chat, upload-and-respond); Streamlit for data-app workflows (dashboards, multi-step forms). Both are prototyping layers — production UIs graduate to a real frontend."}]},
+
+ {id:"streamlit", name:"Streamlit", cat:"Serving & APIs", icon:"📊",
+  what:"Python framework that turns scripts into web apps: widgets, caching, session state — data apps without a frontend team.",
+  why:"Nice-to-have; ideal for internal RAG playgrounds and evaluation dashboards.",
+  use:["RAG playground: swap retriever/model/chunking live for stakeholders","Eval dashboards over Ragas/LangSmith results","Quick internal tools while the real product is built"],
+  rel:["gradio","fastapi","ragas"],
+  qa:[{q:"Where does Streamlit belong in an enterprise architecture?",a:"Internal tooling only — its session model doesn't scale to production multi-user apps. Its value is speed of feedback: stakeholders react to a working thing in days, which de-risks the real build."}]},
+
+ {id:"dialogflow", name:"Dialogflow CX / Gemini Enterprise CX", cat:"Serving & APIs", icon:"☎️",
+  what:"Google's conversational platform: flows, pages, parameters, fulfillment webhooks, generative hybrid agents, chat + telephony channels.",
+  why:"Named in nice-to-haves alongside Vertex Conversational Agents — same product family, CX is the classic flow-builder surface.",
+  use:["Regulated dialog paths as testable flows","Webhook fulfillment into FastAPI services","Generative fallback for open questions; human handoff with context"],
+  rel:["convagents","fastapi","vertexai"],
+  qa:[{q:"Dialogflow CX vs building the conversation in LangGraph?",a:"CX when the conversation is flow-shaped (IVR, support trees) and you want channel management for free. LangGraph when the 'conversation' is really a workflow with state, tools and branching logic. Hybrid: CX front door, LangGraph behind the webhook."}]},
+
+ {id:"bigquery", name:"BigQuery", cat:"Data & Eventing", icon:"🗄️",
+  what:"Serverless data warehouse: petabyte SQL, BigQuery ML, native vector search, and structured data stores that Vertex AI Search can ground on directly.",
+  why:"Nice-to-have, but enterprise data gravity lives here — the AI architect who can't query the warehouse is half an architect.",
+  use:["Analytics + evaluation datasets (what did users actually ask?)","Structured RAG: ground agents on governed tables","BQML for quick baselines before deep learning","Cost control: partitioning, clustering, query budgets"],
+  rel:["dataflow","vsearch","gcp","evaluation"],
+  qa:[{q:"How does BigQuery participate in a RAG architecture?",a:"Three roles: source of structured truth agents ground on (via Vertex AI Search structured stores), home of evaluation data (queries, feedback, metric trends), and — with its vector index — a low-ops vector store for corpus-scale semantic search. All without managing a single server."}]},
+
+ {id:"dataflow", name:"Dataflow", cat:"Data & Eventing", icon:"🌊",
+  what:"Managed Apache Beam: unified batch and streaming ETL — autoscaled, exactly-once, no cluster babysitting.",
+  why:"Nice-to-have; the workhorse for embedding/ingestion pipelines at document scale.",
+  use:["Ingestion pipeline: load → parse → chunk → embed → write to vector store","Streaming enrichment of events before they land in BigQuery","Periodic re-embedding when models change (backfill jobs)"],
+  rel:["pubsub","bigquery","adv-rag"],
+  qa:[{q:"You swap embedding models — what happens to your corpus?",a:"Full re-embed backfill: Dataflow batch job re-chunking and re-embedding everything into a new index, dual-write or shadow period, then cutover verified by retrieval evals. Embedding model changes are migrations, not config edits — plan them like database migrations."}]},
+
+ {id:"cloudsql", name:"Cloud SQL", cat:"Data & Eventing", icon:"🐬",
+  what:"Managed PostgreSQL/MySQL/SQL Server: relational backbone with pgvector extension for embeddings at moderate scale.",
+  why:"Nice-to-have; also the natural home for LangGraph checkpointers and application metadata.",
+  use:["App metadata, users, audit logs","LangGraph Postgres checkpointer — agent state that survives restarts","pgvector for small-to-mid RAG before a dedicated vector store is justified"],
+  rel:["langgraph","fastapi","cloudrun"],
+  qa:[{q:"pgvector or a dedicated vector DB?",a:"Below ~a few million vectors and modest QPS, pgvector wins on operational simplicity — one database, transactions with your metadata. Beyond that (large corpora, hybrid ranking, filtering at scale), dedicated stores (Vertex AI Search, Qdrant, Pinecone) pull ahead. Decide by measurement, not fashion."}]},
+
+ {id:"pubsub", name:"Pub/Sub", cat:"Data & Eventing", icon:"📮",
+  what:"Global messaging: at-least-once delivery, ordering keys, dead-letter topics — the decoupling layer for event-driven AI systems.",
+  why:"Nice-to-have; agents and pipelines shouldn't share a process, or a fate.",
+  use:["Document events → embedding pipeline (Dataflow)","Agent task events between services","DLQs so poison messages don't stall the pipeline"],
+  rel:["dataflow","cloudtasks","multiagent"],
+  qa:[{q:"Why event-driven for AI pipelines?",a:"Ingestion, embedding and agent runs have wildly different scaling and failure profiles. Pub/Sub decouples them: a slow embedding backfill doesn't block uploads, retries are per-stage, and every step is independently observable. Coupled pipelines fail as one unit; event-driven ones fail as one stage."}]},
+
+ {id:"cloudtasks", name:"Cloud Tasks", cat:"Data & Eventing", icon:"⏱️",
+  what:"Managed task queue with rate limiting, scheduled dispatch and retries — controlled asynchronous work with backpressure.",
+  why:"Nice-to-have; the polite way to hammer rate-limited LLM APIs.",
+  use:["Throttled batch LLM jobs (per-tenant quotas)","Delayed retries with backoff for provider outages","Fan-out of per-document processing with dispatch-rate control"],
+  rel:["pubsub","fastapi","scale-cost"],
+  qa:[{q:"Pub/Sub vs Cloud Tasks?",a:"Pub/Sub: many consumers, streaming, event fan-out. Cloud Tasks: one target per task, explicit rate control, scheduled dispatch — it's a queue with a throttle. Batch LLM work with provider rate limits → Cloud Tasks. Decoupled event pipelines → Pub/Sub."}]},
+
+ {id:"github", name:"GitHub · DevOps · CI/CD", cat:"DevOps & Delivery", icon:"🐙",
+  what:"Source control plus automation: Actions workflows, protected environments, PR checks, infrastructure-as-code (Terraform), GitOps deployment patterns.",
+  why:"Nice-to-have; the delivery backbone that makes evals and deploys repeatable.",
+  use:["PR checks: lint, types, unit tests, eval smoke suite","Environment protection: prod deploys need review","Secrets management; Terraform for GCP infra","Prompt/model changes reviewed like code — because they are"],
+  rel:["cloudbuild","evaluation","engineering"],
+  qa:[{q:"What's different about CI/CD for LLM apps?",a:"A third axis: behavior. Beyond build-and-test, you gate on evaluation scores (Ragas/LangSmith), version prompts and models as artifacts, and canary/shadow deploy because 'passed the tests' means 'not worse', not 'better'."}]},
+
+ {id:"cloudbuild", name:"Cloud Build", cat:"DevOps & Delivery", icon:"🏗️",
+  what:"GCP-native CI/CD: builds containers, runs test suites, deploys to Cloud Run/GKE, triggers from GitHub or Artifact Registry events.",
+  why:"Nice-to-have; the GCP-native pipeline that pairs with GitHub Actions.",
+  use:["Build → test (incl. eval smoke) → deploy pipeline","Per-environment promotion with approvals","Binary authorization for supply-chain governance"],
+  rel:["github","artifactregistry","cloudrun"],
+  qa:[{q:"GitHub Actions vs Cloud Build — do you need both?",a:"Common pattern: Actions for source-side (lint, test, PR checks), Cloud Build for deploy-side (build, sign, push to Artifact Registry, deploy) because it's inside the GCP trust boundary. One system can do both — the split is about where secrets and identities live."}]},
+
+ {id:"artifactregistry", name:"Artifact Registry", cat:"DevOps & Delivery", icon:"📦",
+  what:"Managed registry for containers and language packages (Docker, PyPI, npm) with vulnerability scanning and access control.",
+  why:"Nice-to-have; the supply-chain home for everything you deploy.",
+  use:["Versioned, signed images promoted dev → staging → prod","Scanning gates: no critical CVEs into prod","Private PyPI mirrors for pinned AI dependencies"],
+  rel:["cloudbuild","cloudrun","gke"],
+  qa:[{q:"Why does supply chain matter extra for AI apps?",a:"Your dependencies include model artifacts and prompt configs, not just packages. A compromised base image or a silently swapped model file is a security incident. Registry + scanning + signed promotions make 'what is running in prod' an answerable question."}]},
+
+ {id:"cloudrun", name:"Cloud Run", cat:"DevOps & Delivery", icon:"🚀",
+  what:"Serverless containers: scale from zero to thousands of instances, now with GPU support, request- and instance-based billing — the default home for FastAPI AI services on GCP.",
+  why:"Nice-to-have, but the pragmatic default: AI API traffic is spiky, and scale-to-zero economics fit perfectly.",
+  use:["Deploy FastAPI agent/RAG services as containers","Min-instances to kill cold starts on latency-sensitive paths","Workload Identity — no keys; VPC connector to Cloud SQL","Traffic splitting for canary deploys of new prompts/models"],
+  rel:["fastapi","gke","artifactregistry","cloudbuild"],
+  qa:[{q:"Cloud Run or GKE for AI services?",a:"Cloud Run by default: zero ops, autoscale, per-request billing. GKE when you need GPUs for self-hosted inference, custom runtimes (vLLM), sidecars, or fine-grained network control. Start on Cloud Run; migrate the specific workloads that outgrow it."}]},
+
+ {id:"gke", name:"Google Kubernetes Engine", cat:"DevOps & Delivery", icon:"☸️",
+  what:"Managed Kubernetes: GPU node pools, autoscaling, multi-container workloads — where self-hosted model inference (vLLM, TGI) and heavy batch jobs live.",
+  why:"Nice-to-have; needed when managed endpoints can't meet cost, latency or customization requirements.",
+  use:["vLLM/TGI deployments with autoscaling GPU pools","Spot VMs for fault-tolerant batch inference","Multi-tenant isolation via namespaces + network policies"],
+  rel:["cloudrun","vertexai","scale-cost","pytorch"],
+  qa:[{q:"When is self-hosting models on GKE worth it?",a:"When volume makes per-token pricing dominate (steady high throughput), when you need a model Vertex doesn't serve, or when data can't leave your perimeter. The trade: you own utilization, upgrades and capacity planning. Rule of thumb — managed first, self-host the predictable baseline, burst to managed APIs for peaks."}]}
+];
+
+var CATS = ["Foundations","Google Cloud & Vertex AI","Orchestration & RAG","Evaluation & Responsible AI","Serving & APIs","Data & Eventing","DevOps & Delivery"];
+
+function find(id){ for(var i=0;i<TECHS.length;i++){ if(TECHS[i].id===id) return TECHS[i]; } return null; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- Modal with navigation history ---------- */
+var currentTech = null;
+var hist = [];
+
+window.showTech = function(nodeId){
+  var key = NODE_MAP[nodeId] || nodeId;
+  openModal(key, true);
+};
+window.openRel = function(id){ openModal(id, true); };
+window.openModalById = function(id){ openModal(id, true); };
+
+function openModal(id, push){
+  var t = find(id); if(!t) return;
+  if(push && currentTech && currentTech.id !== t.id) hist.push(currentTech.id);
+  currentTech = t;
+  document.getElementById('mTag').textContent = t.cat;
+  document.getElementById('mTitle').textContent = t.icon + '  ' + t.name;
+  var html = '';
+  html += '<section><b>What it is.</b> '+t.what+'</section>';
+  html += '<section><b>Why it matters for the AI Architect role.</b> '+t.why+'</section>';
+  html += '<section><b>How it is used in the AI Architect space.</b><ul>'+t.use.map(function(u){return '<li>'+u+'</li>';}).join('')+'</ul></section>';
+  if(t.code){ html += '<section><b>Pattern sketch.</b><pre>'+esc(t.code)+'</pre></section>'; }
+  if(t.rel && t.rel.length){
+    html += '<section><b>Relates to.</b> '+t.rel.map(function(r){var n=find(r); return '<span class="chip" onclick="openRel(\''+r+'\')">'+(n?n.name:r)+'</span>';}).join('')+'</section>';
+  }
+  if(t.qa && t.qa.length){
+    t.qa.forEach(function(q){ html += '<details><summary>Interview: '+q.q+'</summary><p>'+q.a+'</p></details>'; });
+  }
+  document.getElementById('mBody').innerHTML = html;
+  document.getElementById('backBtn').style.display = hist.length ? '' : 'none';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('mBody').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function goBack(){
+  if(!hist.length) return;
+  var id = hist.pop();
+  openModal(id, false);
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  currentTech = null; hist = [];
+  document.getElementById('backBtn').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function overlayClick(e){ if(e.target === document.getElementById('modalOverlay')) closeModal(); }
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+/* ---------- Knowledge base cards ---------- */
+var root = document.getElementById('kb-root');
+CATS.forEach(function(cat){
+  var sec = document.createElement('div'); sec.className='cat';
+  var h = document.createElement('h3'); h.textContent = cat; sec.appendChild(h);
+  var grid = document.createElement('div'); grid.className='grid';
+  TECHS.filter(function(t){return t.cat===cat;}).forEach(function(t){ grid.appendChild(card(t)); });
+  sec.appendChild(grid); root.appendChild(sec);
+});
+
+function card(t){
+  var d = document.createElement('div'); d.className='card'; d.setAttribute('data-tech', t.id); d.id = 'tech-'+t.id;
+  var html = '<span class="tag">'+t.cat+'</span><h4 style="cursor:pointer" onclick="openModalById(\''+t.id+'\')" title="Open in modal">'+t.icon+' '+t.name+'</h4>';
+  html += '<section><b>What it is.</b> '+t.what+'</section>';
+  html += '<section><b>Why it matters here.</b> '+t.why+'</section>';
+  html += '<section><b>How it is used in the AI Architect space.</b><ul>'+t.use.map(function(u){return '<li>'+u+'</li>';}).join('')+'</ul></section>';
+  if(t.code){ html += '<section><b>Pattern sketch.</b><pre>'+esc(t.code)+'</pre></section>'; }
+  if(t.rel && t.rel.length){ html += '<section class="rel"><b>Relates to.</b> '+t.rel.map(function(r){var n=find(r); return '<span class="chip" onclick="openRel(\''+r+'\')">'+(n?n.name:r)+'</span>';}).join('')+'</section>'; }
+  if(t.qa && t.qa.length){ t.qa.forEach(function(q){ html += '<details><summary>Interview: '+q.q+'</summary><p>'+q.a+'</p></details>'; }); }
+  d.innerHTML = html;
+  return d;
+}
+
+function filterCards(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('.card').forEach(function(c){
+    c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none';
+  });
+}
+
+var TOP_QA = [
+ {t:"Design a multi-agent AI solution for an enterprise use case — end to end.",
+  a:"Start from the decision, not the tech: what outcome, what data, what risk. Then: (1) decompose — which steps are deterministic vs judgment; (2) retrieval design — Vertex AI Search or custom RAG over the governed corpus, with access-control inheritance; (3) orchestration — LangGraph supervisor routing to narrow specialists, typed minimal state, Postgres checkpoints; (4) guardrails — grounding with citations, PII redaction, tool least-privilege, human-in-the-loop on irreversible actions; (5) evaluation — golden set + Ragas in CI, LangSmith tracing in prod; (6) serving — FastAPI on Cloud Run, event-driven ingestion via Pub/Sub/Dataflow. Close with the tradeoff you'd flag to leadership: managed-vs-custom retrieval and cost per query."},
+ {t:"Naive RAG failed in production. How do you make it advanced?",
+  a:"Measure before touching: Ragas context precision/recall localizes the failure. Then in order of usual ROI: fix chunking for the document types (tables, legal text need different strategies); add hybrid retrieval (dense + BM25) with a cross-encoder reranker; add query transformation (multi-query, decomposition) for multi-hop questions; add metadata filters for freshness and access control; consider parent-document retrieval so answers carry context. Each change is one experiment against the golden set — advanced RAG is a measured iteration loop, not a feature list."},
+ {t:"How do you evaluate a RAG system before release?",
+  a:"Three layers: (1) deterministic tests — parsing, tools, business logic in pytest; (2) quality metrics — Ragas faithfulness, answer relevancy, context precision/recall on a golden set, with thresholds that block the deploy; (3) human/LLM-as-judge spot checks on open-ended outputs. In CI the gate is regression: 'not worse than the last version'. Post-release, LangSmith samples production traces and feeds failures back into the dataset."},
+ {t:"How do you mitigate hallucinations?",
+  a:"Layered defense: ground every answer in retrieved context with citations; constrain outputs with structured schemas; measure faithfulness in CI; design abstention ('no evidence, no answer'); human review for high-stakes actions; and red-team regularly. The honest position in an interview: you reduce and detect hallucination — you never eliminate it — and the architecture makes it visible when it happens."},
+ {t:"Build vs buy on Vertex AI — where's the line?",
+  a:"Buy (Agent Builder, Vertex AI Search) when retrieval is table stakes: you get connectors, ACLs, grounding and ops for free. Build (LangGraph + custom retrieval) when retrieval is the differentiator: custom ranking, multi-hop logic, unit economics, portability. Most enterprises land hybrid: managed grounding, custom orchestration. The architect's job is naming which parts are differentiators — and revisiting the line every quarter as managed services improve."},
+ {t:"Cut LLM cost by half without hurting quality.",
+  a:"Measure per-call cost by feature first. Then: model routing — small model first, escalate on low confidence, verified by evals (typically 30–60% savings alone); semantic caching for repeated queries; prompt compression and context trimming; batch APIs for offline work; right-size endpoints (reserved vs autoscale). Present it as a measured program with a quality floor, not a slash-and-burn."},
+ {t:"Supervisor vs swarm vs sequential — when do you use each?",
+  a:"Supervisor: one auditable router + narrow specialists — the enterprise default because someone must answer for decisions. Sequential: document/ETL-shaped pipelines where each stage transforms state. Swarm/network: flexible peer handoffs — powerful but hard to debug and govern; I'd need a compliance-free domain to justify it. The choice is usually made by governance requirements, not elegance."},
+ {t:"How do you defend against prompt injection?",
+  a:"Assume untrusted input everywhere: separate system instructions from user content; validate and schema-check every tool argument (Pydantic) so an injected instruction can't become an arbitrary action; least-privilege tools (scoped credentials, allow-listed APIs); output filtering; and evals with injection payloads in the test set. For agentic systems the deepest fix is capability design — an agent that can only read can't be talked into writing."},
+ {t:"PyTorch vs TensorFlow — how do you advise a team?",
+  a:"Default PyTorch: ecosystem gravity (HuggingFace, PEFT, vLLM) and production maturity (torch.compile, ONNX). TensorFlow where TPU economics, TFX estates or TFLite edge targets exist. On GCP both are first-class in Vertex. The advice is: standardize on one for team velocity, document the exception path, and never let framework identity drive architecture."},
+ {t:"How do you make agents production-reliable?",
+  a:"Treat agents as distributed systems: typed minimal state; deterministic edges wherever possible; bounded loops; checkpointing so failures resume; per-node evaluation; human-in-the-loop interrupts on irreversible actions; full tracing (LangSmith) so any bad run is replayable; and circuit breakers on every external dependency. Reliability isn't a property you add — it's the shape of the graph."},
+ {t:"Walk me through your CI/CD for an LLM application.",
+  a:"PR stage: lint, types, unit tests, contract tests on tools, plus an eval smoke suite (small golden set, Ragas/LangSmith) with thresholds. Merge: Cloud Build builds the image into Artifact Registry, deploys to a staging Cloud Run. Release: canary traffic split, LangSmith monitoring on the new version, auto-rollback on metric regression. Prompts and model versions are versioned artifacts in the repo — changes reviewed like code."},
+ {t:"How do you guarantee structured, valid output from an LLM?",
+  a:"Schema-constrained generation (Gemini responseSchema / function calling), Pydantic validation on receipt, and bounded retry with the validation error fed back to the model. If it still fails after N attempts, fail explicitly to a handler — never pass unvalidated LLM output into business logic. The contract layer is what makes agents composable and testable."}
+];
+var qar = document.getElementById('qa-root');
+TOP_QA.forEach(function(x){
+  var d = document.createElement('div'); d.className='card qa'; d.style.marginBottom='12px';
+  d.innerHTML = '<h4>Q · '+x.t+'</h4><div class="a">'+x.a+'</div>';
+  qar.appendChild(d);
+});
+
+mermaid.initialize({ startOnLoad:true, securityLevel:'loose', theme:'default', flowchart:{curve:'basis'} });
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+/* Application Generator — print/PDF rules. Loaded by index.html */
+  /* ---------- Print ---------- */
+  @page { size: A4; margin: 0; }
+
+  @media print {
+    body { background: #fff; margin: 0; }
+    .toolbar, .no-print, #previewTop, #intakeView { display: none !important; }
+    .edit-note, .sheet.doc-editing { outline: none !important; }
+    .sheet {
+      margin: 0;
+      max-width: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    .live-app-url {
+      color: #333 !important;
+      font-size: 0.82rem;
+      word-break: break-all;
+    }
+    /* Older saved CVs: links without an explicit URL span still show href in PDF */
+    .sheet.cv table a[href^="http"]:not(.live-app-link)::after,
+    a.live-app-link[href^="http"]:not(:has(+ .live-app-url))::after {
+      content: " (" attr(href) ")";
+      font-size: 0.82em;
+      font-weight: 400;
+      word-break: break-all;
+    }
+    .letter .themes a.live-app-link[href^="http"]:not(:has(+ .live-app-url))::after {
+      content: " (" attr(href) ")";
+      font-size: 0.88em;
+      word-break: break-all;
+    }
+    .themes li {
+      background: transparent;
+      border-left-color: #999;
+      padding-left: 10px;
+      break-inside: avoid;
+    }
+    .cv h3, .cv .jobsub, .cv li, .cv tr, .attachments, .signoff { break-inside: avoid; }
+    /*
+      Do NOT put break-inside:avoid on the whole .job — Cubewise (+ woven client
+      bullets) is taller than a page, so the browser moves the entire block and
+      orphans the "Professional Experience" h2 on the previous page.
+    */
+    .job, .job-body { break-inside: auto; page-break-inside: auto; }
+    .cv h2 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    /* Keep section title with the first job's opener (role / dates / blurb). */
+    .cv-exp-lead, .cv-sec-lead {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .job-lead > h3, .job > h3 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .job-group {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    /* Avatar and Preferred Technologies must survive printing. */
+    .cv .hero .avatar,
+    .tech-table th, .tech-table td, .chip, .cv th {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .chip { border-color: #b9c6d2; }
+    .chip.chip-jd-hit {
+      background: var(--accent-2, var(--accent));
+      color: #fff;
+      border-color: var(--accent-2, var(--accent));
+    }
+    .skill-jd-hit {
+      background: var(--accent-2, var(--accent));
+      color: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .chips { break-inside: avoid; }
+    /* Banner layout: img spans the sheet width at natural ratio, never split. */
+    body.layout-banner header.hero { margin: 0; padding: 0 0 18px; }
+    body.layout-banner .hero-panel { margin: 16px 0 0; max-width: none; }
+    body.layout-banner .banner-img { break-inside: avoid; page-break-inside: avoid; }
+    body.layout-banner .hero-panel, body.dark-copy .hero-panel {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* Dark-copy CVs must keep their scheme in the PDF. */
+    body.dark-copy .sheet,
+    body.dark-copy .themes li,
+    body.dark-copy .tech-table th,
+    body.dark-copy .cv th,
+    body.dark-copy .chip,
+    body.dark-copy .side-col {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }

@@ -1,0 +1,29 @@
+{
+  "id": "/#snakes-ladders",
+  "name": "Snakes & Ladders",
+  "short_name": "Snakes",
+  "description": "Multiplayer Snakes & Ladders — requires network for lobby play.",
+  "start_url": "/#snakes-ladders",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0f4c46",
+  "theme_color": "#0f4c46",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/appgen/assets/pwa/icon-snl-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/appgen/assets/pwa/icon-snl-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games"]
+}

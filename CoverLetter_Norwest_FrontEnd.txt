@@ -1,0 +1,18 @@
+Subject: Front End Web Developer — Ilia Shapiro (React / Next.js + design background)
+
+Hi James,
+
+I'm applying for the Front End Web Developer role with your creative digital agency client.
+
+The short version: I'm a full-stack developer whose first career was digital design — Telstra and Optus campaign work, an Advanced Diploma in Graphic Design — so for a creative agency I offer something rare: front-end code with genuine visual craft behind it. I care about the details others miss: the empty state, the loading flicker, the pixel that's one off.
+
+Hands-on skills: HTML5, CSS3, JavaScript, React and Next.js — responsive UI for web and mobile, JSON API integration, and reusable component architecture built over nine years of enterprise web delivery (most recently Apliqo UX, a white-label SaaS platform, and AVA, a production GenAI assistant deployed for Amazon, AWS and ZKB — agencies are selling AI-enabled experiences now, and I've shipped one).
+
+I work fast in collaborative teams — nine years client-facing taught me briefs, account managers and tight deadlines — and I'm Sydney-based, available immediately, and looking for exactly this kind of hands-on craft role in a close-knit team.
+
+My CV is attached. I'd welcome a quick chat.
+
+Kind regards,
+
+Ilia Shapiro
+Mob: 0414 557 038 | reward2learn@gmail.com | linkedin.com/in/iliashapiro

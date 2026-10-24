@@ -1,0 +1,72 @@
+Senior Full Stack Developer
+Category Product Management and Development  Tax & Legal  Sydney  Senior Manager  Regular
+ 
+
+Req ID
+762649WD
+Job Opening Date
+17/09/2026
+Job Closing Date
+22/11/2026
+time type
+Full time
+
+At PwC, Technology enables businesses to achieve their tech-driven goals. The work undertaken covers a range of areas from leading and supporting the firm through the build or adoption of new technology, to protecting against risk, and delivering valuable data insights that transform tech capabilities.
+
+As a Senior Full Stack Developer in the Tax and Legal Digital team you’ll help Australian businesses; not-for-profit and internal PwC clients create value and improve the way they work. From digitising workflows, to creating Global AI enabled applications and igniting our start-up industry, together we build trust in society and solve important problems. 
+
+Why PwC? 
+
+At PwC Australia, your skills meet purpose. We tackle big challenges across industries like finance, technology, energy, and health—giving you the chance to make a real impact. Here, your growth is our priority. You’ll work with leading teams, explore new technologies, and unlock your full potential. 
+
+Join a global community of more than 370,000 people who value bold ideas, collaboration, and lasting change. Together, we’re building trust and shaping the future. 
+
+What you’ll do: 
+
+Build libraries and frameworks to support large, complex web applications.  
+
+Design and implement new user-facing features for both internal and external clients. 
+
+Optimise web applications to maximize speed and scale.  
+
+Write client-side code for web-based applications, creating fast, easy-to-use, high volume production applications, as well as innovative, market-leading prototypes.  
+
+Work closely and efficiently with our team of industry leading developers, data scientists, and business analysts to deliver high-quality enterprise applications.  
+
+What we’re looking for: 
+
+A background in end-to-end software delivery, with expertise in modern web technologies—including object-oriented JavaScript, HTML5, and CSS3—and current web standards.  
+
+Proven experience in aspects of the web development stack including protocols and web server optimization techniques, and are comfortable developing frontend (using ReactJS, NextJS) and backend (using NodeJS, NestJS) components. MongoDB, SQL, Python.  
+
+GenAI experiences are also beneficial as is any work on CI/CD automation.  
+
+An understanding of the broader software development life cycle, DevOps technologies and are focused on delivering robust, high value software.  
+
+A natural willingness and ability to learn new technologies quickly and thrive off solving complex problems.  
+
+You are passionate about being at the forefront of change.  
+
+You’re collaborative and enjoy working in an innovative environment.  
+
+You’re a problem solver by nature and want to join a firm that values the kind of people who reimagine the possible for their clients and stakeholders.  
+
+Most importantly, you act with integrity and show care for the people you work with  
+
+ 
+
+Don’t meet every requirement? We still encourage you to apply. We value diverse experience and recognise that transferable skills can be highly relevant. 
+
+What you’ll gain: 
+
+Work with leading organisations on complex matters that challenge and expand your expertise. 
+
+Be part of an inclusive environment committed to diverse perspectives, including Inclusion and Diversity and First Nations Prosperity. 
+
+Enjoy flexibility in how, when and where you work, balancing what works best for you, your team and your clients. 
+
+Access to clear career progression pathways supported by continuous learning and leadership development. 
+
+Benefit from generous leave entitlements, including floating public holidays, birthday leave and the option to purchase additional leave. 
+
+Receive access to a world-class parental leave policy offering up to 26 weeks of leave for caregivers. 

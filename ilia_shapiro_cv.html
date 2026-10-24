@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ilia Shapiro — AI and Front End Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15202b;
+    --muted: #4a5a6a;
+    --line: #c8d4e0;
+    --accent: #0d5c63;
+    --accent-soft: #e6f2f3;
+    --paper: #fbfcfe;
+    --bg-1: #dce8ef;
+    --bg-2: #e8f0e9;
+    --chip: #eef3f6;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(13, 92, 99, 0.12), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 90% 10%, rgba(40, 90, 140, 0.1), transparent 50%),
+      linear-gradient(165deg, var(--bg-1), var(--bg-2) 55%, #e4ebe8);
+    min-height: 100vh;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(251, 252, 254, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toolbar span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn:hover { filter: brightness(1.05); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent);
+    
+  }
+
+  .sheet {
+    max-width: 880px;
+    margin: 32px auto 48px;
+    padding: 52px 56px 48px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 40px rgba(21, 32, 43, 0.08);
+  }
+
+  /* —— Header / brand —— */
+  header.hero {
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+  }
+
+  header.hero h1 {
+    margin: 0;
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(2.4rem, 5vw, 3.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .role {
+    margin: 10px 0 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .contact {
+    margin: 12px 0 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .contact a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .contact a:hover { text-decoration: underline; }
+
+  .seeking {
+    margin: 16px 0 0;
+    padding: 10px 14px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  /* —— Sections —— */
+  section {
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    margin: 0 0 12px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 1.02rem;
+    font-weight: 700;
+  }
+
+  h3 .org { color: var(--ink); }
+  h3 .title {
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .meta {
+    margin: 0 0 6px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .blurb {
+    margin: 0 0 12px;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  p { margin: 0 0 12px; }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  li { margin: 0 0 8px; }
+
+  li:last-child { margin-bottom: 0; }
+
+  strong { font-weight: 650; }
+
+  .job { margin-bottom: 26px; }
+  .job:last-child { margin-bottom: 0; }
+
+  .sublist {
+    margin-top: 6px;
+    padding-left: 1.1em;
+  }
+
+  .sublist li { margin-bottom: 4px; }
+
+  /* —— Skills —— */
+  .skills {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .skills th,
+  .skills td {
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .skills th {
+    width: 7.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+    background: var(--chip);
+  }
+
+  .skills tr:last-child th,
+  .skills tr:last-child td { border-bottom: none; }
+
+  /* —— Product table —— */
+  .products {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    margin-bottom: 14px;
+  }
+
+  .products th {
+    text-align: left;
+    padding: 8px 10px;
+    background: var(--chip);
+    border-bottom: 2px solid var(--line);
+    font-weight: 650;
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .products td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .products tr:last-child td { border-bottom: none; }
+
+  .products .name { font-weight: 700; white-space: nowrap; }
+
+  /* —— Projects —— */
+  .projects {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    gap: 6px;
+  }
+
+  .projects li {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    align-items: baseline;
+  }
+
+  .projects a {
+    color: var(--accent);
+    text-decoration: none;
+    word-break: break-all;
+  }
+
+  .projects a:hover { text-decoration: underline; }
+
+  .projects .label {
+    font-weight: 650;
+    min-width: 7rem;
+  }
+
+  .note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .checks {
+    list-style: none;
+    padding: 0;
+  }
+
+  .checks li {
+    margin: 0 0 6px;
+    padding-left: 1.4em;
+    position: relative;
+  }
+
+  .checks li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .checks li.progress::before {
+    content: "◦";
+    font-weight: 400;
+  }
+
+  footer.refs {
+    margin-top: 8px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .sheet { margin: 16px 12px 32px; padding: 28px 20px; }
+    .skills th { display: block; width: auto; border-bottom: none; padding-bottom: 2px; }
+    .skills td { display: block; padding-top: 2px; padding-bottom: 12px; }
+    .products { display: block; }
+    .products thead { display: none; }
+    .products tr { display: block; margin-bottom: 14px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+    .products td { display: block; padding: 2px 0; border: none; }
+    .products td::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-weight: 650;
+      margin-bottom: 2px;
+    }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet {
+      margin: 0;
+      max-width: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    .seeking { break-inside: avoid; }
+    .job { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" type="button" onclick="window.open('ilia_shapiro_cv.md', '_blank')">View Markdown source</button>
+  <span>Optimized for A4 / Letter PDF export</span>
+</div>
+
+<article class="sheet">
+  <header class="hero">
+    <h1>Ilia Shapiro</h1>
+    <p class="role">APS6 Software Engineer (Front-end) — Data Science Hub (DaSH)</p>
+    <p class="meta-line">Labour Hire · Australian Agency</p>
+    <div class="contact">
+      <span>Sydney, Australia <br>
+      +61 466 076 898<br>
+      <a href="mailto:ilia.shapiro@email.com">ilia.shapiro@email.com</a><br>
+      <a href="https://linkedin.com/in/iliashapiro" target="_blank" rel="noopener">linkedin.com/in/iliashapiro</a><br>
+      <a href="https://github.com/iliashapiro" target="_blank" rel="noopener">github.com/iliashapiro</a><br></span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Professional Summary</h2>
+    <p>AI and Front End Engineer with <strong>9 years' experience</strong> designing, building, and shipping production web applications — React/TypeScript front ends for AI, analytical, and data-driven products. At Cubewise I delivered the enterprise GenAI assistant <strong>AVA</strong> (conversational UI, streaming responses, citation displays, document search, RAG grounded on enterprise data) to <strong>Amazon, AWS, and ZKB</strong>, and the <strong>Apliqo UX</strong> analytics platform used by Westpac, Optus, and Goodman. I own features end-to-end — requirements gathering, UX decisions, implementation, testing, and deployment — and integrate front ends with REST APIs, asynchronous data services, and real-time/streaming interactions.</p>
+    <p><strong>Core stack:</strong> React, Next.js, TypeScript, JavaScript (ES6+), Python (FastAPI, Flask), Node.js/NestJS, REST/GraphQL, SSE/WebSockets, MongoDB, PostgreSQL, pgvector, AWS (Lambda, API Gateway, S3, DynamoDB, ECS, RDS, Cognito), GCP (Vertex AI, Cloud Run), Docker, Kubernetes, Terraform, GitHub Actions, ArgoCD, Vitest/Jest/Playwright.</p>
+    <p><strong>AI-enabled delivery:</strong> LangGraph/LlamaIndex RAG, OpenAI/Anthropic APIs, Vertex AI, prompt engineering, Ragas/LangSmith evaluation; daily practitioner of Claude Code/Cursor/Codex — shipped 7 live products AI-natively.</p>
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+    <table class="skills">
+      <tbody>
+        <tr>
+          <th scope="row">Frontend</th>
+          <td>React, Next.js (App Router), TypeScript, JavaScript (ES6+), HTML5, CSS3, Tailwind, MUI, Redux Toolkit, RTK Query, WebSockets/SSE, responsive/mobile-first, accessibility (WCAG)</td>
+        </tr>
+        <tr>
+          <th scope="row">Backend</th>
+          <td>Python (FastAPI, Flask), Node.js, NestJS, Express, C# / .NET 8 (fundamentals), REST, GraphQL, gRPC, SSE/WebSockets</td>
+        </tr>
+        <tr>
+          <th scope="row">Databases</th>
+          <td>MongoDB (enterprise scale), PostgreSQL, MySQL, SQL (advanced), Prisma, EF Core, vector stores (pgvector), Redis</td>
+        </tr>
+        <tr>
+          <th scope="row">Cloud / DevOps</th>
+          <td>AWS (Lambda, API Gateway, S3, DynamoDB, ECS, RDS, Cognito, CloudFront), GCP (Cloud Run, Vertex AI, Cloud Build), Docker, Kubernetes (GKE/EKS), Helm, Terraform, GitHub Actions, ArgoCD (GitOps), feature flags, blue-green/canary</td>
+        </tr>
+        <tr>
+          <th scope="row">AI / ML</th>
+          <td>LangGraph, LangChain, LlamaIndex, RAG, vector search, OpenAI/Anthropic APIs, Vertex AI, Amazon Bedrock (patterns), prompt engineering, Ragas, LangSmith</td>
+        </tr>
+        <tr>
+          <th scope="row">Practices</th>
+          <td>TDD, unit/integration/e2e (Vitest, Jest, Playwright), code review, trunk-based Git, CI/CD pipeline build/maintenance, Agile/Scrum, ADRs, OWASP</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Professional Experience</h2>
+
+    <div class="job">
+      <h3><span class="org">Personal AI-Native Products</span> <span class="title">— Founder / Lead Engineer (most recent)</span></h3>
+      <p class="meta">2024–2026 (current) · Remote</p>
+      <p class="blurb">7 live products built AI-natively, end-to-end — requirements, UX, implementation, testing, deployment</p>
+
+      <table class="products">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Stack</th>
+            <th>Highlights</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Product">TMA (TokenizMyApp)</td>
+            <td data-label="Stack">Next.js, TypeScript, Node, PostgreSQL, Prisma, AWS</td>
+            <td data-label="Highlights">Multi-tenant SaaS: tenant provisioning, metrics dashboards, AI chat, resource optimisation</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Product">TMA Finance</td>
+            <td data-label="Stack">Next.js, TypeScript, Node, PostgreSQL, OAuth/RBAC</td>
+            <td data-label="Highlights">CEO dashboard, Google OAuth, staff-PIN RBAC, AI chat</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Product">PRESTIX.VIP</td>
+            <td data-label="Stack">Next.js, TypeScript, Node, MongoDB, Stripe</td>
+            <td data-label="Highlights">VIP venue booking, cart, table-reservation ordering, high-volume transactional</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Product">GoFetch</td>
+            <td data-label="Stack">Next.js (App Router), TypeScript</td>
+            <td data-label="Highlights">Global shopping/delivery marketplace frontend</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Product">Gainwise</td>
+            <td data-label="Stack">Next.js, TypeScript, Node, AWS (Cognito, Lambda, RDS)</td>
+            <td data-label="Highlights">Secure AWS inventory reporting, Google-auth-gated admin</td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Product">ManaposeGP</td>
+            <td data-label="Stack">Next.js, TypeScript, Node, PostgreSQL</td>
+            <td data-label="Highlights">Health dashboard module, decision-maker UX</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul>
+        <li>Owned every product end-to-end: requirements, UX decisions, React/TypeScript implementation, Vitest/Playwright testing, GitHub Actions CI/CD, Docker, feature flags, deployment to Vercel/AWS.</li>
+        <li>AI-enabled interfaces: conversational AI chat, streaming responses, prompt design; serverless AWS integrations (Cognito, Lambda, RDS); responsive, accessible, data-driven dashboards.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3><span class="org">Cubewise / Apliqo</span> <span class="title">— AI and Front End Engineer (Apliqo UX / AVA)</span></h3>
+      <p class="meta">2017–2026 (9 years) · Sydney, Australia</p>
+      <p class="blurb">Enterprise white-label FP&amp;A SaaS (React/Node/MongoDB) + GenAI assistant (Python/TypeScript on GCP/AWS)</p>
+      <ul>
+        <li><strong>Production web applications (React/TypeScript).</strong> Designed, developed, and maintained high-quality production web applications using modern JavaScript/TypeScript frameworks, including React and Next.js — the Apliqo UX platform, deployed white-label to 7+ enterprises (Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB).</li>
+        <li><strong>End-to-end feature ownership.</strong> Owned features from requirements gathering and UX decisions through implementation, testing, and deployment; as Product Owner for AVA I ran the roadmap, backlog, and stakeholder alignment, taking the product from vision to production launch (Sep 2025).</li>
+        <li><strong>Responsive, accessible, user-focused interfaces for complex workflows.</strong> Built intuitive interfaces for self-service planning, forecasting, scenario modelling, and TM1-scale analytics — responsive/mobile-first, with accessibility (WCAG) and empty/error/loading states treated as first-class craft.</li>
+        <li><strong>React fundamentals.</strong> Reusable component architecture and design-system patterns, state management (Redux Toolkit, RTK Query, Context), performance optimisation (render, bundle, and streaming performance on analytics workloads), and frontend testing (Vitest, Jest, Playwright, TDD).</li>
+        <li><strong>REST APIs and asynchronous/streaming integrations.</strong> Integrated front ends with REST and GraphQL APIs and Node.js/NestJS + Python/FastAPI services; real-time UX via SSE/WebSockets, including streaming AI responses and live analytics.</li>
+        <li><strong>Modern engineering practices.</strong> Git-based source control (trunk-based development), code review, automated testing gates, and CI/CD pipelines I built and maintained — GitHub Actions, Cloud Build, ArgoCD (GitOps), Docker/K8s (GKE/EKS), Terraform, feature flags, blue-green/canary, zero-downtime releases.</li>
+        <li><strong>AI-enabled user experiences.</strong> Designed AVA's conversational interface — chat experiences, streaming responses, prompt design, citation displays, document search, and agent-based workflows (LangGraph multi-step agent with human-in-the-loop gates).</li>
+        <li><strong>LLM platforms, RAG, and knowledge-grounded AI.</strong> Integrated OpenAI and Anthropic APIs and Vertex AI; built LlamaIndex RAG grounded on enterprise TM1 data with vector search (pgvector); evaluation pipelines with Ragas/LangSmith; responsible-AI controls that passed governance reviews at Amazon, AWS, and ZKB.</li>
+        <li><strong>Python backend and AWS cloud-native delivery.</strong> Built Python (FastAPI/Flask) services for AVA — API design, authentication, data modelling; delivered on AWS (Lambda, API Gateway, S3, DynamoDB, ECS, RDS, Cognito) with Docker and Infrastructure as Code (Terraform).</li>
+        <li><strong>Collaboration and knowledge sharing.</strong> Worked with Data Scientists, AI Engineers, Machine Learning Engineers, Business Analysts, and stakeholders; mentored 10+ developers on AI and front-end patterns; established AI-assisted development standards (Claude/Cursor/Codex); contributed technical documentation and ADRs.</li>
+        <li>
+          <strong>AEM / CMS Experience</strong>
+          <ul class="sublist">
+            <li>Implemented AEM 6.5 component library (HTL, Core Components, ClientLibs, Sling Models) for marketing sites feeding into the SaaS platform.</li>
+            <li>Configured Dispatcher/CDN caching, content fragments, GraphQL endpoints for headless consumption by React apps; managed Cloud Manager pipelines.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3><span class="org">ShapiroGraphics / Telstra / Optus</span> <span class="title">— Digital Design &amp; Development</span></h3>
+      <p class="meta">2012–2016 · Sydney/Melbourne</p>
+      <p>Client-facing web design and development for enterprise telco accounts. Origin of craft: empty states, error messages, loading flickers — noticed without being asked.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <h3>Bachelor of Psychology</h3>
+    <p class="meta">Macquarie University</p>
+    <p class="note">20 years professional practice senior engineering roles.</p>
+  </section>
+
+  <section>
+    <h2>Certifications &amp; Clearances</h2>
+    <ul class="checks">
+      <li>National Police Check (current)</li>
+      <li>Unrestricted work rights in Australia (Citizen)</li>
+      <li>AWS Solutions Architect Associate</li>
+      <li>Google Cloud Professional Cloud Developer </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Key Projects &amp; Evidence</h2>
+    <ul class="projects">
+      <li><span class="label">Prestix.VIP</span> <a href="https://prestix.vip/" target="_blank" rel="noopener">https://prestix.vip/</a></li>
+      <li><span class="label">TMA</span> <a href="https://tokenizmyapp.vercel.app/" target="_blank" rel="noopener">https://tokenizmyapp.vercel.app/</a></li>
+      <li><span class="label">TMA Finance</span> <a href="https://tokenizmyapp-finance.vercel.app/" target="_blank" rel="noopener">https://tokenizmyapp-finance.vercel.app/</a></li>
+      <li><span class="label">GoFetch</span> <a href="https://gofetchapp.vercel.app/" target="_blank" rel="noopener">https://gofetchapp.vercel.app/</a></li>
+      <li><span class="label">Gainwise</span> <a href="https://gainwise-aws-inventory-report.vercel.app/" target="_blank" rel="noopener">https://gainwise-aws-inventory-report.vercel.app/</a></li>
+      <li><span class="label">ManaposeGP</span> <a href="https://manaposegp.vercel.app/" target="_blank" rel="noopener">https://manaposegp.vercel.app/</a></li>
+    </ul> 
+  </section>
+
+  <footer class="refs">
+    <h2>References</h2>
+    <p>Available on request — former Cubewise CTO, client stakeholders (Amazon/AWS/ZKB contacts), engineering leads.</p>
+  </footer>
+</article>
+
+</body>
+</html>

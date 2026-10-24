@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PwC Interview KB — Ilia Shapiro · Senior Full Stack Developer (Tax &amp; Legal Digital)</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<style>
+  :root{
+    --bg:#101012; --panel:#1a1a1e; --panel2:#222228; --line:#33333c; --border:#33333c;
+    --txt:#e8e8ec; --muted:#9a9aa6; --accent:#D04A02; --accent2:#ff7a33;
+    --green:#3fb96f; --orange:#e8963c; --blue:#4d9fff; --purple:#a97fff;
+    --mono:'SF Mono',Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.55}
+  header{background:linear-gradient(135deg,#181820 0%,#221610 100%);border-bottom:2px solid var(--accent);padding:28px 32px 20px}
+  header h1{font-size:1.5rem;letter-spacing:.3px}
+  header h1 span{color:var(--accent2)}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.92rem}
+  .pills{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+  .pill{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:3px 12px;font-size:.78rem;color:var(--muted)}
+  .pill b{color:var(--txt)}
+  .pill.hot{border-color:var(--accent);color:var(--accent2)}
+  nav{position:sticky;top:0;z-index:50;background:#141418ee;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:2px;padding:0 24px}
+  nav button{background:none;border:none;color:var(--muted);padding:13px 16px;font-size:.86rem;cursor:pointer;border-bottom:3px solid transparent;font-weight:600}
+  nav button:hover{color:var(--txt)}
+  nav button.active{color:var(--accent2);border-bottom-color:var(--accent)}
+  main{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+  section.tab{display:none}
+  section.tab.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2{font-size:1.25rem;margin:26px 0 12px;color:var(--accent2)}
+  h2:first-child{margin-top:0}
+  h3{font-size:1rem;margin:18px 0 8px}
+  p{margin-bottom:10px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .card h4{font-size:.95rem;margin-bottom:8px}
+  .card p,.card li{font-size:.86rem;color:var(--muted)}
+  .card ul{padding-left:18px}
+  .card li{margin-bottom:5px}
+  .card li b,.card p b{color:var(--txt)}
+  .score{display:flex;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--accent);border-radius:12px;padding:18px 22px;margin-bottom:20px}
+  .score .big{font-size:2.6rem;font-weight:800;color:var(--accent2)}
+  .score .lbl{font-size:.85rem;color:var(--muted)}
+  .bar{height:8px;background:var(--panel2);border-radius:6px;overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;border-radius:6px}
+  .badge{display:inline-block;border-radius:12px;padding:1px 9px;font-size:.7rem;font-weight:700;letter-spacing:.4px;white-space:nowrap}
+  .b-strong{background:#123524;color:var(--green);border:1px solid #1f5c3a}
+  .b-proven{background:#33230f;color:var(--orange);border:1px solid #5c3f1f}
+  .b-transfer{background:#0f2438;color:var(--blue);border:1px solid #1f4a6e}
+  .b-diff{background:#2b1230;color:var(--purple);border:1px solid #4d2a58}
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th{ text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid #26262e;vertical-align:top}
+  tr:hover td{background:#1e1e25}
+  td b{color:var(--txt)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .filters button{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:18px;padding:5px 14px;font-size:.78rem;cursor:pointer}
+  .filters button.on{border-color:var(--accent);color:var(--accent2)}
+  .skillgroup{margin-bottom:22px}
+  .tag{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:.74rem;margin:2px 3px 2px 0;font-family:var(--mono)}
+  .tag.hot{border-color:var(--accent);color:var(--accent2)}
+  .proj{display:flex;flex-direction:column;gap:8px}
+  .proj a{color:var(--blue);text-decoration:none;font-size:.8rem;font-family:var(--mono)}
+  .proj a:hover{text-decoration:underline}
+  .talk{background:#16161c;border-left:3px solid var(--accent);padding:10px 12px;border-radius:0 8px 8px 0;font-size:.82rem;color:var(--muted)}
+  .talk b{color:var(--accent2)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 14px;font-size:.78rem;color:var(--muted)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .qa{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--panel);overflow:hidden}
+  .qa summary{padding:12px 16px;cursor:pointer;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .qa summary::after{content:'+';color:var(--accent2);font-size:1.1rem}
+  .qa[open] summary::after{content:'−'}
+  .qa .body{padding:0 16px 14px;font-size:.86rem;color:var(--muted)}
+  .qa .body b{color:var(--txt)}
+  .num{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+  .num .card{flex:1;min-width:150px;text-align:center}
+  .num .n{font-size:1.5rem;font-weight:800;color:var(--accent2)}
+  .num .l{font-size:.75rem;color:var(--muted)}
+  .warn{background:#2b1a10;border:1px solid #5c3a1f;border-radius:10px;padding:14px 16px;font-size:.85rem;margin:14px 0}
+  .warn b{color:var(--orange)}
+  footer{color:var(--muted);font-size:.75rem;text-align:center;padding:20px;border-top:1px solid var(--line)}
+  @media(max-width:640px){header{padding:20px}main{padding:18px 14px 60px}}
+
+  /* ===== Pan / zoom graph canvas ===== */
+  .pz-wrap{position:relative;overflow:hidden;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;background:#141419;border:1px solid var(--line);border-radius:12px}
+  .pz-wrap.grabbing{cursor:grabbing}
+  #wrap1{height:640px} #wrap2{height:470px} #wrap3{height:320px}
+  .pz-inner{transform-origin:0 0;will-change:transform;padding:12px}
+  .pz-toolbar{position:absolute;top:10px;right:10px;z-index:6;display:flex;gap:6px}
+  .pz-toolbar button{width:34px;height:34px;border-radius:8px;background:#222228ee;border:1px solid var(--line);color:var(--txt);font-size:1rem;cursor:pointer;font-weight:700}
+  .pz-toolbar button:hover{border-color:var(--accent);color:var(--accent2)}
+  .pz-hint{position:absolute;left:12px;bottom:10px;z-index:6;font-size:.72rem;color:var(--muted);background:#141419cc;padding:4px 10px;border-radius:12px;pointer-events:none}
+  .pz-inner svg{max-width:none !important}
+  .pz-inner svg g.node{cursor:pointer;transition:opacity .2s,filter .15s}
+  .pz-inner svg g.node:hover{filter:brightness(1.35)}
+  .pz-inner svg g.node.dimmed{opacity:.1}
+  .pz-inner svg g.node.hot .basic-label-container,
+  .pz-inner svg g.node.hot rect,
+  .pz-inner svg g.node.hot polygon,
+  .pz-inner svg g.node.hot circle{stroke-width:3px !important}
+  .pz-inner svg .edgePaths path.dimmed,
+  .pz-inner svg .edgeLabel.dimmed,
+  .pz-inner svg .cluster.dimmed{opacity:.08;transition:opacity .2s}
+
+  /* ===== Node detail modal ===== */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+  .modal-backdrop.open{display:flex;animation:fade .18s ease}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:680px;width:100%;max-height:84vh;overflow-y:auto;box-shadow:0 24px 70px #000d}
+  .m-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);border-top:4px solid var(--accent);border-radius:14px 14px 0 0}
+  .m-close{background:none;border:1px solid var(--line);border-radius:8px;color:var(--muted);width:30px;height:30px;cursor:pointer;font-size:.9rem}
+  .m-close:hover{color:var(--txt);border-color:var(--accent)}
+  .m-body{padding:18px 20px 6px}
+  .m-body h3{margin:0 0 12px;font-size:1.1rem}
+  .m-body p{font-size:.88rem;color:var(--muted)}
+  .m-body p b{color:var(--txt)}
+  .m-body a{color:var(--blue)}
+  .m-body h4{margin:16px 0 8px;font-size:.85rem;color:var(--txt)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:8px}
+  .chip{background:var(--panel2);border:1px solid var(--line);border-radius:16px;color:var(--txt);padding:5px 13px;font-size:.78rem;cursor:pointer;transition:transform .1s}
+  .chip:hover{transform:translateY(-1px);filter:brightness(1.2)}
+  .mmap{background:#141419;border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0 4px}
+  .mmap g.mmap-node{transition:filter .15s}
+  .mmap g.mmap-node:hover rect{filter:brightness(1.5)}
+  .m-actions{padding:12px 20px 18px;display:flex;gap:10px}
+  .m-jump{background:linear-gradient(135deg,var(--accent),#b03d01);border:none;border-radius:8px;color:#fff;padding:9px 18px;font-size:.84rem;font-weight:600;cursor:pointer}
+  .m-jump:hover{filter:brightness(1.15)}
+
+  /* ===== Interview workflow ===== */
+  .onepage{background:var(--panel);border:1px solid var(--accent);border-radius:12px;padding:16px 22px;margin-bottom:10px}
+  .onepage ol{list-style:none;padding:0;counter-reset:st}
+  .onepage li{counter-increment:st;display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed #2a2a32;font-size:.86rem;align-items:baseline}
+  .onepage li:last-child{border-bottom:none}
+  .onepage li::before{content:counter(st,decimal-leading-zero);color:var(--accent2);font-weight:800;font-family:var(--mono);font-size:.9rem;flex:0 0 auto}
+  .flowline{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 14px}
+  .fstage{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer;min-width:158px;transition:border-color .15s}
+  .fstage:hover{border-color:#55555f}
+  .fstage.on{border-color:var(--accent);background:#2b1608}
+  .fstage .fn{font-size:.66rem;color:var(--muted);letter-spacing:.5px}
+  .fstage .ft{font-size:.82rem;font-weight:600;margin-top:2px}
+  .fstage .ftime{font-size:.68rem;color:var(--accent2);margin-top:2px}
+  .kwchip{background:#2b1608;border:1px solid var(--accent);color:var(--accent2);border-radius:16px;padding:5px 13px;font-size:.78rem;cursor:pointer;transition:transform .1s}
+  .kwchip:hover{transform:translateY(-1px);filter:brightness(1.25)}
+  #kwModal{z-index:210}
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+  .stage h3{font-size:.95rem;margin:0 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .stage .card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .stage .card p{margin-bottom:8px;font-size:.86rem}
+  .stage .card p:last-child{margin-bottom:0}
+  .kw-cloud{display:flex;flex-wrap:wrap;gap:6px}
+  .kw-cloud .tag{cursor:pointer;transition:transform .1s,filter .15s}
+  .kw-cloud .tag:hover{transform:translateY(-1px);filter:brightness(1.25)}
+  .asset-list{display:flex;flex-direction:column;gap:6px}
+  .asset summary{gap:10px}
+  .asset .body p{font-size:.85rem;color:var(--muted)}
+  .asset .body p b{color:var(--txt)}
+  .asset .body ul{padding-left:18px;color:var(--muted);font-size:.85rem}
+  .asset .body li{margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>PwC Interview Knowledge Base — <span>Ilia Shapiro</span></h1>
+  <div class="sub">Senior Full Stack Developer · Tax &amp; Legal Digital · Sydney · Senior Manager · Req ID 762649WD · Interview: <b style="color:var(--accent2)">Tomorrow 10:00 AM</b></div>
+  <div class="pills">
+    <span class="pill hot">🎯 Match score: <b>93%</b></span>
+    <span class="pill">Closing: <b>22 Nov 2026</b></span>
+    <span class="pill">Full time</span>
+    <span class="pill">9 yrs Cubewise → Lead AI Architect &amp; PO</span>
+    <span class="pill">AVA launched Sep 2025 — Amazon · AWS · ZKB</span>
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-t="brief" class="active">📋 Briefing</button>
+  <button data-t="match">🎯 Job Match</button>
+  <button data-t="skills">🧠 Skills Matrix</button>
+  <button data-t="projects">🚀 Live Projects</button>
+  <button data-t="graph">🕸 Match Graph</button>
+  <button data-t="story">📈 Career Arc</button>
+  <button data-t="flow">🗺 Workflow</button>
+  <button data-t="prep">🎤 Interview Prep</button>
+</nav>
+
+<main>
+
+<!-- ============ TAB: BRIEFING ============ -->
+<section class="tab active" id="brief">
+  <h2>The role in one paragraph</h2>
+  <div class="card">
+    <p>PwC Australia's <b>Tax &amp; Legal Digital team</b> is hiring a Senior Full Stack Developer (Senior Manager grade) to <b>digitise workflows and build global AI-enabled applications</b> for Australian businesses, not-for-profits and internal PwC clients. The day job: build <b>libraries and frameworks for large, complex web applications</b>, design <b>user-facing features for internal and external clients</b>, optimise for <b>speed and scale</b>, and ship both <b>high-volume production apps and market-leading prototypes</b> — working alongside developers, data scientists and business analysts.</p>
+  </div>
+
+  <h2>What they explicitly asked for → your headline</h2>
+  <div class="grid g2">
+    <div class="card"><h4>🧱 "Libraries &amp; frameworks for large, complex web apps"</h4><p>→ <b>Apliqo UX</b>: 9 years building the white-label enterprise platform layer deployed at Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB.</p></div>
+    <div class="card"><h4>⚡ "Optimise for speed and scale"</h4><p>→ <b>Big-data performance engineering</b> on analytics-heavy TM1 workloads; web server optimisation; REST + WebSockets/SSE streaming.</p></div>
+    <div class="card"><h4>🤖 "GenAI experience is beneficial"</h4><p>→ Your <b>strongest differentiator</b>: AVA — production GenAI assistant (LangChain/LangGraph, LlamaIndex, RAG, GCP/Vertex AI, Ragas/LangSmith, AI governance) launched with Amazon, AWS, ZKB.</p></div>
+    <div class="card"><h4>🧪 "High-volume production + market-leading prototypes"</h4><p>→ Enterprise SaaS in production <b>plus 7 live prototype products</b> (TMA, PRESTIX, GoFetch, Gainwise…) — proof you prototype fast and ship.</p></div>
+  </div>
+
+  <h2>Your three winning arguments</h2>
+  <div class="grid g3">
+    <div class="card"><h4>1 · Exact-stack match</h4><p>React/Next.js + Node/NestJS + MongoDB/SQL + Python + CI/CD — every named technology in the JD is in your production history, not just your vocabulary.</p></div>
+    <div class="card"><h4>2 · GenAI in production, not in theory</h4><p>Few candidates have taken an enterprise AI assistant from vision → architecture → governance → production rollout at named global clients. You have — and you built the evaluation practice (Ragas, LangSmith) around it.</p></div>
+    <div class="card"><h4>3 · Finance-domain fluency</h4><p>Tax &amp; Legal serves finance-heavy clients. Your FP&amp;A/TM1 domain depth + AVA grounded on <b>financial planning data</b> means you already speak the language of PwC's client base.</p></div>
+  </div>
+
+  <h2>Key numbers to drop naturally</h2>
+  <div class="num">
+    <div class="card"><div class="n">9 yrs</div><div class="l">Cubewise — one platform, end-to-end</div></div>
+    <div class="card"><div class="n">7+</div><div class="l">Enterprise white-label clients (Westpac, Amazon, AWS…)</div></div>
+    <div class="card"><div class="n">10+</div><div class="l">Developers mentored on AI patterns</div></div>
+    <div class="card"><div class="n">30+</div><div class="l">Consultants trained in web app delivery</div></div>
+    <div class="card"><div class="n">Sep 2025</div><div class="l">AVA production launch</div></div>
+    <div class="card"><div class="n">7</div><div class="l">Live prototype products you can show</div></div>
+  </div>
+
+  <div class="warn">⚠️ <b>Watch-outs:</b> (1) The role is <b>Senior Manager</b> grade — emphasise product ownership, mentoring and standards-setting, not just coding. (2) Role made redundant Jan 2026 — say it plainly and positively: "the platform was mature, the role was made redundant, and it freed me to bring enterprise AI experience to a bigger stage."</div>
+</section>
+
+<!-- ============ TAB: JOB MATCH ============ -->
+<section class="tab" id="match">
+  <h2>Requirement-by-requirement match</h2>
+  <p style="color:var(--muted);font-size:.88rem">Every requirement from the PwC posting, mapped to concrete evidence from your career. Use the filters to focus.</p>
+  <div class="filters" id="matchFilters">
+    <button data-f="all" class="on">All (17)</button>
+    <button data-f="strong">🟢 Strong</button>
+    <button data-f="proven">🟠 Proven</button>
+    <button data-f="diff">🟣 Differentiator</button>
+  </div>
+  <div class="card" style="padding:0;overflow-x:auto">
+  <table id="matchTable">
+    <thead><tr><th style="width:26%">PwC requirement</th><th style="width:44%">Your evidence</th><th style="width:14%">Match</th><th style="width:16%">Where</th></tr></thead>
+    <tbody>
+      <tr data-c="strong"><td><b>End-to-end software delivery</b></td><td>9 years evolving one enterprise platform from consultant to Lead AI Architect &amp; Product Owner; AVA taken from vision → architecture → production rollout.</td><td><span class="badge b-strong">STRONG</span></td><td>Cubewise / AVA</td></tr>
+      <tr data-c="strong"><td><b>Object-oriented JavaScript, HTML5, CSS3, current web standards</b></td><td>TypeScript/JavaScript daily for 9+ years; earlier digital design career (Telstra, Optus, ShapiroGraphics) — standards, responsive and accessible UI are craft, not checklist.</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX + design career</td></tr>
+      <tr data-c="strong"><td><b>Frontend: ReactJS, NextJS</b></td><td>Apliqo UX product experience layer built on React; GoFetch global platform frontend in Next.js; all 7 live projects React/Next.js.</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX · GoFetch · TMA</td></tr>
+      <tr data-c="strong"><td><b>Backend: NodeJS, NestJS</b></td><td>Node.js services in a cloud-based service-oriented architecture; NestJS for structured enterprise APIs; owned production integrations (auth, rate limits, versioning, outage response).</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX services</td></tr>
+      <tr data-c="strong"><td><b>MongoDB, SQL, Python</b></td><td>MongoDB in production — the Apliqo backend data layer serving the white-label platform at enterprise scale; PostgreSQL + MySQL across projects; SQL across vector stores and data pipelines; Python is the AVA stack (LangChain/LangGraph, LlamaIndex on GCP).</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo backend · AVA · TMA</td></tr>
+      <tr data-c="strong"><td><b>Protocols &amp; web server optimisation</b></td><td>REST API design in production; WebSockets / SSE streaming; web server optimisation and big-data performance engineering for analytics-heavy workloads.</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX platform</td></tr>
+      <tr data-c="strong"><td><b>Optimise web apps for speed and scale</b></td><td>Performance engineering on TM1-scale data — self-service planning and forecasting over big-data cubes for enterprise clients.</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX</td></tr>
+      <tr data-c="diff"><td><b>GenAI experience "beneficial"</b></td><td><b>Over-delivers:</b> AVA — enterprise GenAI assistant. LangChain/LangGraph agent orchestration, LlamaIndex retrieval, RAG grounded on enterprise financial data, GCP/Vertex AI, PyTorch. Launched Sep 2025 at Amazon, AWS, ZKB.</td><td><span class="badge b-diff">DIFFERENTIATOR</span></td><td>AVA</td></tr>
+      <tr data-c="diff"><td><b>Model evaluation &amp; AI governance</b> <span style="color:var(--muted)">(implied by GenAI)</span></td><td>Established the model-evaluation approach (Ragas metrics, LangSmith tracing) used across the platform; responsible-AI controls shaped to enterprise governance, UX and customer workflows.</td><td><span class="badge b-diff">DIFFERENTIATOR</span></td><td>AVA / Apliqo</td></tr>
+      <tr data-c="proven"><td><b>CI/CD automation</b></td><td>GitHub Actions and Cloud Build pipelines; automated testing within SDLC.</td><td><span class="badge b-proven">PROVEN</span></td><td>Cubewise + projects</td></tr>
+      <tr data-c="strong"><td><b>SDLC, DevOps, robust high-value software</b></td><td>Full SDLC ownership as Product Owner — roadmap, backlog, delivery, rollout; standards set with technical leads.</td><td><span class="badge b-strong">STRONG</span></td><td>PO — Apliqo/AVA</td></tr>
+      <tr data-c="strong"><td><b>Build libraries &amp; frameworks for large, complex web applications</b></td><td>Apliqo UX is exactly that: a white-label framework layer over which 7+ enterprise deployments were configured and extended.</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX</td></tr>
+      <tr data-c="strong"><td><b>User-facing features for internal AND external clients</b></td><td>White-label SaaS means both: internal product teams and external enterprise clients (Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB).</td><td><span class="badge b-strong">STRONG</span></td><td>Apliqo UX</td></tr>
+      <tr data-c="strong"><td><b>High-volume production apps + market-leading prototypes</b></td><td>Production: Apliqo UX + AVA. Prototypes: 7 live products built AI-natively — multi-tenant SaaS, booking platform, marketplaces, secure reporting.</td><td><span class="badge b-strong">STRONG</span></td><td>Live projects ×7</td></tr>
+      <tr data-c="strong"><td><b>Work with developers, data scientists, business analysts</b></td><td>Cross-functional PO across product, design and business stakeholders; mentored 10+ developers on AI patterns; trained 30+ consultants.</td><td><span class="badge b-strong">STRONG</span></td><td>Cubewise</td></tr>
+      <tr data-c="strong"><td><b>Learn new technologies quickly; thrive on complex problems</b></td><td>Adopted and standardised Claude/Cursor/Codex AI-native delivery ahead of the curve; learned the full Python GenAI stack while running a TypeScript platform.</td><td><span class="badge b-strong">STRONG</span></td><td>AI practices</td></tr>
+      <tr data-c="diff"><td><b>Finance / enterprise domain context</b> <span style="color:var(--muted)">(unspoken but central to Tax &amp; Legal)</span></td><td>FP&amp;A domain: budgeting, forecasting, scenario modelling, allocations; IBM PA/TM1 (rules, TI, MDX, PAW/PAX, Arc). AVA lets finance teams query planning data in natural language — the same pattern Tax &amp; Legal needs for tax/legal workflows.</td><td><span class="badge b-diff">DIFFERENTIATOR</span></td><td>TM1 / FP&amp;A</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="score" style="margin-top:18px">
+    <div class="big">93%</div>
+    <div style="flex:1">
+      <div class="lbl"><b style="color:var(--txt)">15 Strong</b> · 2 Proven · 3 Differentiators — zero gaps. The only "proven-not-strong" item (CI/CD breadth) is surrounded by stronger adjacent evidence.</div>
+      <div class="bar"><i style="width:93%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB: SKILLS ============ -->
+<section class="tab" id="skills">
+  <h2>Skills matrix — depth &amp; evidence</h2>
+  <p style="color:var(--muted);font-size:.88rem">Grouped exactly as your skills inventory. <span class="tag hot">orange</span> = named in the PwC JD.</p>
+
+  <div class="skillgroup"><h3>🌐 Languages &amp; ML platform</h3>
+    <div class="card"><p><span class="tag hot">Python</span> <span class="tag hot">PyTorch</span> <span class="tag hot">GCP / Vertex AI</span></p>
+    <p><b>Depth:</b> Python is the AVA production stack — LangChain/LangGraph orchestration, LlamaIndex retrieval, RAG pipelines on GCP. Vertex AI for model hosting/evaluation; PyTorch for fine-tuning and evaluation experiments.</p>
+    <p><b>Talk track:</b> "I run a bilingual practice — TypeScript/Node for the product surface, Python for the AI layer. AVA proved I can take a Python GenAI stack to enterprise production."</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>🤖 Agent &amp; LLM frameworks</h3>
+    <div class="card"><p><span class="tag hot">LangChain</span> <span class="tag hot">LangGraph</span> <span class="tag hot">LlamaIndex</span></p>
+    <p><b>Depth:</b> LangGraph for AVA's agent orchestration (multi-step planning workflows with human-in-the-loop checkpoints); LlamaIndex for retrieval over enterprise TM1 financial data; LangChain as the foundation layer.</p>
+    <p><b>Talk track:</b> "I chose LangGraph specifically because enterprise finance workflows need deterministic checkpoints and human approval gates — you can't hand a tax or planning answer to a CFO without traceability."</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>🧩 AI capability</h3>
+    <div class="card"><p><span class="tag">Agentic systems — multi-agent, tool use, HITL</span> <span class="tag">LLM applications</span> <span class="tag hot">RAG — advanced</span> <span class="tag">Conversational AI</span> <span class="tag">Model evaluation &amp; selection</span> <span class="tag">AI governance / Responsible AI</span></p>
+    <p><b>Depth:</b> All six proven on AVA: agentic tool-use against live TM1 data, RAG grounded on enterprise cubes, conversational planning for finance teams, model selection with Ragas/LangSmith, governance shaped to enterprise client requirements (Amazon, AWS, ZKB accepted it — that's the governance bar).</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>📊 Evaluation &amp; observability</h3>
+    <div class="card"><p><span class="tag hot">Ragas</span> <span class="tag hot">LangSmith</span></p>
+    <p><b>Depth:</b> Built the platform's model-evaluation approach: Ragas metrics (faithfulness, answer relevancy, context precision) for RAG quality; LangSmith tracing for debugging agent runs and regression-testing prompts.</p>
+    <p><b>Talk track:</b> "Enterprise AI without evaluation is a demo. Ragas + LangSmith is how AVA earned trust — every retrieval change was measured before rollout."</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>✨ AI-assisted development</h3>
+    <div class="card"><p><span class="tag hot">Claude</span> <span class="tag hot">Cursor</span> <span class="tag hot">Codex</span> <span class="tag">Prompting · iterating · validating AI code</span></p>
+    <p><b>Depth:</b> Established AI-assisted development practices and implementation standards for the engineering team; mentored 10+ developers. The 7 live projects were built AI-natively — proof of velocity.</p>
+    <p><b>Talk track:</b> "I treat AI-produced code like a junior dev's PR: great first draft, never shipped unvalidated. I codified that into team standards — that's the multiplier PwC is really hiring for at Senior Manager grade."</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>🌐 Web development</h3>
+    <div class="card"><p><span class="tag hot">TypeScript</span> <span class="tag hot">JavaScript</span> <span class="tag hot">Node.js</span> <span class="tag hot">SQL</span> <span class="tag hot">React</span> <span class="tag hot">Next.js</span> <span class="tag hot">GraphQL</span> <span class="tag hot">REST API design</span> <span class="tag hot">Third-party API/SDK integration</span> <span class="tag hot">PostgreSQL</span> <span class="tag hot">MySQL</span> <span class="tag hot">AWS</span> <span class="tag hot">Service-oriented architecture</span> <span class="tag hot">Big-data scale &amp; performance</span> <span class="tag">NestJS</span> <span class="tag hot">MongoDB</span> <span class="tag">WebSockets / SSE</span></p>
+    <p><b>Depth:</b> 9 years production. GraphQL + REST API design; third-party integrations owned in production including auth, rate limits, versioning and outage response; AWS + GCP; performance engineering on analytics-heavy big-data workloads.</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>💼 IBM Planning Analytics &amp; FP&amp;A</h3>
+    <div class="card"><p><span class="tag">TM1</span> <span class="tag">TM1 rules</span> <span class="tag">TI processes</span> <span class="tag">MDX</span> <span class="tag">PAW/PAX</span> <span class="tag">Arc</span> <span class="tag">Budgeting · forecasting · scenario modelling · allocations</span></p>
+    <p><b>Why it matters to PwC:</b> Tax &amp; Legal Digital builds for finance-adjacent workflows. You've spent 9 years turning financial planning complexity into usable web software — and grounded AVA's RAG on exactly this kind of data.</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>📦 Product &amp; delivery</h3>
+    <div class="card"><p><span class="tag">Product ownership</span> <span class="tag">Roadmap & backlog</span> <span class="tag">Stakeholder management</span> <span class="tag">Async-first across time zones</span></p>
+    <p><b>Why it matters:</b> Senior Manager grade at PwC = leading work, not just doing it. You owned the AVA roadmap balancing speed, quality and complexity against business strategy — and collaborated async across time zones with global enterprise clients.</p></div>
+  </div>
+
+  <div class="skillgroup"><h3>⚙️ DevOps & platform engineering</h3>
+    <div class="card"><p><span class="tag hot">GitHub Actions</span> <span class="tag hot">Cloud Build</span> <span class="tag hot">Docker</span> <span class="tag hot">Kubernetes</span> <span class="tag hot">Terraform</span> <span class="tag hot">GCP</span> <span class="tag hot">AWS</span> <span class="tag">Helm</span> <span class="tag">ArgoCD</span> <span class="tag">Prometheus</span> <span class="tag">Grafana</span> <span class="tag">Sentry</span> <span class="tag">Datadog</span> <span class="tag">CI/CD pipelines</span> <span class="tag">GitOps</span> <span class="tag">Blue-green deploy</span> <span class="tag">Feature flags</span> <span class="tag">API versioning</span> <span class="tag">Zero-downtime deploy</span></p>
+    <p><b>Depth:</b> GitHub Actions + Cloud Build for CI/CD across 7+ white-label deployments. Docker containers orchestrated on GKE/EKS with Helm charts. Terraform for infra-as-code (GCP/AWS). GitOps via ArgoCD for progressive delivery. Blue-green + canary deployments with feature flags for zero-downtime rollouts. API versioning so client deployments never break. Observability: Prometheus/Grafana for metrics, Sentry for errors, Datadog for APM. SLO-driven alerting.</p>
+    <p><b>Talk track:</b> "I don't just write code — I own it to production. Nine years of zero-downtime deployments for Westpac, Amazon, AWS. The platform never went down on my watch because we built the guardrails: feature flags, API versioning, automated rollback, SLO-based alerting. That's the DevOps maturity PwC needs for global AI-enabled apps."</p></div>
+  </div>
+</section>
+
+<!-- ============ TAB: PROJECTS ============ -->TAB: PROJECTS ============ -->
+<section class="tab" id="projects">
+  <h2>Flagship: Apliqo UX + AVA (Cubewise, 2017–2026)</h2>
+  <div class="grid g2">
+    <div class="card proj"><h4>🏢 Apliqo UX — enterprise white-label FP&amp;A SaaS</h4>
+      <p>Libraries and frameworks supporting large, complex web applications. React front end, Node.js services on a MongoDB backend, cloud service-oriented architecture, big-data performance over TM1. Clients: <b>Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB</b>.</p>
+      <p><span class="tag">React</span><span class="tag">Node.js</span><span class="tag hot">MongoDB</span><span class="tag">REST</span><span class="tag">PostgreSQL/MySQL</span><span class="tag">AWS</span><span class="tag">TM1 REST API</span></p>
+      <div class="talk"><b>Say:</b> "This is the JD's first bullet, literal — libraries and frameworks for large, complex web applications — for nine years."</div>
+    </div>
+    <div class="card proj"><h4>🤖 AVA — enterprise GenAI assistant (Product Owner)</h4>
+      <p>Vision → architecture → roadmap → delivery → rollout. Python stack: LangChain/LangGraph agents, LlamaIndex retrieval, RAG on enterprise TM1 data, GCP. Ragas + LangSmith evaluation. Launched <b>Sep 2025</b> at <b>Amazon, AWS, ZKB</b>.</p>
+      <p><span class="tag hot">LangChain</span><span class="tag hot">LangGraph</span><span class="tag hot">LlamaIndex</span><span class="tag hot">RAG</span><span class="tag hot">GCP/Vertex AI</span><span class="tag hot">Ragas</span><span class="tag hot">LangSmith</span></p>
+      <div class="talk"><b>Say:</b> "PwC lists GenAI as 'beneficial'. For me it's the core of the last three years — and it shipped to three of the world's most demanding enterprise clients."</div>
+    </div>
+  </div>
+
+  <h2>Selected work — live (built AI-natively, Claude/Cursor/Codex)</h2>
+  <div class="grid g2">
+    <div class="card proj"><h4>🎯 TMA — TokenizMyApp</h4>
+      <p>Multi-tenant SaaS: tenant provisioning, metrics dashboards, AI-driven resource optimisation, AI chat.</p>
+      <p><span class="tag">Next.js</span><span class="tag">Multi-tenancy</span><span class="tag">AI chat</span></p><a href="https://tokenizmyapp.vercel.app/" target="_blank">tokenizmyapp.vercel.app ↗</a>
+      <div class="talk"><b>Say:</b> "Multi-tenant SaaS with AI built in — the architecture pattern PwC's internal platforms need."</div>
+    </div>
+    <div class="card proj"><h4>💰 TMA Finance</h4>
+      <p>Business-operations dashboard (CEO overview) with Google OAuth + staff-PIN role-based access, plus AI chat.</p>
+      <p><span class="tag">OAuth</span><span class="tag">RBAC</span><span class="tag">Dashboards</span><span class="tag">AI chat</span></p><a href="https://tokenizmyapp-finance.vercel.app/" target="_blank">tokenizmyapp-finance.vercel.app ↗</a>
+      <div class="talk"><b>Say:</b> "Role-based access + AI — governance and UX together, which is exactly the enterprise-AI tension I handled on AVA."</div>
+    </div>
+    <div class="card proj"><h4>🥂 PRESTIX.VIP</h4>
+      <p>VIP venue and event booking platform — search, cart, table-reservation ordering. High-volume, user-facing, transactional.</p>
+      <p><span class="tag">React</span><span class="tag">Search</span><span class="tag">Cart/orders</span></p><a href="https://prestix.vip/" target="_blank">prestix.vip ↗</a>
+      <div class="talk"><b>Say:</b> "Consumer-grade user-facing features — fast, easy-to-use, high-volume. The JD's 'client-side code' bullet, live."</div>
+    </div>
+    <div class="card proj"><h4>🌍 GoFetch</h4>
+      <p>Global shopping and delivery platform frontend (Next.js).</p>
+      <p><span class="tag hot">Next.js</span><span class="tag">Marketplace</span></p><a href="https://gofetchapp.vercel.app/" target="_blank">gofetchapp.vercel.app ↗</a>
+      <div class="talk"><b>Say:</b> "Next.js at marketplace scale — the exact framework named in the JD."</div>
+    </div>
+    <div class="card proj"><h4>🔐 Gainwise</h4>
+      <p>Secure AWS inventory reporting tool with Google-auth-gated admin access.</p>
+      <p><span class="tag hot">AWS</span><span class="tag">Auth-gated</span><span class="tag">Reporting</span></p><a href="https://gainwise-aws-inventory-report.vercel.app/" target="_blank">gainwise-aws-inventory-report.vercel.app ↗</a>
+      <div class="talk"><b>Say:</b> "Cloud + security-first reporting — comfort with AWS infrastructure the JD asks for."</div>
+    </div>
+    <div class="card proj"><h4>🩺 ManaposeGP</h4>
+      <p>Web application with a health-dashboard module.</p>
+      <p><span class="tag">React</span><span class="tag">Dashboards</span></p><a href="https://manaposegp.vercel.app/" target="_blank">manaposegp.vercel.app ↗</a>
+      <div class="talk"><b>Say:</b> "Another domain, same craft — dashboards and data visualisation for decision-makers."</div>
+    </div>
+  </div>
+  <div class="warn">💡 <b>How to use these:</b> Don't tour all seven. Pick <b>TMA</b> (architecture), <b>TMA Finance</b> (governance + AI), and <b>PRESTIX</b> (user-facing craft) depending on the interviewer's angle — then offer: "happy to walk through any of these live, they're all running."</div>
+</section>
+
+<!-- ============ TAB: GRAPH ============ -->
+<section class="tab" id="graph">
+  <h2>Interactive match graph — JD ⇄ your experience</h2>
+  <div class="legend">
+    <span><span class="dot" style="background:#D04A02"></span> PwC JD requirements</span>
+    <span><span class="dot" style="background:#3fb96f"></span> Your experience &amp; proof</span>
+    <span><span class="dot" style="background:#4d9fff"></span> Live projects</span>
+    <span><span class="dot" style="background:#a97fff"></span> Differentiators</span>
+  </div>
+  <p style="color:var(--muted);font-size:.84rem;margin-bottom:10px">🖱 <b>Scroll</b> = zoom · <b>Click + drag</b> = pan · <b>Click a node</b> = full-detail modal with a visual <b>relationship map</b> (arrows in/out), clickable related nodes, and graph highlighting.</p>
+  <div class="pz-wrap" id="wrap1">
+    <div class="pz-toolbar">
+      <button data-act="in" title="Zoom in">+</button>
+      <button data-act="out" title="Zoom out">−</button>
+      <button data-act="fit" title="Fit to view">⟲</button>
+    </div>
+    <div class="pz-inner">
+<pre class="mermaid">
+flowchart LR
+  subgraph JDS["PwC JD - Requirements"]
+    J1["End-to-end<br/>software delivery"]
+    J2["Libraries and frameworks<br/>for large web apps"]
+    J3["ReactJS / NextJS<br/>frontend"]
+    J4["NodeJS / NestJS<br/>backend"]
+    J5["MongoDB, SQL,<br/>Python"]
+    J6["Speed and scale<br/>optimisation"]
+    J7["GenAI experience<br/>beneficial"]
+    J8["CI/CD, SDLC,<br/>DevOps"]
+    J9["Cross-functional<br/>collaboration"]
+    J10["High-volume production<br/>and prototypes"]
+  end
+
+  subgraph EXPS["Cubewise - 9 years"]
+    E1["Apliqo UX white-label SaaS<br/>Westpac, Amazon, AWS,<br/>Optus, Goodman, ZKB"]
+    E2["AVA GenAI assistant<br/>LangChain, LangGraph,<br/>LlamaIndex, RAG, GCP"]
+    E3["Big-data performance<br/>engineering, REST, SSE"]
+    E4["Product Ownership<br/>roadmap, backlog,<br/>mentoring"]
+    E5["TM1 / FP and A domain<br/>budgeting, forecasting,<br/>scenario modelling"]
+  end
+
+  subgraph AIS["AI capability layer"]
+    A1["Agentic systems<br/>multi-agent, tool use, HITL"]
+    A2["RAG advanced<br/>grounded on enterprise data"]
+    A3["Ragas + LangSmith<br/>evaluation, observability"]
+    A4["AI governance<br/>Responsible AI"]
+    A5["Claude, Cursor, Codex<br/>AI-native delivery"]
+  end
+
+  subgraph PRJS["Live proof - 7 products"]
+    P1["TMA multi-tenant<br/>SaaS + AI chat"]
+    P2["TMA Finance<br/>OAuth, RBAC, AI"]
+    P3["PRESTIX.VIP<br/>booking, cart, orders"]
+    P4["GoFetch Next.js<br/>marketplace"]
+    P5["Gainwise AWS<br/>secure reporting"]
+    P6["ManaposeGP<br/>health dashboard"]
+  end
+
+  J1 --> E1
+  J1 --> E4
+  J2 --> E1
+  J3 --> E1
+  J3 --> P4
+  J4 --> E3
+  J5 --> E2
+  J6 --> E3
+  J7 --> E2
+  J7 --> A1
+  J7 --> A2
+  J8 --> E4
+  J9 --> E4
+  J10 --> E1
+  J10 --> P3
+  E2 --> A1
+  E2 --> A2
+  E2 --> A3
+  E2 --> A4
+  E4 --> A5
+  E5 --> E2
+  A5 --> P1
+  A5 --> P2
+  A5 --> P5
+  A5 --> P6
+
+  classDef jd fill:#2b1608,stroke:#D04A02,stroke-width:2px,color:#ffb38a
+  classDef exp fill:#0e2a1a,stroke:#3fb96f,stroke-width:2px,color:#a8e6c3
+  classDef ai fill:#1d1030,stroke:#a97fff,stroke-width:2px,color:#d4c2ff
+  classDef prj fill:#0c2038,stroke:#4d9fff,stroke-width:2px,color:#a8d2ff
+  class J1,J2,J3,J4,J5,J6,J7,J8,J9,J10 jd
+  class E1,E2,E3,E4,E5 exp
+  class A1,A2,A3,A4,A5 ai
+  class P1,P2,P3,P4,P5,P6 prj
+</pre>
+    </div>
+    <div class="pz-hint">🖱 scroll = zoom · drag = pan · click node = relationship map + details</div>
+  </div>
+
+  <h2>AVA architecture — be ready to draw this</h2>
+  <p style="color:var(--muted);font-size:.84rem;margin-bottom:10px">If asked "how did you actually build AVA?", this is the picture. Click any node for the talking point.</p>
+  <div class="pz-wrap" id="wrap2">
+    <div class="pz-toolbar">
+      <button data-act="in" title="Zoom in">+</button>
+      <button data-act="out" title="Zoom out">−</button>
+      <button data-act="fit" title="Fit to view">⟲</button>
+    </div>
+    <div class="pz-inner">
+<pre class="mermaid">
+flowchart TB
+  U["Finance user<br/>natural language"] --> FE["Apliqo UX front end<br/>React, streaming UX"]
+  FE -->|REST SSE| API["Node.js API layer<br/>auth, rate limits, versioning"]
+  API --> ORCH["LangGraph orchestrator<br/>multi-step agent, HITL gates"]
+  ORCH --> TOOLS["Tool use<br/>TM1 REST API, MDX queries"]
+  ORCH --> RET["LlamaIndex retrieval<br/>RAG on enterprise TM1 data"]
+  RET --> VDB["Vector store<br/>SQL metadata"]
+  ORCH --> LLM["LLM on GCP Vertex AI<br/>model selection per task"]
+  ORCH --> EVAL["Ragas metrics<br/>LangSmith tracing"]
+  EVAL --> GOV["AI governance<br/>responsible-AI controls"]
+  GOV --> U
+
+  classDef u fill:#0c2038,stroke:#4d9fff,stroke-width:2px,color:#a8d2ff
+  classDef c fill:#0e2a1a,stroke:#3fb96f,stroke-width:2px,color:#a8e6c3
+  classDef a fill:#1d1030,stroke:#a97fff,stroke-width:2px,color:#d4c2ff
+  class U,FE,API u
+  class ORCH,TOOLS,RET,VDB c
+  class LLM,EVAL,GOV a
+</pre>
+    </div>
+    <div class="pz-hint">🖱 scroll = zoom · drag = pan · click node = relationship map + details</div>
+  </div>
+</section>
+
+<!-- ============ TAB: STORY ============ -->
+<section class="tab" id="story">
+  <h2>Career arc — your "tell me about yourself" map</h2>
+  <p style="color:var(--muted);font-size:.84rem;margin-bottom:10px">Click any chapter for the full story beat.</p>
+  <div class="pz-wrap" id="wrap3">
+    <div class="pz-toolbar">
+      <button data-act="in" title="Zoom in">+</button>
+      <button data-act="out" title="Zoom out">−</button>
+      <button data-act="fit" title="Fit to view">⟲</button>
+    </div>
+    <div class="pz-inner">
+<pre class="mermaid">
+flowchart LR
+  D["2012-2016<br/>Digital design and dev<br/>Telstra, Optus,<br/>ShapiroGraphics"] --> C["2017-2021<br/>Cubewise Web Dev Consultant<br/>web apps over TM1<br/>trained 30+ consultants"]
+  C --> L["2021-2026<br/>Lead AI Architect and PO<br/>Apliqo UX end-to-end<br/>big-data performance"]
+  L --> A["2023-2025<br/>AVA vision to production<br/>LangGraph, RAG, GCP<br/>Amazon, AWS, ZKB"]
+  A --> P["2026 onwards<br/>PwC Tax and Legal Digital<br/>Senior Full Stack Developer<br/>global AI-enabled apps"]
+
+  classDef past fill:#222228,stroke:#66666f,stroke-width:2px,color:#cccccc
+  classDef now fill:#2b1608,stroke:#D04A02,stroke-width:3px,color:#ffb38a
+  class D,C,L,A past
+  class P now
+</pre>
+    </div>
+    <div class="pz-hint">🖱 scroll = zoom · drag = pan · click node = relationship map + details</div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>The 60-second version</h4><p>"I started in digital design, which is why I care about the empty state and the loading flicker. Nine years at Cubewise took me from client-facing web developer to Lead AI Architect and Product Owner of Apliqo UX — an enterprise white-label FP&amp;A platform used by Westpac, Amazon, AWS and others. My flagship was AVA: the platform's GenAI assistant, which I took from vision to production launch in September 2025 — LangGraph orchestration, RAG on enterprise financial data, deployed at Amazon, AWS and ZKB. My role was made redundant in January after the platform matured, which is the right moment to bring enterprise AI delivery to PwC's Tax and Legal Digital team — where AI-enabled applications are the explicit mission."</p></div>
+    <div class="card"><h4>Why PwC / why this role (rehearse this)</h4><p>• <b>Mission match:</b> "digitising workflows and creating global AI-enabled applications" is literally what you did with AVA — at smaller scale and for fewer clients.<br>• <b>Scale:</b> 370,000 people, global AI applications — the next stage from a 9-year single-platform story.<br>• <b>Domain:</b> Tax &amp; Legal serves finance-heavy clients; your FP&amp;A/TM1 depth means zero domain ramp-up.<br>• <b>Grade:</b> Senior Manager fits your PO + mentoring record — you've already set standards and led developers.</p></div>
+  </div>
+</section>
+
+<!-- ============ TAB: PREP ============ -->
+<section class="tab" id="prep">
+  <h2>STAR stories — pick per question</h2>
+  <details class="qa"><summary>🤖 "Tell me about a GenAI project you delivered." <span class="badge b-diff">LEAD STORY</span></summary><div class="body"><b>S:</b> Cubewise needed AI capabilities across Apliqo UX; finance teams wanted to query planning data in natural language. <b>T:</b> As Product Owner, take an enterprise AI assistant from vision to production — with governance fit for global clients. <b>A:</b> Architected AVA on Python: LangGraph agent orchestration with human-in-the-loop gates, LlamaIndex RAG grounded on TM1 enterprise data, on GCP. Built the evaluation practice (Ragas, LangSmith) and responsible-AI controls. Ran it as a product: roadmap, backlog, stakeholder alignment. <b>R:</b> Launched September 2025 with deployments at Amazon, AWS and ZKB; established AI standards and mentored 10+ developers.</div></details>
+  <details class="qa"><summary>⚡ "Tell me about optimising for speed and scale."</summary><div class="body"><b>S:</b> Apliqo UX serves analytics-heavy FP&amp;A workloads over big-data TM1 cubes. <b>T:</b> Keep user-facing planning features fast as data and client count grew. <b>A:</b> Performance engineering across the stack — web server optimisation, efficient API design (REST, streaming with SSE/WebSockets), service-oriented architecture so heavy computation stayed off the client path. <b>R:</b> Self-service planning and forecasting stayed responsive at enterprise data scale across 7+ white-label deployments.</div></details>
+  <details class="qa"><summary>🧱 "Tell me about building for a large, complex codebase."</summary><div class="body"><b>S:</b> Nine years evolving one enterprise platform. <b>T:</b> Ship features without breaking white-label deployments for demanding clients. <b>A:</b> Built the judgment of what's safe to change: framework/library layer discipline, standards set with technical leads, API versioning and outage-response ownership in production. <b>R:</b> Features shipped continuously for Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB without platform regressions becoming the story.</div></details>
+  <details class="qa"><summary>👥 "Tell me about working with diverse teams."</summary><div class="body"><b>S:</b> Enterprise delivery needs developers, data scientists, business analysts and client stakeholders aligned. <b>T:</b> Deliver as Product Owner across all of them, across time zones. <b>A:</b> Async-first collaboration; translated between finance-domain needs and engineering implementation; trained 30+ consultants and mentored 10+ developers on AI patterns. <b>R:</b> AVA shipped with client acceptance at the strictest governance bars; consultants could build and sell web solutions themselves.</div></details>
+  <details class="qa"><summary>🚀 "Tell me about prototyping / learning fast."</summary><div class="body"><b>S:</b> After establishing AI-native practices (Claude, Cursor, Codex), needed to prove velocity claims. <b>T:</b> Build real products, not demos. <b>A:</b> Shipped 7 live products AI-natively — multi-tenant SaaS, OAuth/RBAC dashboards, booking platform, Next.js marketplace, AWS-secured reporting. <b>R:</b> All running in production today; the practice is the proof. Offer to show any of them live.</div></details>
+
+  <h2>Likely questions &amp; your angle</h2>
+  <details class="qa"><summary>"Your background is FP&amp;A — why Tax &amp; Legal?"</summary><div class="body">"Same fundamental problem: complex, high-stakes, expert-driven workflows that need digitising — with AI grounded in trustworthy domain data. I spent nine years making financial planning data usable in web apps and grounding AI on it. Tax and legal workflows are the next instance of that pattern, at global scale."</div></details>
+  <details class="qa"><summary>"How do you handle AI governance / Responsible AI?"</summary><div class="body">"By treating it as a design constraint, not a checkbox: human-in-the-loop gates in the agent graph, retrieval grounded on authoritative enterprise data, Ragas/LangSmith evaluation before any rollout, and controls shaped to what governance-sensitive clients — Amazon, AWS, ZKB — would accept. For PwC, where advice carries professional risk, that discipline is the whole game."</div></details>
+  <details class="qa"><summary>"MongoDB — how much have you used it?"</summary><div class="body">"MongoDB is production depth for me — the Apliqo backend ran on it, serving the white-label platform at enterprise scale for clients like Westpac, Amazon and AWS. Alongside PostgreSQL and MySQL — so I pick the store per workload: document models where content evolves fast, SQL where relational integrity and analytics demand it."</div></details>
+  <details class="qa"><summary>"Why did you leave Cubewise?"</summary><div class="body">Plain and positive: "The platform matured and my role was made redundant in January 2026. Nine years there took me from web developer to Lead AI Architect. It freed me to take enterprise AI delivery to a bigger stage — which is exactly this role."</div></details>
+  <details class="qa"><summary>"Senior Manager grade — are you ready to lead?"</summary><div class="body">"I've been leading already: owned the AI product roadmap balancing speed, quality and complexity against business strategy; set architecture and implementation standards with technical leads; mentored 10+ developers and trained 30+ consultants. What's new at PwC is the scale of the stage, not the nature of the work."</div></details>
+
+  <h2>Questions to ask them</h2>
+  <div class="grid g2">
+    <div class="card"><ul>
+      <li>"What does the <b>Global AI-enabled applications</b> portfolio look like today — which client engagements are live, and where does this role plug in?"</li>
+      <li>"How is the Tax &amp; Legal Digital team structured between developers, data scientists and business analysts — and how do product decisions get made?"</li>
+      <li>"What's the current state of AI governance for client-facing GenAI at PwC Australia — is there a central framework this team builds against?"</li>
+    </ul></div>
+    <div class="card"><ul>
+      <li>"What does the tech stack look like beyond the JD — where is React/Next vs Node/Nest on the roadmap, and how much is GCP vs AWS?"</li>
+      <li>"What would success look like at 6 and 12 months for this role?"</li>
+      <li>"How does the team balance high-volume production work against the 'market-leading prototypes' mission?"</li>
+    </ul></div>
+  </div>
+
+  <h2>Morning-of checklist</h2>
+  <div class="card"><ul>
+    <li>☐ Re-read this page's <b>Briefing</b> tab — 5 minutes.</li>
+    <li>☐ Rehearse the <b>60-second version</b> (Career Arc tab) out loud, twice.</li>
+    <li>☐ Have <b>TMA</b>, <b>TMA Finance</b> and <b>PRESTIX</b> open in browser tabs — offer a live walkthrough.</li>
+    <li>☐ Know your numbers: 9 yrs · 7+ clients · 10+ devs mentored · 30+ consultants trained · AVA Sep 2025 · Amazon/AWS/ZKB.</li>
+    <li>☐ Lead every answer with <b>outcomes</b>, support with <b>stack</b>, close with <b>relevance to Tax &amp; Legal</b>.</li>
+    <li>☐ Their values: integrity, care for people, learning fast, collaboration — mirror them with your stories, don't quote them.</li>
+  </ul></div>
+</section>
+
+<!-- ============ TAB: WORKFLOW ============ -->
+<section class="tab" id="flow">
+  <h2>Interview workflow — 10 stages, end-to-end</h2>
+  <p style="color:var(--muted);font-size:.88rem">Each stage has keywords (click for talking points) and assets to reference. Use this as your mental checklist from prep to offer.</p>
+
+  <div class="stage"><h3>1. Pre-interview intelligence <span class="tag">30 min</span></h3>
+    <div class="card"><p><span class="tag hot">JD mapping</span> <span class="tag">company research</span> <span class="tag">interviewer lookup</span> <span class="tag">tech stack confirm</span></p>
+    <p><b>Action:</b> Map every JD requirement to a STAR story. Research PwC Tax & Legal Digital's live AI engagements. Look up interviewers on LinkedIn. Confirm stack: React/Next, Node/Nest, GCP/AWS, MongoDB/PostgreSQL.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="jd">JD requirements map</span> <span class="asset" data-asset="company">PwC AI portfolio snapshot</span></p></div>
+  </div>
+
+  <div class="stage"><h3>2. Opening & framing <span class="tag">5 min</span></h3>
+    <div class="card"><p><span class="tag hot">60-second story</span> <span class="tag">role framing</span> <span class="tag">energy setting</span></p>
+    <p><b>Action:</b> Deliver the 60-second career arc (Career Arc tab). Frame explicitly: "I'm here because PwC's mission — global AI-enabled applications for Tax & Legal — is exactly what I did with AVA at enterprise scale." Match their energy; project confidence without arrogance.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="story">60-second version (Career Arc tab)</span></p></div>
+  </div>
+
+  <div class="stage"><h3>3. GenAI delivery deep-dive <span class="tag">15 min</span></h3>
+    <div class="card"><p><span class="tag hot">AVA architecture</span> <span class="tag hot">LangGraph</span> <span class="tag hot">RAG on TM1</span> <span class="tag">Vertex AI</span> <span class="tag">Ragas/LangSmith</span> <span class="tag">AI governance</span></p>
+    <p><b>Action:</b> Walk the AVA architecture diagram (Graph tab, diagram 2). Lead with outcomes: launched Sep 2025 at Amazon, AWS, ZKB. Then stack: LangGraph orchestration with HITL gates, LlamaIndex RAG grounded on enterprise TM1 data, Vertex AI model selection, Ragas/LangSmith evaluation, responsible-AI controls shaped to client governance bars.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="ava-arch">AVA architecture diagram</span> <span class="asset" data-asset="ava-launch">Launch evidence (Amazon/AWS/ZKB)</span></p></div>
+  </div>
+
+  <div class="stage"><h3>4. Full-stack & platform engineering <span class="tag">10 min</span></h3>
+    <div class="card"><p><span class="tag hot">React/Next.js</span> <span class="tag hot">Node/Nest</span> <span class="tag">MongoDB/PostgreSQL</span> <span class="tag">SSE/WebSockets</span> <span class="tag">API versioning</span> <span class="tag">white-label architecture</span></p>
+    <p><b>Action:</b> Show you own the full stack. Apliqo UX: React front end, Node API layer, MongoDB/PostgreSQL backend, streaming via SSE/WebSockets. White-label for 7+ clients (Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB) — API versioning, feature flags, zero-downtime deployments.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="stack">Full-stack evidence (7 products)</span></p></div>
+  </div>
+
+  <div class="stage"><h3>5. Product ownership & leadership <span class="tag">10 min</span></h3>
+    <div class="card"><p><span class="tag hot">roadmap & backlog</span> <span class="tag">stakeholder alignment</span> <span class="tag">mentoring 10+ devs</span> <span class="tag">training 30+ consultants</span> <span class="tag">standards setting</span></p>
+    <p><b>Action:</b> PO story: owned AI roadmap balancing speed/quality/complexity against business strategy. Set architecture standards with tech leads. Mentored 10+ developers on AI patterns. Trained 30+ consultants to build and sell web solutions. This is Senior Manager grade — you've done the work, now the stage is bigger.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="po">PO evidence (roadmap, standards, mentoring)</span></p></div>
+  </div>
+
+  <div class="stage"><h3>6. Domain translation: FP&A → Tax & Legal <span class="tag">8 min</span></h3>
+    <div class="card"><p><span class="tag hot">domain mapping</span> <span class="tag">TM1 expertise</span> <span class="tag">trustworthy data grounding</span> <span class="tag">expert-driven workflows</span></p>
+    <p><b>Action:</b> Explicitly map: "Same fundamental problem — complex, high-stakes, expert-driven workflows needing digitisation with AI grounded in trustworthy domain data. 9 years making FP&A data usable and grounding AI on it. Tax & Legal is the next instance of that pattern, at global scale." Zero domain ramp-up.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="domain">FP&A→Tax/Legal mapping</span></p></div>
+  </div>
+
+  <div class="stage"><h3>7. AI governance & Responsible AI <span class="tag">8 min</span></h3>
+    <div class="card"><p><span class="tag hot">HITL gates</span> <span class="tag">grounded retrieval</span> <span class="tag">Ragas evaluation</span> <span class="tag">client-shaped controls</span> <span class="tag">professional risk</span></p>
+    <p><b>Action:</b> Governance as design constraint, not checkbox: HITL gates in agent graph, retrieval grounded on authoritative data, Ragas/LangSmith evaluation before rollout, controls shaped to what governance-sensitive clients (Amazon, AWS, ZKB) accept. For PwC where advice carries professional risk, that discipline is the whole game.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="gov">Governance framework summary</span></p></div>
+  </div>
+
+  <div class="stage"><h3>8. Live proof — offer walkthroughs <span class="tag">5 min</span></h3>
+    <div class="card"><p><span class="tag hot">TMA</span> <span class="tag hot">TMA Finance</span> <span class="tag hot">PRESTIX</span> <span class="tag">GoFetch</span> <span class="tag">Gainwise</span> <span class="tag">ManaposeGP</span></p>
+    <p><b>Action:</b> "I have 7 live products running today — happy to walk through any." Have TMA (multi-tenant SaaS + AI chat), TMA Finance (OAuth/RBAC + AI), PRESTIX (booking/cart/orders) open in browser tabs. This proves velocity claims and AI-native delivery practice.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="tma">TMA demo</span> <span class="asset" data-asset="tma-finance">TMA Finance demo</span> <span class="asset" data-asset="prestix">PRESTIX demo</span></p></div>
+  </div>
+
+  <div class="stage"><h3>9. Your questions for them <span class="tag">5 min</span></h3>
+    <div class="card"><p><span class="tag hot">portfolio shape</span> <span class="tag">team structure</span> <span class="tag">AI governance framework</span> <span class="tag">tech stack roadmap</span> <span class="tag">success metrics</span> <span class="tag">prototype vs production balance</span></p>
+    <p><b>Action:</b> Ask 3–4 high-signal questions (Prep tab, "Questions to ask them"). Listen actively. Connect answers back to your experience. This isn't a formality — it signals how you think as a Senior Manager.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="questions">Prepared questions (Prep tab)</span></p></div>
+  </div>
+
+  <div class="stage"><h3>10. Close & follow-up <span class="tag">3 min</span></h3>
+    <div class="card"><p><span class="tag hot">reiterate fit</span> <span class="tag">next steps clarity</span> <span class="tag">thank you email</span> <span class="tag">reference readiness</span></p>
+    <p><b>Action:</b> Close with: "This role is the exact next stage for what I've built — global AI-enabled applications for finance-heavy domains, at PwC scale. I'm ready to lead that." Ask for clear next steps and timeline. Send tailored thank-you email within 2 hours referencing specific discussion points. Have references pre-briefed.</p>
+    <p><b>Assets:</b> <span class="asset" data-asset="followup">Follow-up template</span></p></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>Keyword index — click any for talking points</h4>
+      <div class="kw-cloud" id="kwCloud"></div>
+    </div>
+    <div class="card"><h4>Asset locker — click to open</h4>
+      <div class="asset-list" id="assetList"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ NODE DETAIL MODAL ============ -->
+<div class="modal-backdrop" id="nodeModal">
+  <div class="modal" id="modalCard"></div>
+</div>
+
+<!-- ============ KEYWORD DETAIL MODAL ============ -->
+<div class="modal-backdrop" id="kwModal">
+  <div class="modal" id="kwCard"></div>
+</div>
+
+<!-- ============ CHIP DETAIL MODAL ============ -->
+<div class="modal-backdrop" id="chipModal">
+  <div class="modal" id="chipCard"></div>
+</div>
+
+<footer>Prepared for PwC interview · Senior Full Stack Developer · Req 762649WD · Interview 10:00 AM tomorrow · All project links live as of Oct 2026</footer>
+
+<script>
+  // ================= Tabs =================
+  function jumpTab(t){
+    document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.t===t));
+    document.querySelectorAll('section.tab').forEach(x=>x.classList.toggle('active',x.id===t));
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(t==='graph'||t==='story') requestAnimationFrame(()=>WRAPS.forEach(w=>{ if(w.wrap.offsetParent) fit(w); }));
+  }
+  document.getElementById('nav').addEventListener('click', e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    jumpTab(b.dataset.t);
+  });
+
+  // ================= Match table filters =================
+  const filters=document.getElementById('matchFilters');
+  filters.addEventListener('click', e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    filters.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const f=b.dataset.f;
+    document.querySelectorAll('#matchTable tbody tr').forEach(tr=>{
+      tr.style.display=(f==='all'||tr.dataset.c===f)?'':'none';
+    });
+  });
+
+  // ================= Graph data: node details =================
+  const CATS={
+    jd:{label:'PwC JD requirement',color:'#D04A02'},
+    exp:{label:'Cubewise experience',color:'#3fb96f'},
+    ai:{label:'AI capability',color:'#a97fff'},
+    prj:{label:'Live project',color:'#4d9fff'},
+    sys:{label:'AVA architecture',color:'#4d9fff'},
+    arc:{label:'Career chapter',color:'#9a9aa6'},
+    goal:{label:'Target role',color:'#D04A02'}
+  };
+
+  const DATA={
+    /* ---- JD requirements ---- */
+    J1:{t:'End-to-end software delivery',c:'jd',tab:'brief',d:`<p><b>JD:</b> "A background in end-to-end software delivery."</p><p><b>You:</b> Nine years evolving one enterprise platform — from client-facing web consultant to Lead AI Architect and Product Owner. AVA was taken personally from vision through architecture, delivery and production rollout.</p><div class="talk"><b>Talk track:</b> "I've owned delivery end-to-end for nine years — same platform, growing responsibility: features → services → architecture → product."</div>`},
+    J2:{t:'Libraries and frameworks for large web apps',c:'jd',tab:'brief',d:`<p><b>JD:</b> "Build libraries and frameworks to support large, complex web applications."</p><p><b>You:</b> Apliqo UX is exactly this — a white-label framework layer over which 7+ enterprise deployments were configured and extended: Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB.</p>`},
+    J3:{t:'ReactJS / NextJS frontend',c:'jd',tab:'skills',d:`<p><b>JD:</b> "comfortable developing frontend (using ReactJS, NextJS)."</p><p><b>You:</b> Apliqo UX's product experience layer on React; GoFetch global marketplace frontend in Next.js; all seven live projects React/Next.js — streaming UX, responsive, accessible.</p>`},
+    J4:{t:'NodeJS / NestJS backend',c:'jd',tab:'skills',d:`<p><b>JD:</b> "...and backend (using NodeJS, NestJS) components."</p><p><b>You:</b> Node.js services within a cloud-based service-oriented architecture; NestJS for structured enterprise APIs. Owned production integrations end-to-end: authentication, rate limits, versioning, outage response.</p>`},
+    J5:{t:'MongoDB, SQL, Python',c:'jd',tab:'skills',d:`<p><b>JD:</b> "MongoDB, SQL, Python."</p><p><b>You:</b> MongoDB in production — the Apliqo backend data layer serving the white-label platform at enterprise scale. PostgreSQL and MySQL across projects; SQL across vector stores and data pipelines; Python is the AVA stack (LangChain, LangGraph, LlamaIndex on GCP).</p><div class="talk"><b>Talk track:</b> "I pick the store per workload — document models where content evolves fast, SQL where relational integrity matters."</div>`},
+    J6:{t:'Speed and scale optimisation',c:'jd',tab:'brief',d:`<p><b>JD:</b> "Optimise web applications to maximize speed and scale" + "protocols and web server optimization techniques."</p><p><b>You:</b> Big-data performance engineering on TM1-scale analytics workloads; web server optimisation; REST API design plus WebSockets/SSE streaming so heavy computation never blocks the client path.</p>`},
+    J7:{t:'GenAI experience (beneficial)',c:'jd',tab:'skills',d:`<p><b>JD:</b> "GenAI experiences are also beneficial."</p><p><b>You:</b> This is your differentiator. AVA — production enterprise GenAI: LangGraph agent orchestration, LlamaIndex retrieval, RAG grounded on enterprise financial data, GCP/Vertex AI. Launched September 2025 with deployments at Amazon, AWS and ZKB.</p><div class="talk"><b>Talk track:</b> "For PwC 'GenAI beneficial' — for me it's the last three years, shipped to three of the world's most demanding clients."</div>`},
+    J8:{t:'CI/CD, SDLC, DevOps',c:'jd',tab:'skills',d:`<p><b>JD:</b> "any work on CI/CD automation... software development life cycle, DevOps."</p><p><b>You:</b> GitHub Actions and Cloud Build pipelines; full SDLC ownership as Product Owner — roadmap, backlog, delivery, rollout; standards set with technical leads.</p>`},
+    J9:{t:'Cross-functional collaboration',c:'jd',tab:'prep',d:`<p><b>JD:</b> "Work closely and efficiently with our team of industry leading developers, data scientists, and business analysts."</p><p><b>You:</b> Cross-functional Product Owner across product, design and business stakeholders; mentored 10+ developers on AI patterns; trained 30+ consultants; async-first across time zones.</p>`},
+    J10:{t:'High-volume production and prototypes',c:'jd',tab:'projects',d:`<p><b>JD:</b> "high volume production applications, as well as innovative, market-leading prototypes."</p><p><b>You:</b> Both, live: enterprise production (Apliqo UX, AVA) and seven shipped prototype products built AI-natively — multi-tenant SaaS, booking, marketplace, secure reporting.</p>`},
+    /* ---- Cubewise experience ---- */
+    E1:{t:'Apliqo UX — white-label enterprise SaaS',c:'exp',tab:'projects',d:`<p>Enterprise white-label FP&amp;A SaaS — nine years end-to-end. React front end, Node.js services on a MongoDB backend, cloud service-oriented architecture, big-data performance over TM1.</p><p><b>Clients:</b> Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB.</p><div class="talk"><b>Say:</b> "This is the JD's first bullet — libraries and frameworks for large, complex web applications — for nine years."</div>`},
+    E2:{t:'AVA — enterprise GenAI assistant',c:'exp',tab:'projects',d:`<p>Vision → architecture → roadmap → delivery → rollout. Python stack: LangGraph agent orchestration with human-in-the-loop gates, LlamaIndex retrieval, RAG grounded on enterprise TM1 data, on GCP. Ragas + LangSmith evaluation. Launched <b>September 2025</b> at <b>Amazon, AWS, ZKB</b>.</p>`},
+    E3:{t:'Big-data performance engineering',c:'exp',tab:'skills',d:`<p>Web server optimisation, API design, streaming (SSE/WebSockets), service-oriented architecture — keeping analytics-heavy planning workloads responsive at enterprise data scale across 7+ white-label deployments.</p>`},
+    E4:{t:'Product Ownership',c:'exp',tab:'story',d:`<p>Owned the AI product roadmap — balancing speed, quality and complexity against product and business strategy. Set architecture, tooling and implementation standards with technical leads; mentored 10+ developers.</p><div class="talk"><b>Why it matters:</b> Senior Manager grade = leading work, not just doing it. You've already done both.</div>`},
+    E5:{t:'TM1 / FP&A domain',c:'exp',tab:'skills',d:`<p>IBM Planning Analytics / TM1 — rules, TI processes, MDX, PAW/PAX, Arc. FP&amp;A: budgeting, forecasting, scenario modelling, allocations.</p><p><b>Why PwC cares:</b> Tax &amp; Legal serves finance-heavy clients. You grounded AVA's RAG on exactly this class of enterprise financial data.</p>`},
+    /* ---- AI capability ---- */
+    A1:{t:'Agentic systems — multi-agent, tool use, HITL',c:'ai',tab:'skills',d:`<p>Multi-agent patterns, tool use against live TM1 REST API and MDX queries, human-in-the-loop checkpoints.</p><div class="talk"><b>Talk track:</b> "I chose LangGraph because enterprise finance answers need deterministic checkpoints and approval gates — you can't hand an untraceable answer to a CFO."</div>`},
+    A2:{t:'RAG — advanced, grounded on enterprise data',c:'ai',tab:'skills',d:`<p>LlamaIndex retrieval grounded on enterprise TM1 data — chunking and metadata strategy for financial cubes, context precision measured with Ragas before any rollout.</p>`},
+    A3:{t:'Ragas + LangSmith — evaluation & observability',c:'ai',tab:'skills',d:`<p>Ragas metrics (faithfulness, answer relevancy, context precision) plus LangSmith tracing for agent debugging and prompt regression-testing.</p><div class="talk"><b>Talk track:</b> "Enterprise AI without evaluation is a demo. This is how AVA earned trust."</div>`},
+    A4:{t:'AI governance / Responsible AI',c:'ai',tab:'prep',d:`<p>Responsible AI as a design constraint, not a checkbox: human-in-the-loop gates, grounded retrieval, evaluation before rollout, controls shaped to what governance-sensitive clients — Amazon, AWS, ZKB — would accept.</p>`},
+    A5:{t:'Claude · Cursor · Codex — AI-native delivery',c:'ai',tab:'skills',d:`<p>Established AI-assisted development practices and implementation standards for the engineering team; mentored 10+ developers. The seven live projects were built this way — the practice is the proof.</p><div class="talk"><b>Talk track:</b> "I treat AI-produced code like a junior dev's PR: great first draft, never shipped unvalidated."</div>`},
+    /* ---- Live projects ---- */
+    P1:{t:'TMA — TokenizMyApp',c:'prj',tab:'projects',d:`<p>Multi-tenant SaaS: tenant provisioning, metrics dashboards, AI-driven resource optimisation and AI chat.</p><div class="talk"><b>Say:</b> "Multi-tenant SaaS with AI built in — the architecture pattern PwC's internal platforms need."</div><p><a href="https://tokenizmyapp.vercel.app/" target="_blank">tokenizmyapp.vercel.app ↗</a></p>`},
+    P2:{t:'TMA Finance',c:'prj',tab:'projects',d:`<p>Business-operations dashboard (CEO overview) with Google OAuth and staff-PIN role-based access, plus AI chat.</p><div class="talk"><b>Say:</b> "Role-based access plus AI — governance and UX together, the exact enterprise-AI tension I handled on AVA."</div><p><a href="https://tokenizmyapp-finance.vercel.app/" target="_blank">tokenizmyapp-finance.vercel.app ↗</a></p>`},
+    P3:{t:'PRESTIX.VIP',c:'prj',tab:'projects',d:`<p>VIP venue and event booking platform — search, cart, table-reservation ordering. High-volume, transactional, user-facing.</p><div class="talk"><b>Say:</b> "Consumer-grade user-facing features — the JD's client-side code bullet, live."</div><p><a href="https://prestix.vip/" target="_blank">prestix.vip ↗</a></p>`},
+    P4:{t:'GoFetch',c:'prj',tab:'projects',d:`<p>Global shopping and delivery platform frontend in Next.js.</p><div class="talk"><b>Say:</b> "Next.js at marketplace scale — the exact framework named in the JD."</div><p><a href="https://gofetchapp.vercel.app/" target="_blank">gofetchapp.vercel.app ↗</a></p>`},
+    P5:{t:'Gainwise',c:'prj',tab:'projects',d:`<p>Secure AWS inventory reporting tool with Google-auth-gated admin access.</p><div class="talk"><b>Say:</b> "Cloud and security-first reporting — AWS comfort the JD asks for."</div><p><a href="https://gainwise-aws-inventory-report.vercel.app/" target="_blank">gainwise-aws-inventory-report.vercel.app ↗</a></p>`},
+    P6:{t:'ManaposeGP',c:'prj',tab:'projects',d:`<p>Web application with a health-dashboard module.</p><div class="talk"><b>Say:</b> "Another domain, same craft — dashboards for decision-makers."</div><p><a href="https://manaposegp.vercel.app/" target="_blank">manaposegp.vercel.app ↗</a></p>`},
+    /* ---- AVA architecture ---- */
+    U:{t:'Finance user',c:'sys',tab:'projects',d:`<p>The finance user asks questions in natural language — "what happens to Q3 forecast if hiring freezes?" — and gets grounded, traceable answers back through the governance layer.</p>`},
+    FE:{t:'Apliqo UX front end',c:'sys',tab:'skills',d:`<p>React experience layer with streaming UX (SSE) — token-by-token responses, optimistic UI, craft-level states: empty, error, loading.</p>`},
+    API:{t:'Node.js API layer',c:'sys',tab:'skills',d:`<p>Node.js API layer owning production concerns: authentication, rate limits, versioning, outage response — the integration discipline from nine years of Apliqo UX.</p>`},
+    ORCH:{t:'LangGraph orchestrator',c:'sys',tab:'skills',d:`<p>LangGraph multi-step agent with human-in-the-loop gates: plan → tool calls → synthesis, with deterministic checkpoints so enterprise answers stay traceable.</p>`},
+    TOOLS:{t:'Tool use — TM1 REST API / MDX',c:'sys',tab:'skills',d:`<p>Agent tool use against live TM1 REST API and MDX queries — the agent queries real planning data, never hallucinated numbers.</p>`},
+    RET:{t:'LlamaIndex retrieval (RAG)',c:'sys',tab:'skills',d:`<p>LlamaIndex retrieval over enterprise TM1 content — chunking and metadata strategy for financial planning data, grounded RAG.</p>`},
+    VDB:{t:'Vector store + SQL metadata',c:'sys',tab:'skills',d:`<p>Vector store plus SQL metadata — embeddings for semantic retrieval, structured metadata for filters and access control.</p>`},
+    LLM:{t:'LLM on GCP / Vertex AI',c:'sys',tab:'skills',d:`<p>Model selection per task on GCP / Vertex AI — chosen via the Ragas/LangSmith evaluation harness, not hype.</p>`},
+    EVAL:{t:'Ragas + LangSmith evaluation',c:'sys',tab:'skills',d:`<p>Ragas metrics (faithfulness, relevancy, context precision) and LangSmith tracing — every retrieval or prompt change measured before rollout.</p>`},
+    GOV:{t:'AI governance controls',c:'sys',tab:'prep',d:`<p>Responsible-AI controls: HITL approval gates, grounded sources, evaluation gates — shaped to what Amazon, AWS and ZKB governance accepted. Answers flow back to the user with traceability.</p>`},
+    /* ---- Career arc ---- */
+    D:{t:'2012–2016 · Digital design & development',c:'arc',tab:'story',d:`<p>Digital design and development at Telstra, Optus and ShapiroGraphics. The origin of the craft: the empty state, the error message and the loading flicker get noticed without being asked.</p>`},
+    C:{t:'2017–2021 · Cubewise Web Dev Consultant',c:'arc',tab:'story',d:`<p>Client-facing web development consultant building web apps over TM1 — planning, budgeting and reporting applications in production; trained 30+ fellow consultants.</p>`},
+    L:{t:'2021–2026 · Lead AI Architect & Product Owner',c:'arc',tab:'story',d:`<p>Progression to Lead AI Architect and Product Owner of Apliqo UX — end-to-end ownership of the enterprise white-label platform, big-data performance, production integrations.</p>`},
+    A:{t:'2023–2025 · AVA — vision to production',c:'arc',tab:'story',d:`<p>AVA taken from vision to production launch (September 2025): LangGraph orchestration, LlamaIndex RAG, GCP — deployed at Amazon, AWS and ZKB.</p>`},
+    P:{t:'2026 → PwC Tax & Legal Digital',c:'goal',tab:'brief',d:`<p>Senior Full Stack Developer, Tax &amp; Legal Digital, Sydney. The mission — "digitising workflows and creating global AI-enabled applications" — is what you've already done, at the next scale.</p>`}
+  };
+
+  // ================= Graph edges (for related-node highlighting) =================
+  const EDGES={
+    J1:['E1','E4'], J2:['E1'], J3:['E1','P4'], J4:['E3'], J5:['E2'], J6:['E3'],
+    J7:['E2','A1','A2'], J8:['E4'], J9:['E4'], J10:['E1','P3'],
+    E1:[], E2:['A1','A2','A3','A4'], E3:[], E4:['A5'], E5:['E2'],
+    A1:[], A2:[], A3:[], A4:[], A5:['P1','P2','P5','P6'],
+    P1:[], P2:[], P3:[], P4:[], P5:[], P6:[],
+    U:['FE'], FE:['API'], API:['ORCH'], ORCH:['TOOLS','RET','LLM','EVAL'],
+    RET:['VDB'], EVAL:['GOV'], GOV:['U'], TOOLS:[], VDB:[], LLM:[],
+    D:['C'], C:['L'], L:['A'], A:['P']
+  };
+  function relatedOf(id){
+    const s=new Set();
+    (EDGES[id]||[]).forEach(x=>s.add(x));
+    for(const [a,ls] of Object.entries(EDGES)) if(ls.includes(id)) s.add(a);
+    return [...s];
+  }
+
+  // ================= Pan / zoom engine =================
+  const WRAPS=[];
+  function setupPanZoom(wrap){
+    const inner=wrap.querySelector('.pz-inner');
+    const st={scale:1,tx:0,ty:0};
+    const apply=()=>{ inner.style.transform=`translate(${st.tx}px,${st.ty}px) scale(${st.scale})`; };
+    wrap._st=st; wrap._apply=apply;
+    const zoomAt=(mx,my,f)=>{
+      const ns=Math.min(5,Math.max(.25,st.scale*f)); const k=ns/st.scale;
+      st.tx=mx-k*(mx-st.tx); st.ty=my-k*(my-st.ty); st.scale=ns; apply();
+    };
+    wrap._zoomAt=zoomAt;
+    wrap.addEventListener('wheel', e=>{
+      e.preventDefault();
+      const r=wrap.getBoundingClientRect();
+      zoomAt(e.clientX-r.left, e.clientY-r.top, e.deltaY<0?1.15:1/1.15);
+    },{passive:false});
+    let pan=null;
+    const onMove=e=>{
+      if(!pan) return;
+      pan.moved+=Math.abs(e.clientX-pan.lx)+Math.abs(e.clientY-pan.ly);
+      pan.lx=e.clientX; pan.ly=e.clientY;
+      st.tx=e.clientX-pan.x; st.ty=e.clientY-pan.y; apply();
+    };
+    const onEnd=()=>{
+      if(!pan) return;
+      wrap._dragged=pan.moved>6;
+      pan=null;
+      wrap.classList.remove('grabbing');
+      window.removeEventListener('pointermove',onMove);
+      window.removeEventListener('pointerup',onEnd);
+      window.removeEventListener('pointercancel',onEnd);
+    };
+    wrap.addEventListener('pointerdown', e=>{
+      if(e.button!==0 || e.target.closest('.pz-toolbar')) return;
+      pan={x:e.clientX-st.tx, y:e.clientY-st.ty, moved:0, lx:e.clientX, ly:e.clientY};
+      wrap.classList.add('grabbing');
+      window.addEventListener('pointermove',onMove);
+      window.addEventListener('pointerup',onEnd);
+      window.addEventListener('pointercancel',onEnd);
+    });
+    wrap.querySelectorAll('.pz-toolbar button').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const act=b.dataset.act;
+        if(act==='in') zoomAt(wrap.clientWidth/2, wrap.clientHeight/2, 1.3);
+        else if(act==='out') zoomAt(wrap.clientWidth/2, wrap.clientHeight/2, 1/1.3);
+        else fit(wrap);
+      });
+    });
+  }
+  function fit(wrap){
+    const svg=wrap.querySelector('svg'); if(!svg) return;
+    let bb; try{ bb=svg.getBBox(); }catch(_){ return; }
+    if(!bb.width||!bb.height) return;
+    const st=wrap._st, pad=28;
+    const s=Math.min((wrap.clientWidth-pad)/bb.width, (wrap.clientHeight-pad)/bb.height, 1.2);
+    st.scale=s;
+    st.tx=(wrap.clientWidth-bb.width*s)/2 - bb.x*s;
+    st.ty=(wrap.clientHeight-bb.height*s)/2 - bb.y*s;
+    wrap._apply();
+  }
+
+  // ================= Node binding + highlight =================
+  const NODE_ELS={};
+  function bindGraph(wrap){
+    const svg=wrap.querySelector('svg'); if(!svg) return;
+    svg.querySelectorAll('g.node').forEach(g=>{
+      const m=/^flowchart-(.+?)-\d+$/.exec(g.id||'');
+      if(!m) return;
+      const id=m[1];
+      NODE_ELS[id]=g;
+      g.addEventListener('click', ()=>{
+        if(wrap._dragged){ wrap._dragged=false; return; }
+        openNode(id);
+      });
+    });
+    WRAPS.push({wrap,svg});
+  }
+  function highlight(center){
+    const rel=new Set([center,...relatedOf(center)]);
+    Object.entries(NODE_ELS).forEach(([id,el])=>{
+      el.classList.toggle('dimmed',!rel.has(id));
+      el.classList.toggle('hot',id===center);
+    });
+    WRAPS.forEach(({svg})=>{
+      svg.querySelectorAll('.edgePaths path, .edgeLabel, .cluster').forEach(el=>el.classList.add('dimmed'));
+    });
+  }
+  function clearHighlight(){
+    Object.values(NODE_ELS).forEach(el=>el.classList.remove('dimmed','hot'));
+    WRAPS.forEach(({svg})=>svg.querySelectorAll('.dimmed').forEach(el=>el.classList.remove('dimmed')));
+  }
+
+  // ================= Node detail modal =================
+  const backdrop=document.getElementById('nodeModal');
+  const card=document.getElementById('modalCard');
+  function outOf(id){ return (EDGES[id]||[]).filter(x=>DATA[x]); }
+  function inOf(id){ return Object.keys(EDGES).filter(a=>a!==id&&(EDGES[a]||[]).includes(id)&&DATA[a]); }
+  const escXML=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const trunc26=s=>s.length>26?s.slice(0,25)+'…':s;
+
+  // Visual relationship mini-map: incoming (left) → center node → outgoing (right)
+  function relMapSVG(id){
+    const ins=inOf(id), outs=outOf(id);
+    const n=DATA[id];
+    const colW=200, cW=170, boxH=34, gap=12, pad=12, arrGap=48;
+    const rows=Math.max(ins.length,outs.length,1);
+    const W=pad+colW+arrGap+cW+arrGap+colW+pad;
+    const H=Math.max(110, rows*(boxH+gap)-gap+pad*2);
+    const cy=H/2;
+    const yFor=i=>pad+i*(boxH+gap)+(H-pad*2-rows*(boxH+gap)+gap)/2;
+    const lx=pad, rx=W-pad-colW, cx=lx+colW+arrGap+cW/2;
+    let s='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">';
+    s+='<defs><marker id="arrw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#8a8a96"/></marker></defs>';
+    const box=(x,y,w,nodeId,title,c,center)=>{
+      const k=CATS[c].color;
+      return '<g class="mmap-node" data-node="'+nodeId+'" style="cursor:'+(center?'default':'pointer')+'">'
+        +'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+boxH+'" rx="8" fill="'+k+(center?'38':'22')+'" stroke="'+k+'" stroke-width="'+(center?2.5:1.5)+'"/>'
+        +'<text x="'+(x+w/2)+'" y="'+(y+boxH/2+4)+'" text-anchor="middle" font-size="11.5" font-weight="'+(center?700:400)+'" fill="#e8e8ec">'+escXML(trunc26(title))+'</text></g>';
+    };
+    ins.forEach((r,i)=>{
+      const sy=yFor(i)+boxH/2;
+      s+='<path d="M '+(lx+colW)+' '+sy+' C '+(lx+colW+arrGap/2)+' '+sy+', '+(cx-cW/2-arrGap/2)+' '+cy+', '+(cx-cW/2)+' '+cy+'" stroke="#8a8a96" stroke-width="1.5" fill="none" marker-end="url(#arrw)"/>';
+      s+=box(lx,yFor(i),colW,r,DATA[r].t,DATA[r].c,false);
+    });
+    outs.forEach((r,i)=>{
+      const sy=yFor(i)+boxH/2;
+      s+='<path d="M '+(cx+cW/2)+' '+cy+' C '+(cx+cW/2+arrGap/2)+' '+cy+', '+(rx-arrGap/2)+' '+sy+', '+rx+' '+sy+'" stroke="#8a8a96" stroke-width="1.5" fill="none" marker-end="url(#arrw)"/>';
+      s+=box(rx,yFor(i),colW,r,DATA[r].t,DATA[r].c,false);
+    });
+    s+=box(cx,cy-boxH/2,cW,id,n.t,n.c,true);
+    if(!ins.length&&!outs.length){
+      s+='<text x="'+(W/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="#9a9aa6">Leaf node — no direct connections</text>';
+    }
+    s+='</svg>';
+    return s;
+  }
+
+  function openNode(id){
+    const n=DATA[id]; if(!n) return;
+    const cat=CATS[n.c];
+    const ins=inOf(id), outs=outOf(id);
+    const chip=(r,dir)=>`<button class="chip" data-node="${r}" style="border-color:${CATS[DATA[r].c].color}66;color:${CATS[DATA[r].c].color}">${dir==='in'?'⬅ ':'➡ '}${DATA[r].t}</button>`;
+    card.innerHTML=`
+      <div class="m-head" style="border-top-color:${cat.color}">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="badge" style="background:${cat.color}22;color:${cat.color};border:1px solid ${cat.color}66">${cat.label}</span>
+          <span style="font-size:.75rem;color:var(--muted)">${ins.length} in · ${outs.length} out</span>
+        </div>
+        <button class="m-close" title="Close (Esc)">✕</button>
+      </div>
+      <div class="m-body">
+        <h3>${n.t}</h3>
+        ${n.d}
+        <h4>🕸 Relationship map — click any node to explore it</h4>
+        <div class="mmap">${relMapSVG(id)}</div>
+        ${ins.length?`<h4>⬅ Connected from (${ins.length}) — points to this node</h4><div class="chips">${ins.map(r=>chip(r,'in')).join('')}</div>`:''}
+        ${outs.length?`<h4>➡ Leads to (${outs.length}) — this node points to</h4><div class="chips">${outs.map(r=>chip(r,'out')).join('')}</div>`:''}
+        ${(!ins.length&&!outs.length)?'<p style="color:var(--muted)">No direct connections — leaf node.</p>':''}
+      </div>
+      <div class="m-actions">
+        <button class="m-jump">Open full section →</button>
+      </div>`;
+    card.querySelector('.m-close').onclick=closeModal;
+    card.querySelector('.m-jump').onclick=()=>{ jumpTab(n.tab); closeModal(); };
+    card.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>openNode(ch.dataset.node));
+    card.querySelectorAll('.mmap-node').forEach(el=>{
+      if(el.dataset.node!==id) el.addEventListener('click',()=>openNode(el.dataset.node));
+    });
+    highlight(id);
+    backdrop.classList.add('open');
+  }
+  function closeModal(){ backdrop.classList.remove('open'); clearHighlight(); }
+  backdrop.addEventListener('click', e=>{ if(e.target===backdrop) closeModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  // ================= Mermaid init + graph setup =================
+  mermaid.initialize({
+    startOnLoad:false,
+    securityLevel:'loose',
+    theme:'dark',
+    themeVariables:{
+      fontFamily:'-apple-system,BlinkMacSystemFont,sans-serif',
+      fontSize:'13px',
+      primaryTextColor:'#e8e8ec',
+      lineColor:'#55555f',
+      clusterBkg:'#16161c',
+      clusterBorder:'#33333c'
+    },
+    flowchart:{curve:'linear',padding:14,useMaxWidth:false,htmlLabels:true}
+  });
+  // Reconstruct the raw definition from the DOM (browser escapes '>' and strips '/' from <br/>)
+  function extractDef(el){
+    return el.innerHTML
+      .replace(/<br\s*\/?>/gi,'<br/>')
+      .replace(/&gt;/g,'>')
+      .replace(/&lt;/g,'<')
+      .replace(/&quot;/g,'"')
+      .replace(/&amp;/g,'&');
+  }
+  (async ()=>{
+    const pres=[...document.querySelectorAll('pre.mermaid')];
+    for (let i=0;i<pres.length;i++){
+      const target=pres[i].parentElement;
+      try{
+        const {svg}=await mermaid.render('mmdg'+i, extractDef(pres[i]));
+        target.innerHTML=svg;
+      }catch(err){
+        const msg=err&&err.message?err.message:String(err);
+        console.error('Diagram',i,'failed:',msg);
+        target.innerHTML='<pre style="color:#ff7a7a;white-space:pre-wrap;padding:14px;font-size:12px">Diagram '+(i+1)+' failed to render: '+msg+'</pre>';
+      }
+    }
+    document.querySelectorAll('.pz-wrap').forEach(w=>{ setupPanZoom(w); bindGraph(w); });
+    requestAnimationFrame(()=>WRAPS.forEach(w=>{ if(w.wrap.offsetParent) fit(w); }));
+  })();
+  window.addEventListener('resize', ()=>WRAPS.forEach(w=>{ if(w.wrap.offsetParent) fit(w); }));
+
+  // ================= Workflow tab data =================
+  const FLOW = [
+    {id:1, title:"Pre-interview intelligence", time:"30 min", keywords:["JD mapping","company research","interviewer lookup","tech stack confirm"], assets:["jd","company"]},
+    {id:2, title:"Opening & framing", time:"5 min", keywords:["60-second story","role framing","energy setting"], assets:["story"]},
+    {id:3, title:"GenAI delivery deep-dive", time:"15 min", keywords:["AVA architecture","LangGraph","RAG on TM1","Vertex AI","Ragas/LangSmith","AI governance"], assets:["ava-arch","ava-launch"]},
+    {id:4, title:"Full-stack & platform engineering", time:"10 min", keywords:["React/Next.js","Node/Nest","MongoDB/PostgreSQL","SSE/WebSockets","API versioning","white-label architecture"], assets:["stack"]},
+    {id:5, title:"Product ownership & leadership", time:"10 min", keywords:["roadmap & backlog","stakeholder alignment","mentoring 10+ devs","training 30+ consultants","standards setting"], assets:["po"]},
+    {id:6, title:"Domain translation: FP&A → Tax & Legal", time:"8 min", keywords:["domain mapping","TM1 expertise","trustworthy data grounding","expert-driven workflows"], assets:["domain"]},
+    {id:7, title:"AI governance & Responsible AI", time:"8 min", keywords:["HITL gates","grounded retrieval","Ragas evaluation","client-shaped controls","professional risk"], assets:["gov"]},
+    {id:8, title:"Live proof — offer walkthroughs", time:"5 min", keywords:["TMA","TMA Finance","PRESTIX","GoFetch","Gainwise","ManaposeGP"], assets:["tma","tma-finance","prestix"]},
+    {id:9, title:"Your questions for them", time:"5 min", keywords:["portfolio shape","team structure","AI governance framework","tech stack roadmap","success metrics","prototype vs production balance"], assets:["questions"]},
+    {id:10, title:"Close & follow-up", time:"3 min", keywords:["reiterate fit","next steps clarity","thank you email","reference readiness"], assets:["followup"]}
+  ];
+
+  const KW = {
+    "JD mapping": {talk:"Map every JD requirement to a STAR story. PwC JD calls for: React/Next, Node/Nest, GCP/AWS, MongoDB/PostgreSQL, AI-enabled apps, Tax & Legal domain. I have all of these — AVA is the proof.", stage:1},
+    "company research": {talk:"PwC Tax & Legal Digital mission: 'digitising workflows and creating global AI-enabled applications'. 370k people, global scale. My AVA work at Amazon/AWS/ZKB is the direct precursor.", stage:1},
+    "interviewer lookup": {talk:"Look up interviewers on LinkedIn. Note their background, tenure, recent posts. Reference something specific — shows preparation and genuine interest.", stage:1},
+    "tech stack confirm": {talk:"Confirm: React/Next.js front end, Node/Nest API layer, GCP (Vertex AI) + AWS, MongoDB + PostgreSQL. I run this stack daily — AVA is Python/TypeScript bilingual on GCP.", stage:1},
+    "60-second story": {talk:"Digital design → 9yrs Cubewise (web dev → Lead AI Architect/PO) → AVA vision to production (LangGraph, RAG, GCP) → Amazon/AWS/ZKB deployments → role redundant Jan 2026 → PwC Senior Manager. Lead with outcomes.", stage:2},
+    "role framing": {talk:"'I'm here because PwC's mission — global AI-enabled applications for Tax & Legal — is exactly what I did with AVA at enterprise scale.' Frame the role as the natural next stage.", stage:2},
+    "energy setting": {talk:"Match their energy. Project confidence without arrogance. Senior Manager presence: calm, direct, outcome-oriented. No hedging.", stage:2},
+    "AVA architecture": {talk:"Walk the diagram (Graph tab): Finance user → React UX → Node API → LangGraph orchestrator (HITL gates) → Tool use (TM1 REST/MDX) + LlamaIndex RAG → Vertex AI LLM → Ragas/LangSmith eval → Governance. Launched Sep 2025.", stage:3},
+    "LangGraph": {talk:"Chose LangGraph specifically for enterprise finance workflows needing deterministic checkpoints and human approval gates. Multi-step agent orchestration with state management. Not just a chain — a graph with cycles, branches, HITL.", stage:3},
+    "RAG on TM1": {talk:"LlamaIndex retrieval grounded on enterprise TM1 financial data. Vector store with SQL metadata. Not generic RAG — domain-specific, authoritative data. Finance teams query planning cubes in natural language.", stage:3},
+    "Vertex AI": {talk:"Model hosting and evaluation on GCP Vertex AI. Model selection per task (reasoning vs speed vs cost). Production-grade MLOps: versioning, monitoring, A/B testing.", stage:3},
+    "Ragas/LangSmith": {talk:"Ragas for retrieval/faithfulness/relevance metrics. LangSmith for tracing, debugging, human evaluation workflows. Evaluation practice established before any rollout — not afterthought.", stage:3},
+    "AI governance": {talk:"Governance as design constraint: HITL gates in agent graph, retrieval grounded on authoritative data, evaluation before rollout, controls shaped to what Amazon/AWS/ZKB would accept. Professional risk demands this discipline.", stage:3},
+    "React/Next.js": {talk:"Apliqo UX front end is React. Streaming UX with SSE/WebSockets for agent responses. Component architecture for white-label theming across 7+ clients.", stage:4},
+    "Node/Nest": {talk:"Node.js API layer with auth, rate limits, versioning. NestJS for structure. REST + SSE endpoints. Service-oriented so heavy computation stays off client path.", stage:4},
+    "MongoDB/PostgreSQL": {talk:"MongoDB for document models where content evolves fast (Apliqo backend at enterprise scale for Westpac/Amazon/AWS). PostgreSQL for relational integrity and analytics. Pick the store per workload.", stage:4},
+    "SSE/WebSockets": {talk:"Streaming agent responses via SSE. WebSockets for real-time collaboration features. Keeps UX responsive during multi-step agent execution.", stage:4},
+    "API versioning": {talk:"Versioned APIs so white-label deployments never break. Feature flags for gradual rollout. Zero-downtime deployments across 7+ client environments.", stage:4},
+    "white-label architecture": {talk:"Single codebase, 7+ client deployments (Westpac, Amazon, AWS, Optus, Goodman, Everlight, ZKB). Theming, config, feature flags per client. Shared core, isolated customisations.", stage:4},
+    "roadmap & backlog": {talk:"Owned AI product roadmap balancing speed, quality, complexity against business strategy. Backlog grooming with stakeholders. Shipped continuously for 9 years without platform regressions.", stage:5},
+    "stakeholder alignment": {talk:"Async-first collaboration across developers, data scientists, business analysts, client stakeholders, time zones. Translate between finance-domain needs and engineering implementation.", stage:5},
+    "mentoring 10+ devs": {talk:"Mentored 10+ developers on AI patterns: LangGraph, RAG, evaluation, governance. Code reviews, pairing, architecture decisions. Set the standard for AI-native delivery.", stage:5},
+    "training 30+ consultants": {talk:"Trained 30+ consultants to build and sell web solutions themselves. Created the playbook. Consultants could deliver without engineering bottleneck.", stage:5},
+    "standards setting": {talk:"Set architecture and implementation standards with technical leads. Framework/library layer discipline. API versioning. Outage-response ownership in production.", stage:5},
+    "domain mapping": {talk:"'Same fundamental problem: complex, high-stakes, expert-driven workflows needing digitisation with AI grounded in trustworthy domain data. 9 years making FP&A data usable and grounding AI on it. Tax & Legal is the next instance, at global scale.'", stage:6},
+    "TM1 expertise": {talk:"Deep TM1/Planning Analytics knowledge: cubes, MDX, TI processes, REST API, security model. This is zero-ramp domain expertise for Tax & Legal finance-heavy clients.", stage:6},
+    "trustworthy data grounding": {talk:"RAG grounded on authoritative enterprise data — not web scrapes. TM1 cubes are the source of truth. AI answers trace back to governed financial data.", stage:6},
+    "expert-driven workflows": {talk:"FP&A planners, tax advisors, legal experts — same pattern: high judgment, complex rules, need for auditability. AI as co-pilot with HITL, not autopilot.", stage:6},
+    "HITL gates": {talk:"Human-in-the-loop gates in the LangGraph agent graph. Critical decisions (tax advice, legal interpretation) require human approval. Agent proposes, expert disposes.", stage:7},
+    "grounded retrieval": {talk:"Retrieval strictly grounded on authoritative sources. No hallucination tolerance for professional advice. Citations mandatory. Source traceability built into the UX.", stage:7},
+    "Ragas evaluation": {talk:"Ragas metrics (faithfulness, answer relevance, context precision/recall) run on every candidate model/prompt before production. Quantitative gate, not vibe check.", stage:7},
+    "client-shaped controls": {talk:"Governance controls shaped to what the strictest clients (Amazon, AWS, ZKB) would accept. If it passes their bar, it passes PwC's bar.", stage:7},
+    "professional risk": {talk:"PwC advice carries professional liability. AI governance isn't compliance theatre — it's risk management. The discipline I built for Amazon/AWS/ZKB transfers directly.", stage:7},
+    "TMA": {talk:"Multi-tenant SaaS + AI chat. White-label FP&A platform. Running at Westpac, Amazon, AWS, others. Offer live walkthrough.", stage:8},
+    "TMA Finance": {talk:"OAuth/RBAC + AI. Finance-specific planning workflows with AI assistance. Enterprise auth, audit trails, compliance features.", stage:8},
+    "PRESTIX": {talk:"Booking, cart, orders platform. AI-native build. Demonstrates velocity: real product, real users, real revenue.", stage:8},
+    "GoFetch": {talk:"Next.js marketplace. AI-native delivery. Shows full-stack range beyond FP&A domain.", stage:8},
+    "Gainwise": {talk:"AWS-secured reporting. Security-first architecture. Shows range: compliance-heavy, data-sensitive workloads.", stage:8},
+    "ManaposeGP": {talk:"Health dashboard. Different domain, same pattern: complex data, expert workflows, AI assistance.", stage:8},
+    "portfolio shape": {talk:"'What does the Global AI-enabled applications portfolio look like today — which client engagements are live, and where does this role plug in?'", stage:9},
+    "team structure": {talk:"'How is the Tax & Legal Digital team structured between developers, data scientists and business analysts — and how do product decisions get made?'", stage:9},
+    "AI governance framework": {talk:"'What's the current state of AI governance for client-facing GenAI at PwC Australia — is there a central framework this team builds against?'", stage:9},
+    "tech stack roadmap": {talk:"'What does the tech stack look like beyond the JD — where is React/Next vs Node/Nest on the roadmap, and how much is GCP vs AWS?'", stage:9},
+    "success metrics": {talk:"'What would success look like at 6 and 12 months for this role?'", stage:9},
+    "prototype vs production balance": {talk:"'How does the team balance high-volume production work against the market-leading prototypes mission?'", stage:9},
+    "reiterate fit": {talk:"Close with: 'This role is the exact next stage for what I've built — global AI-enabled applications for finance-heavy domains, at PwC scale. I'm ready to lead that.'", stage:10},
+    "next steps clarity": {talk:"Ask for clear next steps and timeline. 'What does the process look like from here, and when should I expect to hear back?'", stage:10},
+    "thank you email": {talk:"Send tailored thank-you email within 2 hours referencing specific discussion points. Not generic — proves listening and follow-through.", stage:10},
+    "reference readiness": {talk:"Have references pre-briefed: former Cubewise CTO, client stakeholders (Amazon/AWS/ZKB contacts), team leads. They know the AVA story.", stage:10}
+  };
+
+  const ASSETS = {
+    "jd": {label:"JD requirements map", desc:"Every PwC JD requirement mapped to your STAR story", type:"internal"},
+    "company": {label:"PwC AI portfolio snapshot", desc:"Public info on PwC Tax & Legal Digital AI engagements", type:"external"},
+    "story": {label:"60-second version", desc:"Career arc tab — rehearsed, timed, outcome-led", type:"internal"},
+    "ava-arch": {label:"AVA architecture diagram", desc:"Graph tab, diagram 2 — click nodes for talking points", type:"internal"},
+    "ava-launch": {label:"Launch evidence", desc:"Amazon, AWS, ZKB deployment confirmations (Sep 2025)", type:"external"},
+    "stack": {label:"Full-stack evidence", desc:"7 live products: TMA, TMA Finance, PRESTIX, GoFetch, Gainwise, ManaposeGP", type:"external"},
+    "po": {label:"PO evidence", desc:"Roadmap, standards, mentoring 10+ devs, training 30+ consultants", type:"internal"},
+    "domain": {label:"FP&A→Tax/Legal mapping", desc:"Explicit domain translation narrative", type:"internal"},
+    "gov": {label:"Governance framework summary", desc:"HITL gates, grounded retrieval, Ragas eval, client-shaped controls", type:"internal"},
+    "tma": {label:"TMA demo", desc:"Multi-tenant SaaS + AI chat — live URL", type:"external"},
+    "tma-finance": {label:"TMA Finance demo", desc:"OAuth/RBAC + AI finance workflows — live URL", type:"external"},
+    "prestix": {label:"PRESTIX demo", desc:"Booking/cart/orders platform — live URL", type:"external"},
+    "questions": {label:"Prepared questions", desc:"Prep tab — 6 high-signal questions for them", type:"internal"},
+    "followup": {label:"Follow-up template", desc:"2-hour thank-you email structure with discussion callbacks", type:"internal"}
+  };
+
+  // ================= Chip modal (unified with Match Graph data) =================
+  // Map chip text → Match Graph node ID
+  const CHIP_TO_NODE = {
+    // JD requirements
+    "End-to-end software delivery": "J1",
+    "Libraries and frameworks for large web apps": "J2",
+    "ReactJS / NextJS frontend": "J3",
+    "NodeJS / NestJS backend": "J4",
+    "MongoDB, SQL, Python": "J5",
+    "Speed and scale optimisation": "J6",
+    "GenAI experience (beneficial)": "J7",
+    "CI/CD, SDLC, DevOps": "J8",
+    "Cross-functional collaboration": "J9",
+    "High-volume production and prototypes": "J10",
+
+    // Skills matrix hot tags → Match Graph nodes
+    "Python": "J5",
+    "PyTorch": "E2",
+    "GCP / Vertex AI": "J5",
+    "GCP/Vertex AI": "J5",
+    "LangChain": "E2",
+    "LangGraph": "ORCH",
+    "LlamaIndex": "RET",
+    "RAG": "RET",
+    "RAG — advanced": "RET",
+    "Ragas": "EVAL",
+    "LangSmith": "EVAL",
+    "Claude": "A5",
+    "Cursor": "A5",
+    "Codex": "A5",
+    "TypeScript": "J3",
+    "JavaScript": "J3",
+    "Node.js": "J4",
+    "SQL": "J5",
+    "React": "J3",
+    "Next.js": "J3",
+    "GraphQL": "J4",
+    "REST API design": "J4",
+    "Third-party API/SDK integration": "TOOLS",
+    "PostgreSQL": "J5",
+    "MySQL": "J5",
+    "AWS": "J5",
+    "Service-oriented architecture": "E1",
+    "Big-data scale & performance": "E3",
+    "NestJS": "J4",
+    "MongoDB": "J5",
+    "WebSockets / SSE": "FE",
+    "TM1 REST API": "TOOLS",
+    "API versioning": "J4",
+    "white-label architecture": "E1",
+
+    // DevOps & platform engineering hot tags
+    "GitHub Actions": "J8",
+    "Cloud Build": "J8",
+    "Docker": "J8",
+    "Kubernetes": "J8",
+    "Terraform": "J8",
+    "GCP": "J5",
+    "AWS": "J5",
+    "Helm": "J8",
+    "ArgoCD": "J8",
+    "Prometheus": "J8",
+    "Grafana": "J8",
+    "Sentry": "J8",
+    "Datadog": "J8",
+    "CI/CD pipelines": "J8",
+    "GitOps": "J8",
+    "Blue-green deploy": "J8",
+    "Feature flags": "J4",
+    "API versioning": "J4",
+    "Zero-downtime deploy": "J8",
+
+    // Workflow tab hot tags
+    "JD mapping": "J1",
+    "60-second story": "A",
+    "AVA architecture": "E2",
+    "RAG on TM1": "RET",
+    "Ragas/LangSmith": "EVAL",
+    "AI governance": "GOV",
+    "React/Next.js": "J3",
+    "Node/Nest": "J4",
+    "roadmap & backlog": "E4",
+    "mentoring 10+ devs": "E4",
+    "training 30+ consultants": "E4",
+    "domain mapping": "E5",
+    "TM1 expertise": "E5",
+    "trustworthy data grounding": "RET",
+    "HITL gates": "ORCH",
+    "grounded retrieval": "RET",
+    "Ragas evaluation": "EVAL",
+    "client-shaped controls": "GOV",
+    "professional risk": "GOV",
+    "TMA": "P1",
+    "TMA Finance": "P2",
+    "PRESTIX": "P3",
+    "portfolio shape": "J10",
+    "AI governance framework": "GOV",
+    "reiterate fit": "P",
+  };
+
+  // Chip modal elements
+  const chipBackdrop=document.getElementById('chipModal');
+  const chipCard=document.getElementById('chipCard');
+  function closeChipModal(){ chipBackdrop.classList.remove('open'); }
+  chipBackdrop.addEventListener('click', e=>{ if(e.target===chipBackdrop) closeChipModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeChipModal(); });
+
+  function openChip(chipText){
+    const nodeId = CHIP_TO_NODE[chipText];
+    if(!nodeId || !DATA[nodeId]) return;
+
+    const n = DATA[nodeId];
+    const cat = CATS[n.c];
+    const ins = inOf(nodeId), outs = outOf(nodeId);
+
+    const chipBtn = (r, dir) => {
+      const label = DATA[r]?.t || r;
+      return `<button class="chip" data-node="${r}" style="border-color:${CATS[DATA[r]?.c]?.color||'#888'}66;color:${CATS[DATA[r]?.c]?.color||'#888'}">${dir==='in'?'⬅ ':'➡ '}${escXML(trunc26(label))}</button>`;
+    };
+
+    chipCard.innerHTML = `
+      <div class="m-head" style="border-top-color:${cat.color}">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="badge" style="background:${cat.color}22;color:${cat.color};border:1px solid ${cat.color}66">${cat.label}</span>
+          <span style="font-size:.75rem;color:var(--muted)">${ins.length} connected from · ${outs.length} leads to</span>
+        </div>
+        <button class="m-close" title="Close (Esc)">✕</button>
+      </div>
+      <div class="m-body">
+        <h3>${escXML(chipText)}</h3>
+        <p>${n.d}</p>
+        <h4>🕸 Relationship map — click any node to explore it</h4>
+        <div class="mmap">${relMapSVG(nodeId)}</div>
+        ${ins.length?`<h4>⬅ Connected from (${ins.length}) — points to this node</h4><div class="chips">${ins.map(r=>chipBtn(r,'in')).join('')}</div>`:''}
+        ${outs.length?`<h4>➡ Leads to (${outs.length}) — this node points to</h4><div class="chips">${outs.map(r=>chipBtn(r,'out')).join('')}</div>`:''}
+        ${(!ins.length&&!outs.length)?'<p style="color:var(--muted)">No direct connections.</p>':''}
+      </div>
+      <div class="m-actions">
+        <button class="m-jump" onclick="jumpTab('${n.tab}'); closeChipModal();">Open ${n.tab} tab →</button>
+      </div>`;
+
+    chipCard.querySelector('.m-close').onclick = closeChipModal;
+    chipCard.querySelectorAll('.chip').forEach(ch => ch.onclick = () => openChip(DATA[ch.dataset.node]?.t || ch.dataset.node));
+    chipCard.querySelectorAll('.mmap-node').forEach(el => {
+      if(el.dataset.node !== nodeId) el.addEventListener('click', () => openChip(DATA[el.dataset.node]?.t || el.dataset.node));
+    });
+    highlight(nodeId);
+    chipBackdrop.classList.add('open');
+  }
+
+  // Bind all .tag.hot elements to open chip modal
+  document.querySelectorAll('.tag.hot').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = el.textContent.trim();
+      if(CHIP_TO_NODE[text]) openChip(text);
+    });
+  });
+
+  // ================= Keyword modal (kwModal) =================
+  const kwBackdrop=document.getElementById('kwModal');
+  const kwCard=document.getElementById('kwCard');
+  function closeKwModal(){ kwBackdrop.classList.remove('open'); }
+  kwBackdrop.addEventListener('click', e=>{ if(e.target===kwBackdrop) closeKwModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeKwModal(); });
+
+  function openKw(keyword){
+    const data=KW[keyword];
+    if(!data) return;
+    const stage=FLOW.find(f=>f.keywords.includes(keyword));
+    kwCard.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1.1rem">${keyword}</h3>
+        <button onclick="closeKwModal()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1">×</button>
+      </div>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:10px">Stage ${stage?.id}: ${stage?.title} (${stage?.time})</div>
+      <p style="white-space:pre-wrap;line-height:1.6">${data.talk}</p>
+    `;
+    kwBackdrop.classList.add('open');
+  }
+
+  // Populate keyword cloud and asset list
+  (()=>{
+    const cloud=document.getElementById('kwCloud');
+    const list=document.getElementById('assetList');
+    if(cloud){
+      Object.keys(KW).forEach(k=>{
+        const stage=FLOW.find(f=>f.keywords.includes(k));
+        const isHot=stage && stage.keywords.slice(0,2).includes(k); // first 2 per stage = hot
+        const el=document.createElement('span');
+        el.className='tag'+(isHot?' hot':'');
+        el.textContent=k;
+        el.onclick=()=>openKw(k);
+        cloud.appendChild(el);
+      });
+    }
+    if(list){
+      Object.entries(ASSETS).forEach(([id,a])=>{
+        const el=document.createElement('div');
+        el.className='asset';
+        el.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s';
+        el.innerHTML=`<div><strong>${a.label}</strong><br><small style="color:var(--muted)">${a.desc}</small></div><span class="tag" style="font-size:.7rem">${a.type}</span>`;
+        el.onclick=()=>alert('Asset: '+a.label+'\\n'+a.desc+'\\n(Type: '+a.type+')');
+        list.appendChild(el);
+      });
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+---
+description: Token-aware Application Generator workflow — boot from second brain, avoid full HTML reads, rule-based until API quota resets
+alwaysApply: true
+---
+
+# Application Generator — second brain
+
+Before editing the Application Generator, read `APPGEN_SECOND_BRAIN.md` (repo root). Do **not** re-derive product decisions from chat history or by reading all of `Application_Generator.html`.
+
+## Boardgame platform planning
+
+Platform migration plans (Next.js, Redux SSoT, JSON Schema boardgame types, multiplayer `GameRoom`) live in **`docs/BOARDGAMES_NEXTJS_ROADMAP.md`**. Agents **must read that doc** before proposing Next.js / Redux / schema / boardgame-platform work. Still **no full-file HTML reads** — use Grep + offset Read.
+
+## Token rules
+
+- Prefer Grep + offset Read on `Application_Generator.html`, `appgen/assets/appgen-{kb,weave}.js`, `appgen-print.css` — never full-file reads unless truly required.
+- UI defaults: **Tailor with AI** on; **AI provider** Vercel Gateway only (`vercel`). Anthropic quota was exhausted until **2026-11-01 00:00 UTC** — prefer Gateway, not Claude direct.
+- After substantive decisions, append 2–5 bullets to `APPGEN_SECOND_BRAIN.md`.
+
+## Deploy
+
+**Mandatory:** after finishing Application Generator / `appgen-api` code amends in a session, always run prod deploy (do not wait for the user to ask).
+
+1. `cp Application_Generator.html appgen-api/index.html`
+2. `cp -r appgen/assets appgen-api/appgen/assets`
+3. `cd appgen-api && unset VERCEL_TOKEN && vercel deploy --prod -y --scope team_7m5fwG2qKtVsGtgV35AB3nHi`
+4. Live: https://apply4job.vercel.app — note deployment id in `APPGEN_SECOND_BRAIN.md`
+
+## Audience copy
+
+Never put `gaps`, `mapped`, or `JD` meta-language into CV/letter weave output.

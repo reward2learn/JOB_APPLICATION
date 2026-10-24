@@ -1,0 +1,49 @@
+{
+  "installCommand": "bash scripts/vercel-npm-install.sh",
+  "build": {
+    "env": {
+      "NPM_CONFIG_CACHE_DIR": "",
+      "npm_config_cache_dir": ""
+    }
+  },
+  "functions": {
+    "api/tailor.js": {
+      "maxDuration": 300
+    },
+    "api/scrape-jd.js": {
+      "maxDuration": 60
+    },
+    "api/batch-download.js": {
+      "maxDuration": 300,
+      "memory": 3008
+    }
+  },
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/manifest-chess.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/manifest-snl.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# Cover Letter — Data and AI Architect, Halcyon Knights (Melbourne, Contract)
+
+Dear [Name],
+
+I'm applying for the Data and AI Architect role. The three pillars of this position — platform readiness assessment, solution architecture, and hands-on delivery leadership — describe the job I have just done, inside a commercial enterprise platform, at production scale.
+
+At Cubewise I spent nine years in enterprise software, the last two as Lead AI Architect and Product Owner for the Apliqo UX platform. In that role:
+
+- **Platform strategy and readiness.** I defined the AI strategy and assessed platform readiness across the AI landscape — identifying gaps against enterprise requirements (security, governance, integration, user experience) and setting the architecture, tooling and implementation standards the platform teams built to.
+- **Solution architecture and design.** I designed end-to-end architectures for AI use cases as reusable patterns, not one-off builds: retrieval and knowledge grounding over enterprise TM1 data, agent orchestration, model selection, identity and access controls, observability and evaluation, and resilience under enterprise security constraints.
+- **Delivery and engineering leadership.** I architected and owned **AVA**, the platform's GenAI assistant, from technical discovery through to production — launched September 2025, deployed for enterprise clients including Amazon, AWS and ZKB — while mentoring 10+ developers on AI implementation patterns and guiding testing, release, documentation and operational-readiness practices.
+
+The stack is current and hands-on: Python, LangChain/LangGraph, LlamaIndex, Ragas and LangSmith for evaluation and observability, GCP, PyTorch. And the communication requirement — articulating trade-offs, dependencies and risks to senior business stakeholders and engineering teams alike — is what nine years of client-facing consulting trained me to do; I also trained 30+ consultants to do the same.
+
+I'm available for contract engagement and would welcome a conversation about your client's platform.
+
+Kind regards,
+
+**Ilia Shapiro**
+Mob: 0414 557 038 | reward2learn@gmail.com | linkedin.com/in/iliashapiro

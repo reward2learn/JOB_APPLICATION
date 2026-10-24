@@ -1,0 +1,18 @@
+Dear [Name],
+
+Game studios live or die on their web presence and their live services — and you're hiring for both sides of that: elegant front ends and dependable backend infrastructure. That combination is my whole career: I'm a full-stack developer with a digital design background, nine years shipping high-availability enterprise platforms, and most recently a production GenAI assistant.
+
+What I would bring to Reach Game Studios:
+
+- Frontend with visual identity ownership. Responsive React/Next.js front ends — and I can own the visual identity, not just implement it: my earlier career was digital design and production for Telstra and Optus campaigns, backed by an Advanced Diploma in Graphic Design. Game sites and corporate sites would get design leadership, not just code.
+- Backend services and endpoints. Node.js services, REST API design, and third-party API/SDK integration in production — built for internal teams and external partners alike, the same pattern as your community developers and game infrastructure communicating through endpoints.
+- Live-ops continuity. My platform work was big-data scale and performance engineering under enterprise governance — security constraints, role-based access, evaluation and reliability as daily practice. I'm comfortable liaising with external security partners, and I treat operation continuity as a design constraint, not an afterthought.
+
+To be direct about stack: JavaScript, NodeJS and SQL are my production languages; C#, Java and C++ are not my daily drivers. My record shows I switch stacks fast — from TM1 development to AI architecture in two years — and interfacing with Unreal Engine for live implementation is a learning curve I'd take on with the same structured approach. One bonus I'd add to the studio: GenAI. I architected and shipped AVA, an AI assistant in production with clients including Amazon, AWS and ZKB — increasingly table stakes for game web services and community tools.
+
+I'm NSW-based, remote-experienced, and would welcome a conversation about Glory's web presence.
+
+Kind regards,
+
+Ilia Shapiro
+Mob: 0414 557 038 | reward2learn@gmail.com | linkedin.com/in/iliashapiro

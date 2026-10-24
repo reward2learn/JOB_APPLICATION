@@ -1,0 +1,179 @@
+{
+  // Opencode Configuration for Application Generator
+  // Schema: https://opencode.dev/schema.json
+  
+  "$schema": "https://opencode.dev/schema.json",
+  "version": "1.0.0",
+  
+  "project": {
+    "name": "Application Generator",
+    "description": "AI-powered cover letter and CV generator with cognitive training games",
+    "root": "/Users/iliashapiro/JOB_APPLICATION",
+    "type": "fullstack-spa"
+  },
+  
+  // Cursor navigation and agent routing
+  "cursor": {
+    // Auto-activate agent when cursor enters these paths
+    "agent_routing": {
+      "**/*.html": "coder",
+      "**/*.{js,ts,tsx}": "coder",
+      "**/*.{css,scss}": "coder",
+      "**/api/**/*.js": "coder",
+      "**/migrations/**": "db-admin",
+      "**/test/**": "test-engineer",
+      "**/docs/**": "doc-writer",
+      "**/.opencode/**": "customization",
+      "**/security/**": "security-auditor"
+    },
+    
+    // Context clues for agent suggestions
+    "context_hints": {
+      "component": "coder",
+      "api": "coder",
+      "test": "test-engineer",
+      "schema": "db-admin",
+      "security": "security-auditor",
+      "docs": "doc-writer"
+    }
+  },
+  
+  // Agent definitions and capabilities
+  "agent": {
+    "default": "director",
+    "agents": {
+      "director": {
+        "type": "director",
+        "description": "Central orchestrator - receives tasks, decomposes, delegates to sub-agents",
+        "tools": ["create_task", "list_tasks", "read_task", "update_task_progress"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.md", "**/*.json", "**/*.yaml"]
+        }
+      },
+      "coder": {
+        "type": "coder",
+        "description": "Individual file implementation - precise, scoped code changes",
+        "tools": ["read", "edit", "glob", "grep", "bash"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.html", "**/*.js", "**/*.css", "**/*.json", "**/*.ts", "**/*.tsx"]
+        }
+      },
+      "reviewer": {
+        "type": "reviewer",
+        "description": "Quality gate - reviews code against all project standards",
+        "tools": ["read", "glob", "grep", "bash"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "test-engineer": {
+        "type": "test-engineer",
+        "description": "Testing agent - runs, debugs, fixes test failures",
+        "tools": ["bash", "read", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.test.*", "**/*.spec.*"]
+        }
+      },
+      "security-auditor": {
+        "type": "security-auditor",
+        "description": "Read-only security audit - vulnerability scanning and code review",
+        "tools": ["read", "glob", "grep", "bash"],
+        "permissions": {
+          "read": ["**/*"]
+        }
+      },
+      "db-admin": {
+        "type": "db-admin",
+        "description": "Database operations - schema management, migrations, seeding",
+        "tools": ["bash", "read", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/migrations/**", "**/seed/**", "**/schema/**"]
+        }
+      },
+      "doc-writer": {
+        "type": "doc-writer",
+        "description": "Generates documentation, knowledge base entries, guides",
+        "tools": ["read", "edit", "glob", "grep"],
+        "permissions": {
+          "read": ["**/*"],
+          "write": ["**/*.md", "**/*.txt"]
+        }
+      }
+    }
+  },
+  
+  // MCP Server Configuration
+  "mcp": {
+    "servers": {
+      "vercel": {
+        "enabled": true,
+        "command": "npx",
+        "args": ["-y", "@vercel/mcp-server"],
+        "env": {
+          "VERCEL_TOKEN": "${VERCEL_TOKEN}"
+        },
+        "timeout": 30000
+      },
+      "meeting-assistant": {
+        "enabled": false,
+        "note": "MCP error: -32000 Connection closed - needs investigation and fix",
+        "timeout": 30000
+      }
+    }
+  },
+  
+  // Enabled skills
+  "skills": {
+    "enabled": [
+      "cover-letter-cv-generator",
+      "deploy-to-vercel",
+      "vercel-react-best-practices",
+      "web-design-guidelines",
+      "writing-guidelines",
+      "xerj"
+    ]
+  },
+  
+  // Git hooks for quality gates
+  "hooks": {
+    "pre-commit": [
+      "bun run lint 2>&1 || true"
+    ],
+    "post-commit": [
+      "echo 'Commit successful'"
+    ]
+  },
+  
+  // Validation commands
+  "validation": {
+    "commands": {
+      "lint": "bun run lint",
+      "type-check": "bun run type-check || true",
+      "test": "bun run test || true",
+      "build": "bun run build || true"
+    }
+  },
+  
+  // File structure conventions
+  "conventions": {
+    "naming": {
+      "components": "PascalCase.tsx or .jsx",
+      "utils": "camelCase.ts or .js",
+      "styles": "kebab-case.css",
+      "tests": "ComponentName.test.tsx",
+      "api": "route.ts (Next.js), api/name.js (Express)"
+    },
+    "structure": {
+      "components": "src/components/**",
+      "pages": "src/pages/** or app/**",
+      "api": "appgen-api/api/** or app/api/**",
+      "styles": "**/*.css (inline or external)",
+      "tests": "**/__tests__/** or **/*.test.*",
+      "docs": "docs/** or README.md"
+    }
+  }
+}

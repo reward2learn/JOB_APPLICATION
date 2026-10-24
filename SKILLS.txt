@@ -1,0 +1,99 @@
+SKILLS — ILIA SHAPIRO
+Prepared for: Senior Full Stack Developer — PwC Tax & Legal Digital (Req 762649WD)
+
+=== AI ARCHITECT & AI ENGINEERING ===
+
+Languages & ML platform
+- Python
+- PyTorch
+- GCP / Vertex AI
+
+Agent & LLM frameworks
+- LangChain
+- LangGraph
+- LlamaIndex
+
+AI capability
+- Agentic systems — multi-agent patterns, tool use, human-in-the-loop
+- LLM applications
+- Retrieval-augmented generation (RAG) — advanced
+- Conversational AI
+- Model evaluation and selection
+- AI governance / Responsible AI
+
+Evaluation & observability
+- Ragas
+- LangSmith
+
+AI-assisted development
+- Claude · Cursor · Codex
+- Prompting; iterating, validating and refining AI-produced code
+
+
+=== WEB DEVELOPMENT ===
+
+Languages & runtime
+- TypeScript
+- JavaScript (object-oriented)
+- Node.js
+- SQL
+- HTML5
+- CSS3
+*(SQL shared with AI work — vector stores, data pipelines)*
+
+Frontend
+- React
+- Next.js
+- Current web standards — responsive, accessible
+
+Backend
+- NestJS
+- WebSockets / SSE streaming protocols
+
+APIs & integration
+- GraphQL
+- REST API design
+- Third-party API and SDK integration
+
+Data
+- MongoDB
+- PostgreSQL
+- MySQL
+
+Cloud & architecture
+- AWS
+- Cloud-based service-oriented architectures
+- Web server optimisation
+- Big-data scale and performance engineering
+
+UX & experience design
+- UX
+- Information architecture
+- Digital design and production
+
+
+=== DEVOPS & DELIVERY ===
+
+- CI/CD automation — GitHub Actions · Cloud Build
+- SDLC
+- Automated testing
+- Git / GitHub
+
+
+=== PRODUCT & DELIVERY ===
+
+- Product ownership
+- Roadmap and backlog management
+- Stakeholder management
+- Async-first collaboration across time zones
+
+
+=== IBM PLANNING ANALYTICS & FP&A ===
+
+- IBM Planning Analytics / TM1
+- TM1 rules
+- TI processes
+- MDX
+- PAW/PAX
+- Arc
+- FP&A — budgeting, forecasting, scenario modelling, allocations

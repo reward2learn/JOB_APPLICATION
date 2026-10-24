@@ -1,0 +1,197 @@
+# Cursor Rules for Application Generator
+
+## Project Overview
+- **Project**: Application Generator - AI-powered cover letter and CV generator with cognitive training games
+- **Main File**: Application_Generator.html (inline CSS + JavaScript)
+- **Deployment**: Vercel (https://apply4job.vercel.app)
+- **Stack**: Vanilla HTML/CSS/JS, Node.js API (appgen-api/)
+
+## Code Style & Conventions
+
+### HTML/Template Style
+- Use semantic HTML5 elements (`<dialog>`, `<nav>`, `<section>`, etc.)
+- Modal dialogs: Use native `<dialog>` element with `showModal()` / `close()`
+- Data attributes: Use `data-*` for state management (`data-field`, `data-mode`, etc.)
+- Class naming: `kebab-case` (e.g., `.toolbar-group`, `.modal-dialog-button`)
+- ID naming: `camelCase` (e.g., `#toolbarMoreLetter`, `#applicationForm`)
+
+### CSS Style
+- Inline CSS in `<style>` blocks (no separate stylesheet in Application_Generator.html)
+- Media queries for responsive design:
+  - Mobile: `<640px` (collapsible sections by default)
+  - Desktop: `≥640px` (expanded sections by default)
+- CSS variables for theming (colors, spacing, typography)
+- Flexbox for layouts; grid for complex grids
+- Animation: Use `@keyframes` for smooth transitions
+
+### JavaScript Style
+- Function naming: `camelCase` (e.g., `toggleToolbarGroup()`, `closeToolbarDialog()`)
+- Event handlers: Inline `onclick` or `addEventListener()`
+- State management: DOM attributes (`data-*`, classes like `.expanded`)
+- Async patterns: Use `async/await` for API calls (not `.then()` chains)
+- DOM queries: Use `document.querySelector()` / `document.querySelectorAll()`
+
+### Class Naming Conventions
+- `.toolbar-group` - Container for grouped toolbar actions
+- `.toolbar-group-label` - Label text inside toolbar group
+- `.toolbar-group-primary` - Primary action button
+- `.toolbar-group-expand` - Expand/collapse toggle button
+- `.toolbar-group-expand-btn` - Specific selector for toggle button
+- `.toolbar-group-options` - Container for dropdown/modal options
+- `.toolbar-more-dialog` - Modal dialog for toolbar options
+- `.toolbar-more-dialog__content` - BEM modifier for dialog content
+- `.toolbar-more-dialog-icon` - SVG icon inside dialog button
+- `.expanded` - State class indicating expanded/open state (use instead of `.collapsed`)
+- `.wtd-game-lab` - Cognitive training mode class
+- `.wtd-2d-play` - 2D play area in HUD
+
+## Modal Dialog Patterns
+
+### Structure
+```html
+<dialog id="toolbarMoreLetter" class="toolbar-more-dialog">
+  <div class="toolbar-more-dialog__backdrop"></div>
+  <div class="toolbar-more-dialog__content">
+    <button class="btn" onclick="editLetter()">
+      <svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24"><!-- icon --></svg>
+      <span>Edit</span>
+    </button>
+  </div>
+</dialog>
+```
+
+### Dialog Functions
+- `closeToolbarDialog(dialogId)` - Close any dialog by ID
+- `showDialog(dialogId)` - Open dialog (use `dialog.showModal()`)
+- Modal backdrop: Semi-transparent overlay that closes dialog on click
+
+### Icons
+- SVG icons: Inline in HTML with `<svg class="toolbar-more-dialog-icon">`
+- Icon size: 20×20px (flex-shrink: 0)
+- Icon gap from text: 10px (flexbox gap)
+- Use `currentColor` for dynamic color inheritance
+
+## Mobile Responsiveness
+
+### Breakpoints
+- Mobile: `max-width: 639px` - Toolbars collapse to icons only, options hidden
+- Desktop: `min-width: 640px` - Toolbars expanded, options visible
+
+### Mobile Toolbar Behavior
+- Label text hidden on mobile (show icon only)
+- Expand button visible on mobile to toggle options
+- Options container hidden by default on mobile (show when `.expanded`)
+- Three-dot menu expands upward to avoid viewport cutoff
+
+### Testing Responsive Design
+- Use browser DevTools device emulation
+- Test at exactly 640px boundary
+- Verify chevron rotation and option visibility
+
+## API Integration
+
+### Cloud API Endpoints
+- `POST /api/applications` - Save application with `content` field
+- `GET /api/applications/:id` - Retrieve application with theme data
+- Content field structure:
+  ```javascript
+  {
+    letterThemes: { /* theme config */ },
+    openingTemplate: { /* template data */ }
+  }
+  ```
+
+### Async Patterns
+```javascript
+async function saveApplication(data) {
+  try {
+    const response = await fetch('/api/applications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Save failed:', error);
+  }
+}
+```
+
+## Cognitive Training (WTD) Integration
+
+### Game Modes
+- `wtd-game-lab` - Main cognitive training container
+- `.wtd-2d-play` - 2D HUD area for training sessions
+- `.wtd-footer` - Black background (#0f172a) in 3D mode
+
+### HUD Functions
+- `render2dHud()` - Render training interface header/footer
+- `setWtdMode(mode)` - Switch between game modes
+- Session start buttons: Center-aligned in HUD area
+
+## Deployment & Build
+
+### Vercel Deployment
+- Deploy command: `vercel deploy --target production --yes --scope tokenizin-projects` (from `appgen-api/`)
+- Build output: Served from `appgen-api/public/` or static assets
+- Environment variables: Configure in Vercel dashboard
+
+### Build Commands
+```bash
+# From appgen-api/ directory
+vercel deploy --target production --yes --scope tokenizin-projects
+```
+
+## Git & Version Control
+
+### Commit Messages
+- Format: `[feat|fix|refactor|docs|test]: <description>`
+- Example: `feat: add icon support to modal dialogs`
+- Keep descriptions concise and focused on single feature/fix
+
+### Branch Strategy
+- `main` - Production-ready code (deployed to Vercel)
+- `dev` - Development branch (preview deployments)
+- Feature branches: `feat/feature-name`, `fix/bug-name`
+
+## Testing & Validation
+
+### Manual Testing Checklist
+- [ ] Modal dialogs open/close correctly
+- [ ] Icons render at 20×20px
+- [ ] Toolbar collapses correctly on mobile (<640px)
+- [ ] Toolbar expands correctly on desktop (≥640px)
+- [ ] Theme persistence: Save and reload application
+- [ ] API calls return expected `content` field with theme data
+- [ ] Cognitive training HUD renders without errors
+- [ ] No console errors in browser DevTools
+
+### Browser Support
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Mobile browsers (iOS Safari, Chrome Android)
+- CSS Grid, Flexbox, native `<dialog>` support required
+
+## Common Patterns & Do's/Don'ts
+
+### Do
+- Use `.expanded` class for state management
+- Use native `<dialog>` for modals
+- Keep functions focused and single-responsibility
+- Add aria-labels to interactive elements
+- Test responsive behavior at 640px boundary
+- Commit frequently with clear messages
+
+### Don't
+- Use `.collapsed` class (use `.expanded` instead)
+- Use `display: none` for dialogs (use `<dialog>` or set `display: flex` with visibility)
+- Hardcode colors (use CSS variables when possible)
+- Forget to close dialogs on overlay click
+- Mix inline `onclick` and `addEventListener()` on same element
+- Commit without testing on actual Vercel deployment
+
+## Resources & Documentation
+
+- Vercel Docs: https://vercel.com/docs
+- MDN `<dialog>` Element: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog
+- Opencode Architecture: `.opencode/AGENTS.md`, `.opencode/opencode.json`
+- Application State: `.opencode/opencode.jsonc` (conventions & validation)

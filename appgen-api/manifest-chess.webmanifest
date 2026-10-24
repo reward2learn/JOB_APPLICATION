@@ -1,0 +1,29 @@
+{
+  "id": "/#chess",
+  "name": "Chess tutor",
+  "short_name": "Chess",
+  "description": "3D chess tutor — practice drills offline; online for invites.",
+  "start_url": "/#chess",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/appgen/assets/pwa/icon-chess-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/appgen/assets/pwa/icon-chess-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "education"]
+}

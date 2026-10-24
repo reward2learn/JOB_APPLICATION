@@ -1,0 +1,28 @@
+# Cover Letter — Solo Founder, AI Proposal SaaS for Freelancers
+
+Dear [Name],
+
+You're not looking for an agency — you're looking for one developer you can talk to directly, who treats the product like their own and tells you when an idea won't work. That's how I've worked for a decade, and it's why I'm writing to you rather than answering a job ad.
+
+A few things that made me sit up when I read your post:
+
+**I've been on the other side of the proposal.** I ran my own design-and-development studio (ShapiroGraphics) and spent years in client-facing consulting — where winning the work meant writing the pitch, every single time. I know why a tailored response wins and a template loses, and exactly how much time that tailoring eats. Your product solves a problem I've lived.
+
+**AI APIs aren't a checkbox for me — they're my specialty.** I was Product Owner and architect of AVA, an enterprise AI assistant (LLM, RAG, conversational AI) that went from vision to production rollout, with deployments at Amazon, AWS and ZKB. I evaluated and selected the models, set the AI implementation standards, and mentored 10+ developers on AI patterns. I know where generation is genuinely useful, where it goes wrong, and how to design the edit-and-approve UX around it — which is precisely your product's core loop: draft, review, tweak, send.
+
+**The stack you described is the stack I build with.** React and Next.js frontends, Node.js backends with API keys kept server-side, auth and metering in place. My live work:
+
+- **tokenizmyapp.vercel.app** — multi-tenant SaaS: tenant provisioning, metrics dashboards, AI chat
+- **tokenizmyapp-finance.vercel.app** — Google OAuth + role-based access (your auth ask, already built) plus AI chat
+- **prestix.vip** and **gofetchapp.vercel.app** — Next.js booking/marketplace frontends
+
+Usage limits per user is a multi-tenancy and metering problem — I've built the multi-tenant version of it. And your later phases (dashboard, saved history, custom templates, Stripe subscriptions) read like a natural roadmap, not a rewrite.
+
+On pushing back: my roadmap rule was always "should we build this?" before "how do we build this?" — technically sound, user-centric, aligned with the business. I'll apply the same filter to your feature ideas, and I'll tell you plainly when something doesn't make sense. One note from an earlier design career: the empty state, the error message and the loading flicker get noticed without being asked. For freelancers trying to win work, that polish is the difference between "AI wrote this" and "this tool gets me."
+
+I'm based in NSW and available immediately. If it's useful, I'm happy to send you a short technical plan for the MVP (architecture, auth, metering, OpenAI proxy) before we even get on a call.
+
+Kind regards,
+
+**Ilia Shapiro**
+Mob: 0414 557 038 | reward2learn@gmail.com | linkedin.com/in/iliashapiro

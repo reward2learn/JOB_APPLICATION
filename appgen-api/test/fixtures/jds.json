@@ -1,0 +1,38 @@
+{
+  "jds": [
+    {
+      "id": "ncs-australia",
+      "label": "NCS Australia — Senior Full Stack Engineer, AI and Conversational Systems",
+      "expectedEssentials": [
+        "conversational",
+        "generative AI",
+        "Vertex AI",
+        "React",
+        "TypeScript",
+        "Node.js",
+        "testing non-deterministic",
+        "Sydney",
+        "working rights"
+      ],
+      "text": "Senior Full Stack Engineer — AI and Conversational Systems\nNCS Australia · Sydney (hybrid)\n\nAbout the role\nNCS Australia is looking for a hands-on Senior Full Stack Engineer to build AI Coach solutions and real-time CoPilot streaming experiences for our enterprise clients. You will work with generative AI features in production, including intelligent agent workflows built on Google's stack: Vertex AI, Dialogflow CX and AgentStudio.\n\nEssential\n- Solid experience building production-grade web applications with React, Vite and Tailwind; component libraries documented in Storybook\n- Real-time experience: WebSockets, streaming UX for CoPilot-style interactions\n- Backend development with Node.js and TypeScript; Java experience in an enterprise API gateway context (Apigee)\n- Building and evaluating generative AI features: prompt design, guardrails, testing non-deterministic model behaviour, prompt regression\n- Full Australian working rights; Sydney-based or willing to work hybrid from our Sydney office\n\nDesirable\n- Vertex AI, Dialogflow CX, AgentStudio\n- Experience with AI quality programs: accuracy, latency, guardrails, evaluation\n- Cross-functional work with product managers, AI architects, UX designers and platform engineers\n\nQualifications & other requirements\n- Relevant tertiary qualification or equivalent experience\n- Background checks: probity, police check\n\nOur values: Adventure, Excellence, Integrity, Ownership, Unity."
+    },
+    {
+      "id": "synthetic-fpna-frontend",
+      "label": "Synthetic — Senior Frontend Engineer, FP&A SaaS",
+      "expectedEssentials": ["React", "TypeScript", "Next.js", "dashboard", "REST"],
+      "text": "Senior Frontend Engineer — FP&A SaaS\nEssential\n- 5+ years React and TypeScript in production\n- Next.js App Router experience\n- REST and GraphQL integration for analytics dashboards\n- Data visualisation for financial planning workloads\nDesirable\n- WebSockets/SSE streaming\n- Tailwind, MUI\n"
+    },
+    {
+      "id": "synthetic-devops",
+      "label": "Synthetic — Platform Engineer, Kubernetes",
+      "expectedEssentials": ["Kubernetes", "Terraform", "CI/CD", "AWS"],
+      "text": "Platform Engineer\nEssential\n- Kubernetes (GKE/EKS) operations at scale\n- Terraform infrastructure as code\n- CI/CD pipelines: GitHub Actions, ArgoCD GitOps\n- AWS and/or GCP cloud-native architecture\n- Observability: Prometheus, Grafana, Datadog\nDesirable\n- No Java required\n"
+    },
+    {
+      "id": "synthetic-ai-product",
+      "label": "Synthetic — Lead Product Manager, GenAI",
+      "expectedEssentials": ["product management", "GenAI", "stakeholder", "roadmap"],
+      "text": "Lead Product Manager — GenAI\nEssential\n- 5+ years product management; roadmap ownership end to end\n- Shipped generative AI products (LLM, RAG)\n- Stakeholder management across engineering and commercial teams\n- Data-informed prioritisation\nDesirable\n- A/B testing and experimentation platforms\n- Python literacy\n"
+    }
+  ]
+}

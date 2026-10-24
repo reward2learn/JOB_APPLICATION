@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter — Frontend Software Engineer (React &amp; TypeScript), PRA — Ilia Shapiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15202b;
+    --muted: #4a5a6a;
+    --line: #c8d4e0;
+    --accent: #0d5c63;
+    --accent-soft: #e6f2f3;
+    --paper: #fbfcfe;
+    --bg-1: #dce8ef;
+    --bg-2: #e8f0e9;
+    --ok: #1a7a4a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(13, 92, 99, 0.12), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 90% 10%, rgba(40, 90, 140, 0.1), transparent 50%),
+      linear-gradient(165deg, var(--bg-1), var(--bg-2) 55%, #e4ebe8);
+    min-height: 100vh;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: rgba(251, 252, 254, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toolbar span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn:hover { filter: brightness(1.05); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent);
+    
+  }
+
+  .btn.copied {
+    color: var(--ok) !important;
+    border-color: var(--ok);
+  }
+
+  .sheet {
+    max-width: 820px;
+    margin: 32px auto 48px;
+    padding: 52px 56px 48px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 40px rgba(21, 32, 43, 0.08);
+  }
+
+  header.hero {
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+
+  header.hero h1 {
+    margin: 0;
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 2.85rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .role {
+    margin: 10px 0 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .meta-line {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .contact {
+    margin: 14px 0 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .contact a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .contact a:hover { text-decoration: underline; }
+
+  .salutation {
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .letter p {
+    margin: 0 0 16px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  h2 {
+    margin: 28px 0 14px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .themes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .themes li {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+
+  .themes li:last-child { margin-bottom: 0; }
+
+  .themes strong.num {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  .themes .body {
+    margin: 0;
+    font-size: 0.94rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .signoff {
+    margin-top: 28px;
+  }
+
+  .signoff .name {
+    margin-top: 28px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .attachments {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .sheet { margin: 16px 12px 32px; padding: 28px 20px; }
+    .letter p,
+    .themes .body { text-align: left; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet {
+      margin: 0;
+      max-width: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    .themes li {
+      background: transparent;
+      border-left-color: #999;
+      padding-left: 10px;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" type="button" id="copyBtn" onclick="copyLetter()">Copy letter text</button>
+  <button class="btn ghost" type="button" onclick="window.open('CV_Frontend_Developer_PRA.html', '_blank')">Open CV</button>
+  <span>Print outputs the letter only — toolbar is screen-only</span>
+</div>
+
+<article class="sheet" id="letter">
+  <header class="hero">
+    <h1>Ilia Shapiro</h1>
+    <p class="role">Frontend Software Engineer — React &amp; TypeScript · PRA</p>
+    <p class="meta-line">React · TypeScript · Enterprise-Scale Web Applications · Sydney</p>
+    <div class="contact">
+      <span>Sydney, Australia <br>
+      0466 076 898<br>
+      <a href="mailto:reward2learn@gmail.com">reward2learn@gmail.com</a><br>
+      <a href="https://linkedin.com/in/iliashapiro" target="_blank" rel="noopener">linkedin.com/in/iliashapiro</a><br>
+      <a href="https://github.com/reward2learn" target="_blank" rel="noopener">github.com/reward2learn</a><br></span>
+    </div>
+  </header>
+
+  <div class="letter">
+    <p class="salutation">Dear Kanak Pandit and Hiring Team,</p>
+
+    <p>I am writing to apply for the Frontend Software Engineer contract opportunity you are representing in Sydney. Building modern web applications with React and TypeScript in a collaborative engineering environment is precisely the work I have done for the past decade — most of it on an enterprise-scale platform used by customers around the world, including Westpac, Amazon, AWS, Optus and ZKB. I am available immediately for a six-month engagement with extension, based in Sydney and comfortable with the North Ryde hybrid arrangement.</p>
+
+    <h2>What I bring to the role</h2>
+    <ol class="themes">
+      <li>
+        <strong class="num">Commercial React and TypeScript at enterprise scale.</strong>
+        <p class="body">At Cubewise I spent nine years building and enhancing Apliqo UX, an enterprise white-label FP&amp;A platform — self-service planning, forecasting and big-data analytics — with React and TypeScript as the core of the product experience layer. This was not greenfield demo work: it was years of developing new features and improving an existing product inside a large, established codebase, where the judgement to know what is safe to change matters as much as the ability to build something new. I also ship React/Next.js applications of my own, live in production today.</p>
+      </li>
+      <li>
+        <strong class="num">Strong JavaScript, HTML and CSS — with a designer's eye underneath.</strong>
+        <p class="body">My foundation is solid front-end craft: semantic HTML, modern CSS, and JavaScript deep enough to debug what the framework is doing rather than just what it renders. Before engineering, I worked as a digital designer at Optus and Telstra, and it shows in the details — the empty state, the error message, the loading flicker get noticed without being asked. That combination of engineering rigour and design sensibility is exactly what "improving existing products" calls for.</p>
+      </li>
+      <li>
+        <strong class="num">State management chosen for the problem, not the fashion.</strong>
+        <p class="body">I have worked across the React state-management spectrum — Context API for lightweight shared state, Redux-style stores for predictable application state, and modern alternatives where they fit better — and my rule is consistent: use the lightest tool that keeps the app predictable, testable and easy for the next developer to reason about. On a long-lived enterprise codebase, that discipline is what keeps state from becoming the part of the app nobody wants to touch.</p>
+      </li>
+      <li>
+        <strong class="num">REST APIs in production — including the parts that go wrong.</strong>
+        <p class="body">I owned Apliqo UX's production integrations end to end: REST API design and consumption, authentication, rate limits, versioning and outage response, connecting the platform with TM1's REST API and third-party services. I know how to build front ends that behave well when the backend doesn't — graceful degradation, clear loading and error states, retries that respect the server — because I have been the person on the other end of the outage call.</p>
+      </li>
+      <li>
+        <strong class="num">Frontend architecture, performance and best practices — and the mentoring to spread them.</strong>
+        <p class="body">As Lead AI Architect and Product Owner I set architecture, tooling and implementation standards with technical leads, and mentored 10+ developers — including on performance engineering for analytics-heavy, big-data workloads where front-end choices directly affect perceived speed. I contribute to architecture discussions with pragmatism: patterns that serve the product, documented decisions, and code reviews that raise the team's bar rather than just the reviewer's.</p>
+      </li>
+      <li>
+        <strong class="num">Collaboration across Product, UX, Backend and QA.</strong>
+        <p class="body">I have sat on both sides of the product-engineering line: as Product Owner I turned loosely defined opportunities into shipped, measured features, working daily with design, backend and business stakeholders; as a developer I have participated in agile ceremonies, estimated honestly, communicated progress and risks in plain language, and treated QA as a partner in quality rather than a gate at the end. I am productive in a collaborative team from week one.</p>
+      </li>
+    </ol>
+
+    <p>One more thing worth knowing: I established AI-assisted development practices (Claude, Cursor, Codex) across the Cubewise engineering team — prompting, iterating, validating and reviewing AI-produced code. Used well, these tools meaningfully speed up feature delivery without compromising quality, and I would bring that working knowledge to your team from day one.</p>
+
+    <p>I am Sydney-based, hold unrestricted Australian work rights, and am available for an immediate start on the six-month contract, with genuine interest in an extension should the fit be right.</p>
+
+    <p>Thank you for your time, Kanak — I would welcome a confidential chat about how my React and TypeScript experience can contribute to the team's enterprise applications.</p>
+
+    <div class="signoff">
+      <p>Yours sincerely,</p>
+      <p class="name">Ilia Shapiro</p>
+    </div>
+
+    <div class="attachments">
+      Attached: CV — Frontend Software Engineer, React &amp; TypeScript (Ilia Shapiro)
+    </div>
+  </div>
+</article>
+
+<script>
+async function copyLetter() {
+  const el = document.getElementById("letter");
+  const text = el.innerText.replace(/\n{3,}/g, "\n\n").trim();
+  const btn = document.getElementById("copyBtn");
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = "Copied";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy letter text";
+      btn.classList.remove("copied");
+    }, 2000);
+  } catch {
+    btn.textContent = "Copy failed";
+  }
+}
+</script>
+
+</body>
+</html>

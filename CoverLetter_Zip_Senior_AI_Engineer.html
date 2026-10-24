@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter — Senior AI Engineer, Zip — Ilia Shapiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15202b;
+    --muted: #4a5a6a;
+    --line: #c8d4e0;
+    --accent: #0d5c63;
+    --accent-soft: #e6f2f3;
+    --paper: #fbfcfe;
+    --bg-1: #dce8ef;
+    --bg-2: #e8f0e9;
+    --ok: #1a7a4a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(13, 92, 99, 0.12), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 90% 10%, rgba(40, 90, 140, 0.1), transparent 50%),
+      linear-gradient(165deg, var(--bg-1), var(--bg-2) 55%, #e4ebe8);
+    min-height: 100vh;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: rgba(251, 252, 254, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toolbar span { font-size: 13px; color: var(--muted); }
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn:hover { filter: brightness(1.05); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent);
+    
+  }
+
+  .btn.copied { color: var(--ok) !important; border-color: var(--ok); }
+
+  .sheet {
+    max-width: 820px;
+    margin: 32px auto 48px;
+    padding: 52px 56px 48px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 40px rgba(21, 32, 43, 0.08);
+  }
+
+  header.hero {
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+
+  header.hero h1 {
+    margin: 0;
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 2.85rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .role { margin: 10px 0 0; font-size: 1.05rem; font-weight: 600; color: var(--accent); }
+
+  .meta-line { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); font-style: italic; }
+
+  .contact {
+    margin: 14px 0 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .contact a { color: var(--accent); text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
+
+  .salutation { margin: 0 0 16px; font-weight: 600; }
+
+  .letter p { margin: 0 0 16px; text-align: justify; hyphens: auto; }
+
+  h2 {
+    margin: 28px 0 14px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .themes { list-style: none; margin: 0; padding: 0; }
+
+  .themes li {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+
+  .themes li:last-child { margin-bottom: 0; }
+
+  .themes strong.num {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  .themes .body { margin: 0; font-size: 0.94rem; text-align: justify; hyphens: auto; }
+
+  .signoff { margin-top: 28px; }
+
+  .signoff .name {
+    margin-top: 28px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .attachments {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .sheet { margin: 16px 12px 32px; padding: 28px 20px; }
+    .letter p,
+    .themes .body { text-align: left; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet {
+      margin: 0;
+      max-width: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    .themes li {
+      background: transparent;
+      border-left-color: #999;
+      padding-left: 10px;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" type="button" id="copyBtn" onclick="copyLetter()">Copy letter text</button>
+  <button class="btn ghost" type="button" onclick="window.open('Ilia_Shapiro_CV_Zip_Senior_AI_Engineer.html', '_blank')">Open CV</button>
+  <span>Print outputs the letter only — toolbar is screen-only</span>
+</div>
+
+<article class="sheet" id="letter">
+  <header class="hero">
+    <h1>Ilia Shapiro</h1>
+    <p class="role">Senior AI Engineer · Data &amp; AI Squad — Zip</p>
+    <p class="meta-line">Production agentic AI in Python · AWS &amp; Kubernetes · React/Next.js · shipped to Amazon, AWS &amp; ZKB · mentoring at scale</p>
+    <div class="contact">
+      <span>Sydney, Australia <br>
+      0466 076 898<br>
+      <a href="mailto:reward2learn@gmail.com">reward2learn@gmail.com</a><br>
+      <a href="https://linkedin.com/in/iliashapiro" target="_blank" rel="noopener">linkedin.com/in/iliashapiro</a><br>
+      <a href="https://github.com/reward2learn" target="_blank" rel="noopener">github.com/reward2learn</a><br></span>
+    </div>
+  </header>
+
+  <div class="letter">
+    <p class="salutation">Dear Zip Hiring Team,</p>
+
+    <p>I'm applying for the Senior AI Engineer role in Zip's Data &amp; AI Squad. For the last two years at Cubewise I architected and shipped <strong>AVA</strong> — a production agentic AI assistant built on a Python stack (LangChain/LangGraph, LlamaIndex, Ragas/LangSmith, GCP) — end to end, from technical discovery through to launch in September 2025 with deployments at Amazon, AWS and ZKB. That is exactly the journey this role describes: production-grade AI that survives governance reviews and delivers real customer value. I'm Sydney-based, have unrestricted Australian work rights, and am available immediately.</p>
+
+    <h2>What I bring to the role</h2>
+    <ol class="themes">
+      <li>
+        <strong class="num">1. Production-grade AI software and platforms — designed, built and scaled.</strong>
+        <p class="body">At Cubewise I owned AVA, the enterprise AI assistant on the Apliqo UX platform, end to end: vision, architecture, backlog, delivery and rollout. The stack was production Python — LangChain/LangGraph agent orchestration with supervisor patterns, tool use and human-in-the-loop gates; LlamaIndex retrieval with advanced RAG (chunking strategy, hybrid retrieval, reranking) grounded on enterprise TM1 data; built on cloud infrastructure. It launched in September 2025 and is deployed at Amazon, AWS and ZKB.</p>
+      </li>
+      <li>
+        <strong class="num">2. Python with modern cloud technologies — AWS and Kubernetes.</strong>
+        <p class="body">My daily stack is Python (FastAPI/Flask services, LangGraph agents) delivered cloud-natively: AWS services including Lambda, API Gateway, S3, DynamoDB, ECS, RDS and Cognito, alongside GCP/Vertex AI where the AI workload lives. I've built and maintained the surrounding platform — Docker, Kubernetes (GKE/EKS), Terraform infrastructure as code, and CI/CD with GitHub Actions and ArgoCD delivering zero-downtime, blue-green/canary releases.</p>
+      </li>
+      <li>
+        <strong class="num">3. Scalable AI products with React or Next.js where appropriate.</strong>
+        <p class="body">I'm a full-stack engineer first: nine years building React/TypeScript products, including the Apliqo UX white-label FP&amp;A platform deployed to seven-plus enterprises including Westpac, Amazon, AWS and Optus. For AVA I designed the conversational experience itself — streaming responses, citation displays, document search — so I understand both the agent layer in Python and the AI-powered product experience in React/Next.js that customers actually touch.</p>
+      </li>
+      <li>
+        <strong class="num">4. Reliable, secure, observable AI systems — from day one.</strong>
+        <p class="body">I established the model-evaluation approach used across our platform: Ragas faithfulness and grounding metrics with LangSmith tracing, plus model routing by use case. Responsible-AI controls — guardrails, hallucination mitigation, PII handling — were designed in from the start and passed governance reviews at Amazon, AWS and ZKB, clients as demanding on security and risk as any Australian financial-services business.</p>
+      </li>
+      <li>
+        <strong class="num">5. Mentoring, stakeholder partnership and technical direction.</strong>
+        <p class="body">As Lead AI Architect and Product Owner I set AI architecture and tooling standards with technical leads, mentored 10+ developers on AI implementation patterns, and trained 30+ consultants. I partnered with technical and non-technical stakeholders to balance experimentation speed against long-term platform quality — and I practice what I preach about embracing AI tools: I've established AI-assisted development practices (Claude, Cursor, Codex) that our whole engineering team works to.</p>
+      </li>
+    </ol>
+
+    <p>Zip's values map naturally onto how I work: customer-first because I came to engineering from digital design and still obsess over the experience the customer actually gets; own it because AVA was mine from whiteboard to production; and pragmatic risk management because everything I shipped went through enterprise security, governance and evaluation gates at regulated clients. I'd love to bring that same end-to-end ownership to Zip's AI platform.</p>
+
+    <p>I live in Sydney and am happy in the office for team connection days, I have unrestricted work rights in Australia, and I can start immediately. I'd welcome a conversation about how I can help shape the future direction of Zip's AI platform.</p>
+
+    <p>Thank you for your time and consideration — I look forward to hearing from you.</p>
+
+    <div class="signoff">
+      <p>Kind regards,</p>
+      <p class="name">Ilia Shapiro</p>
+    </div>
+
+    <div class="attachments">
+      Attached: CV — Ilia Shapiro, Senior AI Engineer (Tailored for Zip)
+    </div>
+  </div>
+</article>
+
+<script>
+async function copyLetter() {
+  const el = document.getElementById("letter");
+  const text = el.innerText.replace(/\n{3,}/g, "\n\n").trim();
+  const btn = document.getElementById("copyBtn");
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = "Copied";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy letter text";
+      btn.classList.remove("copied");
+    }, 2000);
+  } catch {
+    btn.textContent = "Copy failed";
+  }
+}
+</script>
+
+</body>
+</html>
