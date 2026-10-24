@@ -444,9 +444,10 @@ function finishSession(acc) {
       acc.pct +
       "%</strong></p>" +
       '<p class="wtd-3d-metric">Physics drop + hue sequencing — playable demo of spatial planning under gravity (level <code>rainbow3d</code>).</p>' +
+      '<div class="wtd-3d-start-center"><button type="button" class="btn big" id="wtdRainbowAgain">Start Again</button></div>' +
       "</div>"
   );
-  setControls('<button type="button" class="btn big" id="wtdRainbowAgain">Start Again</button>');
+  setControls("");
   submitRun(timeMs, acc.pct);
 }
 
@@ -606,9 +607,10 @@ function showIntro() {
   setHud(
     "<h3>Rainbow 3D Builder</h3>" +
       "<p>Seven coloured blocks fall under gravity. Drag and stack them into spectrum order left-to-right.</p>" +
-      '<p class="wtd-3d-metric">Tracked: time + order accuracy → cloud leaderboard (<code>rainbow3d</code>).</p>'
+      '<p class="wtd-3d-metric">Tracked: time + order accuracy → cloud leaderboard (<code>rainbow3d</code>).</p>' +
+      '<div class="wtd-3d-start-center"><button type="button" class="btn big" id="wtdRainbowStart">Start rainbow build</button></div>'
   );
-  setControls('<button type="button" class="btn big" id="wtdRainbowStart">Start rainbow build</button>');
+  setControls("");
 }
 
 function init() {

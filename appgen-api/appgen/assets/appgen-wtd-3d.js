@@ -1341,11 +1341,10 @@ function finishSession() {
       eff +
       "</strong> — higher when accurate recall meets shorter total time.</p>" +
       '<p class="wtd-3d-metric">Method: visuospatial encoding → delayed object–location recall (supported in cognitive training literature for working memory and episodic binding).</p>' +
+      '<div class="wtd-3d-start-center"><button type="button" class="btn big" id="wtd3dAgain">Start Again</button></div>' +
       "</div>"
   );
-  setControls(
-    '<button type="button" class="btn big" id="wtd3dAgain">Start Again</button>'
-  );
+  setControls("");
   submitRun(timeMs, accuracyPct, wrongAttempts);
 }
 
@@ -1375,11 +1374,10 @@ function showIntro() {
       (peak > 0
         ? '<p class="wtd-3d-metric">Personal best level: <strong>' + peak + "</strong>.</p>"
         : "") +
-      '<p class="wtd-3d-metric">Tracked: total time, recall accuracy, efficiency index → cloud leaderboard (<code>spatial3d</code>).</p>'
+      '<p class="wtd-3d-metric">Tracked: total time, recall accuracy, efficiency index → cloud leaderboard (<code>spatial3d</code>).</p>' +
+      '<div class="wtd-3d-start-center"><button type="button" class="btn big" id="wtd3dStart">Start 3D session</button></div>'
   );
-  setControls(
-    '<button type="button" class="btn big" id="wtd3dStart">Start 3D session</button>'
-  );
+  setControls("");
 }
 
 /** Cancels a pending auto-start from a prior init() if mode closes / re-enters. */

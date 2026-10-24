@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="appgen/assets/appgen-doc.css">
 <link rel="stylesheet" href="appgen/assets/appgen-print.css" media="print">
-<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261024-chrome-avatar-lb-v1">
+<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261024-snl-invite-modal-v1">
 <style>
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -92,64 +92,144 @@
   .preview-doc-toolbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 6px;
   }
   .preview-doc-toolbar__groups {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
   }
   .toolbar-group {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: stretch;
     align-items: center;
+    gap: 8px;
+    width: 100%;
     padding: 8px 12px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.55);
+    transition: background 0.2s ease;
+  }
+  .toolbar-group:hover {
+    background: rgba(255, 255, 255, 0.75);
   }
   body.dark-copy .toolbar-group {
     background: rgba(20, 28, 36, 0.55);
   }
+  body.dark-copy .toolbar-group:hover {
+    background: rgba(20, 28, 36, 0.75);
+  }
   .toolbar-group-label {
-    flex: 0 0 100%;
-    font-size: 10px;
+    flex: 0 0 auto;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--muted);
-    margin: 0 0 2px;
+    margin: 0;
+    white-space: nowrap;
   }
-  .toolbar-group-actions {
-    display: flex;
-    flex-wrap: wrap;
+  .toolbar-group-primary {
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+  .toolbar-group-primary .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .toolbar-group-expand {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+  .toolbar-group-expand-btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px 8px;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    width: 100%;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 6px;
   }
-  .toolbar-group-actions--menu-only {
-    justify-content: flex-end;
+  .toolbar-group-expand-btn:hover {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+  }
+  .toolbar-group-expand-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+  .toolbar-group.expanded .toolbar-group-expand-btn svg {
+    transform: rotate(180deg);
+  }
+  .toolbar-group-options {
+    display: none;
+    width: 100%;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .toolbar-group.expanded .toolbar-group-options {
+    display: flex;
   }
   .toolbar-more-wrap {
     position: relative;
-    margin-left: auto;
     flex-shrink: 0;
   }
   .toolbar-more-trigger {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 8px 10px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
   .toolbar-more-trigger .toolbar-more-dots {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     display: block;
+  }
+
+  /* Mobile: collapse by default, show primary action + expand toggle */
+  @media (max-width: 639px) {
+    .toolbar-group {
+      padding: 6px 10px;
+    }
+    .toolbar-group:not(.expanded) .toolbar-group-options {
+      display: none;
+    }
+    .toolbar-group:not(.expanded) .toolbar-group-expand-btn {
+      display: inline-flex;
+    }
+    .toolbar-group-primary {
+      display: inline-flex;
+    }
+    .toolbar-group-label {
+      font-size: 10px;
+    }
+  }
+
+  /* Desktop: always expanded, hide expand toggle */
+  @media (min-width: 640px) {
+    .toolbar-group-expand-btn {
+      display: none !important;
+    }
+    .toolbar-group-options {
+      display: flex !important;
+    }
+    .toolbar-group {
+      padding: 8px 12px;
+    }
   }
   .toolbar-more-menu {
     position: absolute;
@@ -178,41 +258,115 @@
     align-self: flex-start;
     margin: 2px 8px 4px;
   }
+
+  /* Toolbar More Dialog (modal) */
+  .toolbar-more-dialog {
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: var(--paper);
+    box-shadow: 0 24px 48px rgba(21, 32, 43, 0.18);
+    min-width: min(280px, 92vw);
+    max-width: 92vw;
+    max-height: 80vh;
+    overflow: hidden;
+    bottom: 0px;
+  }
+  .toolbar-more-dialog::backdrop {
+    background: rgba(21, 32, 43, 0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: toolbarDialogBackdropIn 0.15s ease-out;
+  }
+  .toolbar-more-dialog[open] {
+    animation: toolbarDialogIn 0.2s ease-out;
+  }
+  .toolbar-more-dialog__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+  }
+  .toolbar-more-dialog__content .btn {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toolbar-more-dialog-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: currentColor;
+  }
+  .toolbar-more-dialog__content .edit-badge {
+    align-self: flex-start;
+    margin: 2px 8px 4px;
+  }
+
+  @keyframes toolbarDialogBackdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes toolbarDialogIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
   .preview-doc-toolbar .toolbar-share-meta {
     max-width: none;
     margin: 0;
   }
   .preview-doc-toolbar .toolbar-doc-hint {
     margin: 0;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
-    line-height: 1.4;
+    line-height: 1.3;
   }
 
   .doc-share-footer {
     max-width: 820px;
-    margin: 0 auto 16px;
-    padding: 12px 16px;
+    margin: 0 auto 8px;
+    padding: 8px 12px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px 14px;
+    gap: 6px 10px;
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: 6px;
     background: var(--shell-bar, rgba(255, 255, 255, 0.92));
-    font-size: 13px;
+    font-size: 11px;
     color: var(--muted);
+    transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease, margin 0.2s ease;
+    overflow: hidden;
   }
-  .doc-share-footer span { flex: 1 1 14rem; min-width: 0; line-height: 1.4; }
+  .doc-share-footer.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 12px;
+    margin: 0 auto;
+    border-color: transparent;
+    background: transparent;
+  }
+  .doc-share-footer span { flex: 1 1 12rem; min-width: 0; line-height: 1.3; }
   .doc-share-footer .share-footer-error {
     flex: 1 1 100%;
     color: #b42318;
-    font-size: 12px;
-    line-height: 1.35;
+    font-size: 10px;
+    line-height: 1.25;
   }
   .doc-share-footer .share-footer-auth {
     flex: 0 0 auto;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: var(--muted);
@@ -224,6 +378,35 @@
     background: rgba(20, 28, 36, 0.92);
   }
   body.dark-copy .doc-share-footer .share-footer-error { color: #f97066; }
+
+  .toolbar-footer-toggle {
+    display: none;
+    width: 100%;
+    text-align: center;
+    padding: 4px 0;
+    margin-top: 4px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+  .toolbar-footer-toggle:hover {
+    color: var(--accent);
+  }
+  .toolbar-footer-toggle svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+    transition: transform 0.2s ease;
+  }
+  .doc-share-footer.collapsed + .toolbar-footer-toggle svg,
+  .toolbar-doc-hint.collapsed + .toolbar-footer-toggle svg {
+    transform: rotate(-90deg);
+  }
   body.dark-copy .doc-share-footer .share-footer-auth[data-signed="1"] { color: #75e0a7; }
   body.dark-copy .doc-share-footer .share-footer-auth[data-signed="0"] { color: #f97066; }
 
@@ -1044,15 +1227,15 @@
           <div id="appgenLabPickerMenuIntake" class="appgen-lab-picker-menu" role="menu" hidden>
             <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="cognitive"><span class="appgen-lab-picker-icon" aria-hidden="true">🐉</span> Cognitive Training <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
-            
-            </div>
-            <div class="appgen-lab-picker-row" role="none">
-              <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="chess"><span class="appgen-lab-picker-icon" aria-hidden="true">♟</span> Chess tutor <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
               
             </div>
             <div class="appgen-lab-picker-row" role="none">
+              <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="chess"><span class="appgen-lab-picker-icon" aria-hidden="true">♟</span> Chess tutor <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
+             
+            </div>
+            <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="snl"><span class="appgen-lab-picker-icon" aria-hidden="true">🎲</span> Snakes &amp; ladders</button>
-            
+              
             </div>
             <p id="appgenPwaInstallStatus" class="appgen-lab-picker-status" hidden role="status"></p>
           </div>
@@ -1179,15 +1362,15 @@
           <div id="appgenLabPickerMenuPreview" class="appgen-lab-picker-menu" role="menu" hidden>
             <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="cognitive"><span class="appgen-lab-picker-icon" aria-hidden="true">🐉</span> Cognitive Training <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
-              
+              <button type="button" class="btn ghost appgen-lab-install-btn" data-appgen-install="lab" title="Add Cognitive Training to Home Screen">Add</button>
             </div>
             <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="chess"><span class="appgen-lab-picker-icon" aria-hidden="true">♟</span> Chess tutor <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
-             
+              <button type="button" class="btn ghost appgen-lab-install-btn" data-appgen-install="chess" title="Add Chess to Home Screen">Add</button>
             </div>
             <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="snl"><span class="appgen-lab-picker-icon" aria-hidden="true">🎲</span> Snakes &amp; ladders</button>
-             
+              <button type="button" class="btn ghost appgen-lab-install-btn" data-appgen-install="snl" title="Add Snakes &amp; Ladders to Home Screen">Add</button>
             </div>
             <p class="appgen-lab-picker-status" data-appgen-pwa-hint hidden role="status"></p>
           </div>
@@ -1255,57 +1438,79 @@
     <div class="preview-doc-toolbar__groups">
       <div class="toolbar-group" data-toolbar-group="letter">
         <span class="toolbar-group-label">Cover letter</span>
-        <div class="toolbar-group-actions">
+        <div class="toolbar-group-primary">
           <button class="btn" type="button" onclick="printDoc('letter')">Print / Save as PDF</button>
           <span class="edit-badge" id="editLetterBadge" hidden>Editing</span>
+        </div>
+        <div class="toolbar-group-expand">
+          <button type="button" class="toolbar-group-expand-btn" aria-label="Expand cover letter options" aria-expanded="false" onclick="toggleToolbarGroup(this)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 10l5 5 5-5"/></svg></button>
+        </div>
+        <div class="toolbar-group-options">
           <div class="toolbar-more-wrap">
-            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="toolbarMoreLetter" aria-label="More cover letter actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
-            <div class="toolbar-more-menu" id="toolbarMoreLetter" role="menu" hidden>
-              <button class="btn ghost" type="button" role="menuitem" id="btnBatchDownload" hidden onclick="batchDownloadZip()">Batch download (ZIP)</button>
-              <button class="btn ghost" type="button" role="menuitem" id="editLetterBtn" onclick="toggleDocEdit('letter')">Edit</button>
-              <button class="btn ghost" type="button" role="menuitem" id="copyLetterBtn" onclick="copyDoc('letter','copyLetterBtn')">Copy letter text</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="copyShareUrl('letter', this)">Copy document URL</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="openShareUrl('letter', this)">Open URL in new tab</button>
-            </div>
+            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="dialog" aria-label="More cover letter actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
+            <dialog id="toolbarMoreLetter" class="toolbar-more-dialog">
+              <div class="toolbar-more-dialog__content">
+                <button class="btn ghost" type="button" id="btnBatchDownload" hidden onclick="batchDownloadZip(); closeToolbarDialog('toolbarMoreLetter')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Batch download (ZIP)</button>
+                <button class="btn ghost" type="button" id="editLetterBtn" onclick="toggleDocEdit('letter'); closeToolbarDialog('toolbarMoreLetter')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit</button>
+                <button class="btn ghost" type="button" id="copyLetterBtn" onclick="copyDoc('letter','copyLetterBtn'); closeToolbarDialog('toolbarMoreLetter')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>Copy letter text</button>
+                <button class="btn ghost" type="button" onclick="copyShareUrl('letter', this); closeToolbarDialog('toolbarMoreLetter')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 9h4V6h3l7 7-7 7v-3h-4v-6H9V6H6v10h4v3h-7v-3H3V9h14v3h-7zm-1 2h6v-2h-6v2z"/></svg>Copy document URL</button>
+                <button class="btn ghost" type="button" onclick="openShareUrl('letter', this); closeToolbarDialog('toolbarMoreLetter')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>Open URL in new tab</button>
+              </div>
+            </dialog>
           </div>
         </div>
       </div>
       <div class="toolbar-group" data-toolbar-group="cv" hidden>
         <span class="toolbar-group-label">CV</span>
-        <div class="toolbar-group-actions">
+        <div class="toolbar-group-primary">
           <button class="btn" type="button" onclick="printDoc('cv')">Print / Save as PDF</button>
           <span class="edit-badge" id="editCvBadge" hidden>Editing</span>
+        </div>
+        <div class="toolbar-group-expand">
+          <button type="button" class="toolbar-group-expand-btn" aria-label="Expand CV options" aria-expanded="false" onclick="toggleToolbarGroup(this)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 10l5 5 5-5"/></svg></button>
+        </div>
+        <div class="toolbar-group-options">
           <div class="toolbar-more-wrap">
-            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="toolbarMoreCv" aria-label="More CV actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
-            <div class="toolbar-more-menu" id="toolbarMoreCv" role="menu" hidden>
-              <button class="btn ghost" type="button" role="menuitem" id="btnBatchDownloadCv" hidden onclick="batchDownloadZip()">Batch download (ZIP)</button>
-              <button class="btn ghost" type="button" role="menuitem" id="editCvBtn" onclick="toggleDocEdit('cv')">Edit</button>
-              <button class="btn ghost" type="button" role="menuitem" id="copyCvBtn" onclick="copyDoc('cv','copyCvBtn')">Copy CV text</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="copyShareUrl('cv', this)">Copy document URL</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="openShareUrl('cv', this)">Open URL in new tab</button>
-            </div>
+            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="dialog" aria-label="More CV actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
+            <dialog id="toolbarMoreCv" class="toolbar-more-dialog">
+              <div class="toolbar-more-dialog__content">
+                <button class="btn ghost" type="button" id="btnBatchDownloadCv" hidden onclick="batchDownloadZip(); closeToolbarDialog('toolbarMoreCv')">Batch download (ZIP)</button>
+                <button class="btn ghost" type="button" id="editCvBtn" onclick="toggleDocEdit('cv'); closeToolbarDialog('toolbarMoreCv')">Edit</button>
+                <button class="btn ghost" type="button" id="copyCvBtn" onclick="copyDoc('cv','copyCvBtn'); closeToolbarDialog('toolbarMoreCv')">Copy CV text</button>
+                <button class="btn ghost" type="button" onclick="copyShareUrl('cv', this); closeToolbarDialog('toolbarMoreCv')">Copy document URL</button>
+                <button class="btn ghost" type="button" onclick="openShareUrl('cv', this); closeToolbarDialog('toolbarMoreCv')">Open URL in new tab</button>
+              </div>
+            </dialog>
           </div>
         </div>
       </div>
       <div class="toolbar-group" data-toolbar-group="app">
         <span class="toolbar-group-label">Application</span>
-        <div class="toolbar-group-actions toolbar-group-actions--menu-only">
+        <div class="toolbar-group-primary" style="display: none;"></div>
+        <div class="toolbar-group-expand">
+          <button type="button" class="toolbar-group-expand-btn" aria-label="Expand application options" aria-expanded="false" onclick="toggleToolbarGroup(this)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 10l5 5 5-5"/></svg></button>
+        </div>
+        <div class="toolbar-group-options">
           <div class="toolbar-more-wrap">
-            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="toolbarMoreApp" aria-label="More application actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
-            <div class="toolbar-more-menu" id="toolbarMoreApp" role="menu" hidden>
-              <button class="btn ghost" type="button" role="menuitem" data-toolbar-switch="cv" onclick="showDoc('cv')">Open CV</button>
-              <button class="btn ghost" type="button" role="menuitem" data-toolbar-switch="letter" hidden onclick="showDoc('letter')">Open cover letter</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="openSettings()">Settings</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="saveToCloudClick(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Save to cloud</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="showSaved()">Saved applications</button>
-              <button class="btn ghost" type="button" role="menuitem" onclick="backToEditor()">Back to editor</button>
-            </div>
+            <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="dialog" aria-label="More application actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
+            <dialog id="toolbarMoreApp" class="toolbar-more-dialog">
+              <div class="toolbar-more-dialog__content">
+                <button class="btn ghost" type="button" data-toolbar-switch="cv" onclick="showDoc('cv'); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H6V4h7v5h5v11z"/></svg>Open CV</button>
+                <button class="btn ghost" type="button" data-toolbar-switch="letter" hidden onclick="showDoc('letter'); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H6V4h7v5h5v11z"/></svg>Open cover letter</button>
+                <button class="btn ghost" type="button" onclick="openSettings(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>Settings</button>
+                <button class="btn ghost" type="button" onclick="saveToCloudClick(this); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path fill="currentColor" d="M17 21v-8H7v8M7 3v5h8"/></svg>Save to cloud</button>
+                <button class="btn ghost" type="button" onclick="showSaved(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>Saved applications</button>
+                <button class="btn ghost" type="button" onclick="backToEditor(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back to editor</button>
+              </div>
+            </dialog>
           </div>
         </div>
       </div>
     </div>
    
-   
+    <button type="button" class="toolbar-footer-toggle" aria-label="Toggle share link" aria-expanded="false" onclick="toggleShareFooter(this)" hidden><span>Share link</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 10l5 5 5-5"/></svg></button>
+    <p class="toolbar-doc-hint" id="previewToolbarDocHint">Edit toggles click-to-change on the letter · Print uses the live preview (including your edits) — toolbar is screen-only</p>
+    <button type="button" class="toolbar-footer-toggle" aria-label="Toggle help hint" aria-expanded="false" onclick="toggleDocHint(this)"><span>Help</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 10l5 5 5-5"/></svg></button>
   </div>
 </div>
 
@@ -1595,8 +1800,11 @@
             <div id="wtdLevelList" class="wtd-level-list"></div>
           </aside>
           <div class="wtd-primary">
-            <section class="wtd-arena-section" aria-label="Active training game">
-              <div class="wtd-arena" id="wtdArena" aria-live="polite"></div>
+            <section class="wtd-2d-play" aria-label="Cognitive Training mini-games">
+              <div id="wtd2dHud" class="wtd-3d-hud"></div>
+              <section class="wtd-arena-section" aria-label="Active training game">
+                <div class="wtd-arena" id="wtdArena" aria-live="polite"></div>
+              </section>
             </section>
           </div>
         </div>
@@ -1779,6 +1987,41 @@
             </footer>
           </div>
         </div>
+        <div id="wtdSnLOnlineInviteModal" class="wtd-chess-env-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wtdSnLOnlineInviteTitle">
+          <div class="wtd-chess-env-modal-backdrop" data-wtd-snl-online-invite-close tabindex="-1" aria-hidden="true"></div>
+          <div class="wtd-chess-env-modal-panel">
+            <header class="wtd-chess-env-modal-header">
+              <h2 id="wtdSnLOnlineInviteTitle">Online players — send invite</h2>
+              <button type="button" class="btn ghost wtd-chess-env-modal-x" data-wtd-snl-online-invite-close aria-label="Close">×</button>
+            </header>
+            <div id="wtdSnLOnlineInviteBody" class="wtd-chess-env-settings-body"></div>
+            <footer class="wtd-chess-env-modal-footer">
+              <p id="wtdSnLOnlineInviteStatus" class="wtd-chess-env-status" role="status" aria-live="polite"></p>
+              <div class="wtd-chess-env-modal-footer-end">
+                <button type="button" class="btn ghost" data-wtd-snl-online-invite-close>Cancel</button>
+                <button type="button" class="btn big" id="wtdSnLOnlineInviteSend" disabled>Send invite</button>
+              </div>
+            </footer>
+          </div>
+        </div>
+        <div id="wtdSnLInboxModal" class="wtd-chess-env-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wtdSnLInboxModalTitle">
+          <div class="wtd-chess-env-modal-backdrop" data-wtd-snl-inbox-close tabindex="-1" aria-hidden="true"></div>
+          <div class="wtd-chess-env-modal-panel">
+            <header class="wtd-chess-env-modal-header">
+              <h2 id="wtdSnLInboxModalTitle">Game invite</h2>
+              <button type="button" class="btn ghost wtd-chess-env-modal-x" data-wtd-snl-inbox-close aria-label="Close">×</button>
+            </header>
+            <div class="wtd-chess-env-settings-body">
+              <p id="wtdSnLInboxModalBody" class="wtd-snl-inbox-title"></p>
+            </div>
+            <footer class="wtd-chess-env-modal-footer">
+              <div class="wtd-chess-env-modal-footer-end wtd-snl-inbox-actions">
+                <button type="button" class="btn ghost" id="wtdSnLInboxDecline">Decline</button>
+                <button type="button" class="btn big" id="wtdSnLInboxAccept">Accept</button>
+              </div>
+            </footer>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1909,7 +2152,7 @@
 <script type="module" src="appgen/assets/appgen-wtd-3d.js?v=20261024-cognitive-3d-autostart"></script>
 <script type="module" src="appgen/assets/appgen-wtd-rainbow.js"></script>
 <script type="module" src="appgen/assets/appgen-wtd-chess.js?v=20261024-cognitive-3d-autostart"></script>
-<script type="module" src="appgen/assets/appgen-wtd-snl.js?v=20261024-cognitive-3d-autostart"></script>
+<script type="module" src="appgen/assets/appgen-wtd-snl.js?v=20261024-snl-invite-modal-v1"></script>
 <script>
 "use strict";
 
@@ -4073,7 +4316,7 @@ function setDocTitle(which) {
 
 const PREVIEW_TOOLBAR_DOC_HINT = {
   letter:
-   "",
+    "",
   cv:
     ""
 };
@@ -4090,12 +4333,61 @@ function closePreviewToolbarMenus(exceptMenu) {
   });
 }
 
+function closeToolbarDialog(dialogId) {
+  const dialog = $(dialogId);
+  if (dialog && dialog.open) {
+    dialog.close();
+  }
+}
+
+function toggleToolbarGroup(btn) {
+  const group = btn.closest('.toolbar-group');
+  if (!group) return;
+  const isExpanded = group.classList.toggle('expanded');
+  btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+  btn.setAttribute('aria-label', isExpanded ? 'Collapse options' : 'Expand options');
+}
+
+function toggleShareFooter(btn) {
+  const footer = $('#previewShareMeta');
+  if (!footer) return;
+  const isCollapsed = footer.classList.toggle('collapsed');
+  btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+  btn.hidden = isCollapsed;
+  btn.setAttribute('aria-label', isCollapsed ? 'Show share link' : 'Hide share link');
+}
+
+function toggleDocHint(btn) {
+  const hint = $('#previewToolbarDocHint');
+  if (!hint) return;
+  const isCollapsed = hint.classList.toggle('collapsed');
+  btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+  btn.hidden = isCollapsed;
+  btn.setAttribute('aria-label', isCollapsed ? 'Show help' : 'Hide help');
+}
+
 function initPreviewToolbarMoreMenus() {
   if (window.__previewToolbarMoreBound) return;
   window.__previewToolbarMoreBound = true;
   document.querySelectorAll(".toolbar-more-trigger").forEach(btn => {
     btn.addEventListener("click", e => {
       e.stopPropagation();
+      /* Current pattern: the trigger's .toolbar-more-wrap holds a
+         <dialog class="toolbar-more-dialog">. Open it as a modal; a second
+         click on the trigger toggles it closed. */
+      const wrap = btn.closest(".toolbar-more-wrap");
+      const dialog = wrap ? wrap.querySelector("dialog.toolbar-more-dialog") : null;
+      if (dialog) {
+        if (dialog.open) {
+          dialog.close();
+        } else if (typeof dialog.showModal === "function") {
+          dialog.showModal();
+        } else {
+          dialog.setAttribute("open", "");   /* ancient-browser fallback */
+        }
+        return;
+      }
+      /* Legacy dropdown-menu fallback (aria-controls + role=menu). */
       const menuId = btn.getAttribute("aria-controls");
       const menu = menuId ? $(menuId) : null;
       if (!menu) return;
@@ -4112,6 +4404,14 @@ function initPreviewToolbarMoreMenus() {
   document.querySelectorAll(".toolbar-more-menu").forEach(menu => {
     menu.addEventListener("click", e => {
       if (e.target.closest("button[role='menuitem']")) closePreviewToolbarMenus();
+    });
+  });
+  /* Outside-click parity with the old dropdown: clicking the ::backdrop
+     (dispatched at the dialog; the dialog box has padding:0 so it only
+     happens on the backdrop) closes it. Escape already works natively. */
+  document.querySelectorAll("dialog.toolbar-more-dialog").forEach(dialog => {
+    dialog.addEventListener("click", e => {
+      if (e.target === dialog) dialog.close();
     });
   });
 }
@@ -4135,6 +4435,24 @@ function syncPreviewDocToolbar() {
   if (meta) meta.setAttribute("data-share-footer", currentDoc);
   const hint = $("previewToolbarDocHint");
   if (hint) hint.textContent = PREVIEW_TOOLBAR_DOC_HINT[currentDoc] || PREVIEW_TOOLBAR_DOC_HINT.letter;
+
+  // Handle collapsible sections on mobile
+  const isMobile = window.innerWidth < 640;
+  document.querySelectorAll('.toolbar-group').forEach(group => {
+    const toggle = group.querySelector('.toolbar-group-expand-btn');
+    if (toggle) {
+      toggle.hidden = !isMobile;
+      if (isMobile && !group.classList.contains('expanded')) {
+        group.classList.remove('expanded');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Expand options');
+      } else if (!isMobile && !group.classList.contains('expanded')) {
+        group.classList.add('expanded');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Collapse options');
+      }
+    }
+  });
 }
 
 function showDoc(which) {
@@ -4230,7 +4548,7 @@ async function copyTextToClipboard(text) {
 }
 
 const SHARE_FOOTER_HINT = {
-  letterReady: "",
+  letterReady: "Shareable link for this cover letter",
   cvReady: "Shareable CV link",
   checking: "Checking sign-in…",
   saving: "Signed in — saving to the cloud and creating your link…",
@@ -5250,6 +5568,7 @@ function showPreviewNotice(text) {
 
 function saveApplicationSnapshot(state, form) {
   const a = settings.appearance;
+  const c = settings.content;
   const entry = {
     id: Date.now() + "-" + Math.random().toString(36).slice(2, 8),
     ts: Date.now(),
@@ -5267,6 +5586,10 @@ function saveApplicationSnapshot(state, form) {
     appearance: {
       layout: a.layout, primary: a.accent, secondary: a.accent2, copyBg: a.copyBackground,
       bannerUsed: a.layout === "banner" && !!a.banner
+    },
+    content: {
+      letterThemes: c.letterThemes || "",
+      openingTemplate: c.openingTemplate || ""
     }
   };
   const list = loadSaved();
@@ -5410,17 +5733,36 @@ function safeId(id) {
 function isSafeStr(s) { return typeof s === "string" && s.length <= 200; }
 
 /* Apply a saved appearance snapshot (layout/colours/copyBg) without touching
-   the user's settings — the next generate() re-applies their current settings. */
+   the user's settings — the next generate() re-applies their current settings.
+   Two snapshot shapes exist in the wild: local saves store
+   {layout, primary, secondary, copyBg} while cloud records store the
+   server-PDF shape {layout, accent, accent2, copyBackground}. Accept both, and
+   fall back to the user's current appearance for anything the snapshot does
+   not carry — older/empty records must never silently reset the page light. */
 function applyAppearanceSnapshot(a) {
   a = a || {};
+  const cur = (typeof settings !== "undefined" && settings.appearance) || {};
+  const copyBg = a.copyBg || a.copyBackground || cur.copyBackground || "white";
+  const isDark = copyBg === "black";
   const b = document.body;
   LAYOUTS.forEach(l => b.classList.remove("layout-" + l));
-  b.classList.add("layout-" + (a.layout || "classic"));
-  b.classList.toggle("dark-copy", a.copyBg === "black");
-  applyAccentCssVars(a.primary || "#0d5c63", a.secondary || "#ff6600", a.copyBg === "black" ? "black" : "white");
+  b.classList.add("layout-" + (a.layout || cur.layout || "classic"));
+  b.classList.toggle("dark-copy", isDark);
+  applyAccentCssVars(
+    a.primary || a.accent || cur.accent || "#0d5c63",
+    a.secondary || a.accent2 || cur.accent2 || "#ff6600",
+    isDark ? "black" : "white"
+  );
   /* Banner images are hydrated into <img class="banner-img"> elements by
      hydrateBannerImages() — the entry's bannerUsed flag says whether to
      expect them. No background var needed. */
+}
+
+function applyContentSnapshot(c) {
+  c = c || {};
+  const content = settings.content;
+  content.letterThemes = c.letterThemes || "";
+  content.openingTemplate = c.openingTemplate || "";
 }
 
 function loadSavedEntry(id) {
@@ -5448,6 +5790,7 @@ function restoreEntry(entry) {
   $("matchSub").textContent = entry.matchSub || "";
   renderGapPanel(entry.gapItems || [], detectModes(currentJob.title));
   applyAppearanceSnapshot(entry.appearance);
+  applyContentSnapshot(entry.content);
   /* So the explicit "Save to cloud" button re-upserts this exact application. */
   lastGenerated = {
     job: currentJob, jd: entry.jd || "",
@@ -8925,6 +9268,17 @@ window.addEventListener("hashchange", () => {
   }
   routeAppgenHash();
 });
+
+// Handle responsive toolbar collapsing
+let toolbarResizeTimer = 0;
+window.addEventListener("resize", () => {
+  clearTimeout(toolbarResizeTimer);
+  toolbarResizeTimer = setTimeout(() => {
+    syncPreviewDocToolbar();
+  }, 100);
+});
+
+syncPreviewDocToolbar();
 </script>
 </body>
 </html>

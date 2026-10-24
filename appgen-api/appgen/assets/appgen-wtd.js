@@ -682,6 +682,7 @@
       if (window.AppgenWtdChess) window.AppgenWtdChess.onClose();
       if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
       runState = null;
+      render2dHud();
       renderArena();
     }
     syncWtdMobileChessLabUi();
@@ -1153,6 +1154,7 @@
     $("wtdPickLevel").addEventListener("click", () => {
       runState = null;
       if (window.AppgenWtdSessionModal) window.AppgenWtdSessionModal.close();
+      render2dHud();
       renderArena();
     });
   }
@@ -1170,6 +1172,16 @@
       escapeHtml(level.intro) +
       '</p><button type="button" class="btn big" id="wtdStartLevel">Start level</button></div>'
     );
+  }
+
+  function render2dHud() {
+    const hudEl = $("wtd2dHud");
+    if (!hudEl) return;
+    hudEl.hidden = false;
+    hudEl.removeAttribute("hidden");
+    hudEl.innerHTML =
+      "<h3>Cognitive Training</h3>" +
+      '<p class="wtd-3d-metric">Neuroscience-inspired micro-training — inhibition, memory, switching, reasoning, attention. Pick a level from the sidebar to begin.</p>';
   }
 
   function renderArena() {
@@ -1207,6 +1219,7 @@
       onExit: () => {
         runState = null;
         stopTimer();
+        render2dHud();
         renderArena();
       }
     });

@@ -144,6 +144,14 @@ let snlSettingsOpen = false;
 let snlSettingsBound = false;
 let snlGameOverBound = false;
 let snlRollDiceBtnBound = false;
+/** Draft piece while SNL settings modal is open. */
+let snlPieceDraft = "p";
+let onlineInviteModalOpen = false;
+let onlineInviteModalBound = false;
+let inboxModalOpen = false;
+let inboxModalBound = false;
+/** @type {object | null} */
+let activeInboxItem = null;
 /** @type {{ lat: number|null, lng: number|null, timezone: string|null }} */
 let deviceGeo = { lat: null, lng: null, timezone: null };
 /** @type {object[]} */
@@ -153,6 +161,8 @@ let presenceTimer = null;
 let pendingInboxInvites = [];
 /** @type {Set<string>} */
 const seenInboxIds = new Set();
+/** @type {Set<string>} */
+const notifiedInboxIds = new Set();
 let labPresenceTimer = null;
 /** Lobby token we already heartbeat for — avoid re-arming on every poll/re-render. */
 let presenceHeartbeatToken = null;
@@ -403,8 +413,8 @@ function snlLeaveBtnHtml() {
 }
 
 /**
- * Single-row dock: ⚙ · piece · …actions · leave (optional).
- * @param {string} middleHtml piece popover + phase actions
+ * Single-row dock: ⚙ · …actions · leave (optional). Piece lives in settings.
+ * @param {string} middleHtml phase actions
  * @param {{ leave?: boolean }} [opts]
  */
 function dockIconsFooter(middleHtml, opts) {
@@ -418,8 +428,8 @@ function dockIconsFooter(middleHtml, opts) {
   );
 }
 
-function dockPlayIconsFooter(pieceHtml) {
-  return dockIconsFooter(pieceHtml);
+function dockPlayIconsFooter() {
+  return dockIconsFooter("");
 }
 
 function closePieceMenu() {
@@ -536,8 +546,17 @@ function renderSnLSettingsBody() {
   const body = $("wtdSnLSettingsBody");
   if (!body || !snlSettingsDraft) return;
   const d = snlSettingsDraft;
+  const inv = getLobbyInvite();
+  const pieceSel =
+    snlPieceDraft ||
+    (inv && inv.myPiece) ||
+    loadPreferredPiece();
   body.innerHTML =
     '<p class="wtd-snl-settings-hint">Backdrop, wood board, and lighting follow the shared <strong>Chess studio</strong> settings. Open <strong>Help</strong> in the header for rules.</p>' +
+    '<div class="wtd-snl-settings-piece">' +
+    '<p class="wtd-snl-settings-hint"><strong>Your piece</strong> — chess piece token on the board.</p>' +
+    piecePickerHtml(pieceSel, { forceOpen: true }) +
+    "</div>" +
     levelPickerSettingsHtml(d.level) +
     '<div class="wtd-snl-settings-row">' +
     "<label for=\"wtdSnLLadderColor\">Ladder colour</label>" +
@@ -557,11 +576,34 @@ function renderSnLSettingsBody() {
     "<span>" +
     escapeHtml(d.snakeColor) +
     "</span></div></div>";
+  bindSettingsPiecePicker();
+}
+
+function bindSettingsPiecePicker() {
+  const details = $("wtdSnLPiecePicker");
+  if (details) {
+    details.open = true;
+    details.addEventListener("toggle", (e) => {
+      e.preventDefault();
+      details.open = true;
+    });
+  }
+  document.querySelectorAll("#wtdSnLSettingsBody [data-snl-piece]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const piece = btn.getAttribute("data-snl-piece");
+      if (!piece) return;
+      snlPieceDraft = sanitizePieceType(piece);
+      renderSnLSettingsBody();
+      setSnLSettingsStatus("Piece selected — Apply to save.");
+    });
+  });
 }
 
 function openSnLSettings() {
   snlSettings = loadSnLSettings();
   snlSettingsDraft = { ...snlSettings };
+  const inv = getLobbyInvite();
+  snlPieceDraft = sanitizePieceType((inv && inv.myPiece) || loadPreferredPiece());
   snlSettingsOpen = true;
   const modal = $("wtdSnLSettingsModal");
   if (modal) modal.hidden = false;
@@ -580,10 +622,16 @@ function closeSnLSettings() {
   setSnLSettingsStatus("");
 }
 
-function applySnLSettingsFromDraft() {
+async function applySnLSettingsFromDraft() {
   if (!snlSettingsDraft) return;
   saveSnLSettings(snlSettingsDraft);
   applyPortalMaterials();
+  const piece = sanitizePieceType(snlPieceDraft || loadPreferredPiece());
+  savePreferredPiece(piece);
+  const inv = getLobbyInvite();
+  if (inv && inv.token && inv.status === "lobby") {
+    await setMyPiece(inv.token, piece);
+  }
   if (!getLobbyInvite()) {
     setActiveBoardLevel(snlSettings.level);
     activeBoardLevelKey = null;
@@ -606,7 +654,7 @@ function bindSnLSettingsModal() {
       return;
     }
     if (t.closest("#wtdSnLSettingsApply")) {
-      applySnLSettingsFromDraft();
+      void applySnLSettingsFromDraft();
       return;
     }
     if (t.closest("#wtdSnLSettingsResetColors")) {
@@ -2567,44 +2615,99 @@ async function sendDirectLobbyInvite(targetUserId, inv) {
   );
 }
 
-function ensureInboxBanner() {
-  let el = $("wtdSnLInboxBanner");
-  if (el) return el;
-  const host = $("wtdSnLPlay");
-  if (!host) return null;
-  el = document.createElement("div");
-  el.id = "wtdSnLInboxBanner";
-  el.className = "wtd-snl-inbox-banner";
-  el.hidden = true;
-  el.setAttribute("role", "alertdialog");
-  el.setAttribute("aria-live", "polite");
-  host.appendChild(el);
-  return el;
+async function ensureNotifyPermission() {
+  if (typeof Notification === "undefined") return false;
+  if (Notification.permission === "granted") return true;
+  if (Notification.permission === "denied") return false;
+  try {
+    const p = await Notification.requestPermission();
+    return p === "granted";
+  } catch (_) {
+    return false;
+  }
 }
 
-function renderInboxBanner(item) {
-  const el = ensureInboxBanner();
-  if (!el || !item) return;
-  el.hidden = false;
-  el.innerHTML =
-    '<p class="wtd-snl-inbox-title"><strong>' +
-    escapeHtml(item.fromName || "Someone") +
-    "</strong> invited you to " +
-    escapeHtml(item.lobbyLabel || "Snakes & Ladders") +
-    '</p><div class="wtd-snl-inbox-actions">' +
-    '<button type="button" class="btn" data-snl-inbox-accept="' +
-    escapeHtml(item.id) +
-    '">Accept</button>' +
-    '<button type="button" class="btn ghost" data-snl-inbox-reject="' +
-    escapeHtml(item.id) +
-    '">Decline</button>' +
-    "</div>";
-  el.querySelector("[data-snl-inbox-accept]")?.addEventListener("click", () => {
-    void respondInboxInvite(item.id, "accept");
+function showChromeInviteNotification(item) {
+  if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+  if (!item || !item.id || notifiedInboxIds.has(item.id)) return;
+  notifiedInboxIds.add(item.id);
+  try {
+    const n = new Notification("Snakes & Ladders invite", {
+      body:
+        (item.fromName || "Someone") +
+        " invited you to " +
+        (item.lobbyLabel || "a lobby") +
+        ". Open the lab to Accept or Decline.",
+      tag: "snl-invite-" + item.id,
+      requireInteraction: true
+    });
+    n.onclick = () => {
+      try {
+        window.focus();
+      } catch (_) {
+        /* ignore */
+      }
+      n.close();
+      openInboxModal(item);
+    };
+  } catch (_) {
+    /* ignore */
+  }
+}
+
+function bindInboxModalOnce() {
+  if (inboxModalBound) return;
+  inboxModalBound = true;
+  const modal = $("wtdSnLInboxModal");
+  if (!modal) return;
+  modal.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    if (t.closest("[data-wtd-snl-inbox-close]")) {
+      closeInboxModal();
+      return;
+    }
+    if (t.closest("#wtdSnLInboxAccept") && activeInboxItem) {
+      void respondInboxInvite(activeInboxItem.id, "accept");
+      return;
+    }
+    if (t.closest("#wtdSnLInboxDecline") && activeInboxItem) {
+      void respondInboxInvite(activeInboxItem.id, "reject");
+    }
   });
-  el.querySelector("[data-snl-inbox-reject]")?.addEventListener("click", () => {
-    void respondInboxInvite(item.id, "reject");
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && inboxModalOpen) closeInboxModal();
   });
+}
+
+function openInboxModal(item) {
+  if (!item || !item.id) return;
+  bindInboxModalOnce();
+  activeInboxItem = item;
+  inboxModalOpen = true;
+  const modal = $("wtdSnLInboxModal");
+  const body = $("wtdSnLInboxModalBody");
+  if (body) {
+    body.innerHTML =
+      "<strong>" +
+      escapeHtml(item.fromName || "Someone") +
+      "</strong> invited you to " +
+      escapeHtml(item.lobbyLabel || "Snakes & Ladders") +
+      ".";
+  }
+  if (modal) modal.hidden = false;
+  document.body.classList.add("wtd-chess-env-modal-open");
+  hideInboxBanner();
+}
+
+function closeInboxModal() {
+  inboxModalOpen = false;
+  activeInboxItem = null;
+  const modal = $("wtdSnLInboxModal");
+  if (modal) modal.hidden = true;
+  if (!snlSettingsOpen && !onlineInviteModalOpen) {
+    document.body.classList.remove("wtd-chess-env-modal-open");
+  }
 }
 
 function hideInboxBanner() {
@@ -2621,6 +2724,7 @@ async function respondInboxInvite(inboxId, decision) {
     inboxId,
     decision
   });
+  closeInboxModal();
   hideInboxBanner();
   if (!data.ok) {
     setSnLAlert(data.error || "Could not update invite");
@@ -2650,7 +2754,10 @@ function processInboxItems(items) {
   const next = items.find((e) => e && e.id && !seenInboxIds.has(e.id));
   if (!next) return;
   seenInboxIds.add(next.id);
-  renderInboxBanner(next);
+  void ensureNotifyPermission().then((ok) => {
+    if (ok) showChromeInviteNotification(next);
+  });
+  if (!inboxModalOpen) openInboxModal(next);
 }
 
 function startLabPresencePolling() {

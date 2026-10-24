@@ -271,6 +271,7 @@
     max-width: 92vw;
     max-height: 80vh;
     overflow: hidden;
+    bottom: 0px;
   }
   .toolbar-more-dialog::backdrop {
     background: rgba(21, 32, 43, 0.35);
@@ -850,7 +851,7 @@
   .appgen-lab-picker-wrap { position: relative; display: inline-flex; }
   .appgen-lab-picker-menu {
     position: absolute;
-    bottom: calc(100% + 6px);
+    top: calc(100% + 6px);
     left: 0;
     z-index: 10060;
     min-width: 16.5rem;
@@ -858,7 +859,7 @@
     border-radius: 12px;
     border: 1px solid var(--line);
     background: var(--paper, #fff);
-    box-shadow: 0 -12px 40px rgba(20, 40, 50, 0.14);
+    box-shadow: 0 12px 40px rgba(20, 40, 50, 0.14);
   }
   .appgen-lab-picker-menu[hidden] { display: none !important; }
   .appgen-lab-picker-row {
@@ -1732,7 +1733,7 @@
       <div class="appgen-top-nav__left">
         <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only" type="button" id="wtdBackToAppgen" hidden onclick="closeWtd()" aria-label="Back to applications" title="Back to applications"><span class="appgen-nav-icon" aria-hidden="true">←</span><span class="appgen-nav-label">Back to applications</span></button>
         <div class="appgen-lab-picker-wrap">
-          <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only" type="button" id="appgenLabPickerBtnWtd" aria-haspopup="dialog" aria-label="Apps" title="Apps"><span class="appgen-nav-icon appgen-lab-picker-apps-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg></span><span class="appgen-nav-label">Apps</span></button>
+          <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only" type="button" id="appgenLabPickerBtnWtd" aria-haspopup="menu" aria-expanded="false" aria-controls="appgenLabPickerMenuWtd" aria-label="Apps" title="Apps"><span class="appgen-nav-icon appgen-lab-picker-apps-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg></span><span class="appgen-nav-label">Apps</span></button>
           <div id="appgenLabPickerMenuWtd" class="appgen-lab-picker-menu" role="menu" hidden>
             <div class="appgen-lab-picker-row" role="none">
               <button type="button" class="appgen-lab-picker-item" role="menuitem" data-appgen-lab="cognitive"><span class="appgen-lab-picker-icon" aria-hidden="true">🐉</span> Cognitive Training <span class="appgen-lab-offline-badge" data-appgen-offline-badge>Offline</span></button>
@@ -4371,6 +4372,22 @@ function initPreviewToolbarMoreMenus() {
   document.querySelectorAll(".toolbar-more-trigger").forEach(btn => {
     btn.addEventListener("click", e => {
       e.stopPropagation();
+      /* Current pattern: the trigger's .toolbar-more-wrap holds a
+         <dialog class="toolbar-more-dialog">. Open it as a modal; a second
+         click on the trigger toggles it closed. */
+      const wrap = btn.closest(".toolbar-more-wrap");
+      const dialog = wrap ? wrap.querySelector("dialog.toolbar-more-dialog") : null;
+      if (dialog) {
+        if (dialog.open) {
+          dialog.close();
+        } else if (typeof dialog.showModal === "function") {
+          dialog.showModal();
+        } else {
+          dialog.setAttribute("open", "");   /* ancient-browser fallback */
+        }
+        return;
+      }
+      /* Legacy dropdown-menu fallback (aria-controls + role=menu). */
       const menuId = btn.getAttribute("aria-controls");
       const menu = menuId ? $(menuId) : null;
       if (!menu) return;
@@ -4387,6 +4404,14 @@ function initPreviewToolbarMoreMenus() {
   document.querySelectorAll(".toolbar-more-menu").forEach(menu => {
     menu.addEventListener("click", e => {
       if (e.target.closest("button[role='menuitem']")) closePreviewToolbarMenus();
+    });
+  });
+  /* Outside-click parity with the old dropdown: clicking the ::backdrop
+     (dispatched at the dialog; the dialog box has padding:0 so it only
+     happens on the backdrop) closes it. Escape already works natively. */
+  document.querySelectorAll("dialog.toolbar-more-dialog").forEach(dialog => {
+    dialog.addEventListener("click", e => {
+      if (e.target === dialog) dialog.close();
     });
   });
 }
@@ -5708,14 +5733,26 @@ function safeId(id) {
 function isSafeStr(s) { return typeof s === "string" && s.length <= 200; }
 
 /* Apply a saved appearance snapshot (layout/colours/copyBg) without touching
-   the user's settings — the next generate() re-applies their current settings. */
+   the user's settings — the next generate() re-applies their current settings.
+   Two snapshot shapes exist in the wild: local saves store
+   {layout, primary, secondary, copyBg} while cloud records store the
+   server-PDF shape {layout, accent, accent2, copyBackground}. Accept both, and
+   fall back to the user's current appearance for anything the snapshot does
+   not carry — older/empty records must never silently reset the page light. */
 function applyAppearanceSnapshot(a) {
   a = a || {};
+  const cur = (typeof settings !== "undefined" && settings.appearance) || {};
+  const copyBg = a.copyBg || a.copyBackground || cur.copyBackground || "white";
+  const isDark = copyBg === "black";
   const b = document.body;
   LAYOUTS.forEach(l => b.classList.remove("layout-" + l));
-  b.classList.add("layout-" + (a.layout || "classic"));
-  b.classList.toggle("dark-copy", a.copyBg === "black");
-  applyAccentCssVars(a.primary || "#0d5c63", a.secondary || "#ff6600", a.copyBg === "black" ? "black" : "white");
+  b.classList.add("layout-" + (a.layout || cur.layout || "classic"));
+  b.classList.toggle("dark-copy", isDark);
+  applyAccentCssVars(
+    a.primary || a.accent || cur.accent || "#0d5c63",
+    a.secondary || a.accent2 || cur.accent2 || "#ff6600",
+    isDark ? "black" : "white"
+  );
   /* Banner images are hydrated into <img class="banner-img"> elements by
      hydrateBannerImages() — the entry's bannerUsed flag says whether to
      expect them. No background var needed. */
