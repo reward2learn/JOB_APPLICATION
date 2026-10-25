@@ -6,6 +6,9 @@
   let mountEl = null;
   let headerSlot = null;
   let titleEl = null;
+  let footerEl = null;
+  let actionsEl = null;
+  let actionsHome = null;
   let openFlag = false;
   let exitHandler = null;
   let restartHandler = null;
@@ -61,6 +64,11 @@
     mountEl = document.getElementById("wtdSessionModalMount");
     headerSlot = document.getElementById("wtdSessionModalTopbar");
     titleEl = document.getElementById("wtdSessionModalTitle");
+    footerEl = modal.querySelector(".wtd-session-modal-footer");
+    actionsEl = modal.querySelector(".wtd-session-modal-actions");
+    if (actionsEl) {
+      actionsHome = { parent: actionsEl.parentNode, next: actionsEl.nextSibling };
+    }
     restartBtn = document.getElementById("wtdSessionModalRestart");
     document.getElementById("wtdSessionModalExit").addEventListener("click", () => close());
     restartBtn.addEventListener("click", () => {
@@ -84,6 +92,17 @@
     headerSlot.appendChild(bar);
   }
 
+  /** Put ↻ / ✕ back in the footer — the 3D HUD borrows them while a session runs. */
+  function parkSessionActions() {
+    if (!actionsEl || !actionsHome || !actionsHome.parent) return;
+    if (actionsEl.parentNode === actionsHome.parent) return;
+    if (actionsHome.next && actionsHome.next.parentNode === actionsHome.parent) {
+      actionsHome.parent.insertBefore(actionsEl, actionsHome.next);
+    } else {
+      actionsHome.parent.appendChild(actionsEl);
+    }
+  }
+
   function notifyResize() {
     window.requestAnimationFrame(() => {
       window.dispatchEvent(new Event("resize"));
@@ -105,6 +124,13 @@
       restartBtn.hidden = !restartHandler;
       if (restartHandler) restartBtn.removeAttribute("hidden");
     }
+
+    /* 3D keeps title + ↻/✕ in the HUD bar, so the footer would be a duplicate. */
+    if (footerEl) footerEl.hidden = layout === "3d";
+    modal.setAttribute(
+      "aria-labelledby",
+      layout === "3d" ? "wtd3dHudTitle" : "wtdSessionModalTitle"
+    );
 
     /* Always clear prior session nodes (2D/3D/rainbow swap or restart). */
     restoreAll();
@@ -138,6 +164,9 @@
     modal.hidden = true;
     document.body.classList.remove("wtd-session-modal-open");
     restoreAll();
+    parkSessionActions();
+    if (footerEl) footerEl.hidden = false;
+    modal.setAttribute("aria-labelledby", "wtdSessionModalTitle");
     notifyResize();
     restartHandler = null;
     if (restartBtn) restartBtn.hidden = true;

@@ -188,6 +188,13 @@
   const ADMIN_SHIELD_ICON =
     '<svg class="appgen-auth-admin-shield" width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
 
+  /* Standalone header buttons (before the avatar) */
+  const ADMIN_SETTINGS_ICON =
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>';
+
+  const LEADERBOARD_ICON =
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>';
+
   const GOOGLE_SIGNIN_ICON =
     '<img class="appgen-auth-google-icon" src="appgen/assets/google-signin-icon.png" alt="" width="20" height="20" aria-hidden="true" decoding="async">';
 
@@ -249,11 +256,6 @@
     }
     if (user) {
       const label = escapeHtml(user.name || user.email || "Signed in");
-      const adminBadge = isAppAdmin()
-        ? '<span class="appgen-auth-admin-badge" title="Admin (SUP)" aria-label="Admin (SUP)">' +
-          ADMIN_SHIELD_ICON +
-          "</span>"
-        : "";
       const initial = escapeHtml(
         String(user.name || user.email || "?").trim().charAt(0).toUpperCase() || "?"
       );
@@ -268,11 +270,30 @@
         '<button type="button" class="appgen-auth-avatar-btn" data-auth-settings aria-label="User Settings" title="User Settings">' +
         '<span class="appgen-auth-avatar-wrap">' +
         avatarInner +
-        adminBadge +
         "</span></button>";
+      /* Leaderboard + Admin sit BEFORE the avatar; admin only for the admin email.
+         The leaderboard aside lives inside #wtdView, so its toggle is WTD-only —
+         rendering it in every view's slot would duplicate the id. */
+      const inWtd = !!el.closest("#wtdView");
+      const leaderboardBtn = inWtd
+        ? '<button type="button" class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only appgen-auth-leaderboard" id="wtdLeaderboardToggle" hidden aria-label="Leaderboard" aria-expanded="false" aria-controls="wtdLeaderboardAside" title="Leaderboard">' +
+          '<span class="appgen-nav-icon" aria-hidden="true">' +
+          LEADERBOARD_ICON +
+          "</span></button>"
+        : "";
+      const adminBtn = isAppAdmin()
+        ? '<button type="button" class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only appgen-auth-admin-btn" data-auth-admin aria-label="Admin Settings" title="Admin Settings">' +
+          '<span class="appgen-nav-icon" aria-hidden="true">' +
+          ADMIN_SETTINGS_ICON +
+          "</span></button>"
+        : "";
       el.innerHTML =
         '<div class="appgen-auth-signed">' +
+        leaderboardBtn +
+        adminBtn +
         avatarBtn +
+        '<span class="appgen-auth-name">Signed in as <strong>' +
+        label +
         "</strong></span>" +
         '<button type="button" class="btn ghost appgen-auth-logout" data-auth-logout aria-label="Sign out" title="Sign out">' +
         LOGOUT_ICON +
@@ -318,6 +339,12 @@
       if (e.target.closest("[data-auth-logout]")) {
         e.preventDefault();
         logout();
+        return;
+      }
+      const adminBtn = e.target.closest("[data-auth-admin]");
+      if (adminBtn) {
+        e.preventDefault();
+        if (typeof window.openSettingsArea === "function") window.openSettingsArea("admin");
         return;
       }
       const settingsBtn = e.target.closest("[data-auth-settings]");

@@ -317,17 +317,20 @@ body.dark-copy .wtd-session-modal-footer {
   color: var(--heading, var(--ink));
 }
 
-.wtd-session-modal-footer .btn.ghost {
+.wtd-session-modal-footer .btn.ghost,
+.wtd-3d-hud-actions .btn.ghost {
   color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
-body.dark-copy .wtd-session-modal-footer .btn.ghost {
+body.dark-copy .wtd-session-modal-footer .btn.ghost,
+body.dark-copy .wtd-3d-hud-actions .btn.ghost {
   color: var(--heading, var(--accent));
   border-color: color-mix(in srgb, var(--heading, var(--accent)) 55%, var(--line));
 }
 
-body.dark-copy .wtd-session-modal-footer .btn.ghost:hover {
+body.dark-copy .wtd-session-modal-footer .btn.ghost:hover,
+body.dark-copy .wtd-3d-hud-actions .btn.ghost:hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
@@ -351,7 +354,8 @@ body.dark-copy .wtd-session-modal-footer .btn.ghost:hover {
 }
 
 .wtd-session-modal-restart svg,
-.wtd-session-modal-exit svg {
+.wtd-session-modal-exit svg,
+.wtd-3d-hud-actions svg {
   width: 20px;
   height: 20px;
   display: block;
@@ -1096,28 +1100,28 @@ body.dark-copy .appgen-auth-admin-badge {
 }
 
 /* Leaderboard — right aside (header toggle); mobile slide-over */
+/* Leaderboard opens as a centred modal popup (was a right slide-over). */
 .wtd-leaderboard-aside {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 50%;
+  left: 50%;
   z-index: 10038;
-  width: min(400px, 100vw);
-  max-width: 100%;
-  height: 100%;
-  height: 100dvh;
+  width: min(560px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  height: auto;
+  max-height: min(80dvh, 760px);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-top: max(8px, env(safe-area-inset-top, 0px));
-  padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  background: rgba(251, 252, 254, 0.98);
-  border-left: 1px solid var(--line);
-  box-shadow: -8px 0 28px rgba(21, 32, 43, 0.12);
-  transform: translateX(100%);
+  padding: 16px 18px max(16px, env(safe-area-inset-bottom, 0px));
+  background: rgba(251, 252, 254, 0.99);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(21, 32, 43, 0.3);
+  transform: translate(-50%, -50%) scale(0.97);
+  opacity: 0;
   visibility: hidden;
-  transition: transform 0.24s ease, visibility 0.24s;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
   overflow: hidden;
 }
 
@@ -1126,7 +1130,8 @@ body.dark-copy .wtd-leaderboard-aside {
 }
 
 .wtd-leaderboard-aside.is-open {
-  transform: translateX(0);
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
   visibility: visible;
 }
 
@@ -1179,26 +1184,9 @@ body.dark-copy .wtd-leaderboard-aside {
   visibility: visible;
 }
 
-@media (min-width: 900px) {
-  .wtd-leaderboard-aside {
-    top: var(--wtd-leaderboard-aside-top, 56px);
-    height: calc(100dvh - var(--wtd-leaderboard-aside-top, 56px));
-    border-radius: 12px 0 0 0;
-  }
-
-  .wtd-leaderboard-backdrop {
-    display: none;
-  }
-
-  body.wtd-leaderboard-open {
-    overflow: auto;
-  }
-}
-
-@media (max-width: 899px) {
-  body.wtd-leaderboard-open {
-    overflow: hidden;
-  }
+/* Modal: dim the page and lock scroll at every width. */
+body.wtd-leaderboard-open {
+  overflow: hidden;
 }
 
 #wtdLeaderboardToggle[aria-expanded="true"] {
@@ -1622,6 +1610,26 @@ body.dark-copy .wtd-leaderboard-aside {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* Title (left) + expand/collapse + session ↻/✕ actions (right-aligned). */
+.wtd-3d-hud-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wtd-3d-hud-bar .wtd-3d-hud-toggle {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wtd-3d-hud-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
 }
 
 .wtd-3d-hud-toggle {

@@ -487,8 +487,8 @@
       !window.AppgenAuth ||
       typeof window.AppgenAuth.isSessionReady !== "function" ||
       window.AppgenAuth.isSessionReady();
-    /* Cognitive Training (spatial 3D) only — hide on chess / SNL / 2d hub */
-    const show = !!sessionReady && !!authed && fallbackWtdMode === "3d";
+    /* Lives in the app header now, so it follows sign-in rather than the active tab. */
+    const show = !!sessionReady && !!authed;
     toggle.hidden = !show;
     if (!show) setLeaderboardAsideOpen(false);
   }
@@ -506,26 +506,21 @@
     }
     document.body.classList.toggle("wtd-leaderboard-open", on);
     if (backdrop) {
-      const showBackdrop = on && window.matchMedia("(max-width: 899px)").matches;
-      backdrop.hidden = !showBackdrop;
-      backdrop.classList.toggle("is-visible", showBackdrop);
-      backdrop.setAttribute("aria-hidden", showBackdrop ? "false" : "true");
-    }
-    if (on) {
-      const bar = document.querySelector("#wtdView > .appgen-top-bar");
-      if (bar) {
-        const top = Math.ceil(bar.getBoundingClientRect().bottom);
-        document.documentElement.style.setProperty("--wtd-leaderboard-aside-top", top + "px");
-      }
+      backdrop.hidden = !on;
+      backdrop.classList.toggle("is-visible", on);
+      backdrop.setAttribute("aria-hidden", on ? "false" : "true");
     }
   }
 
   function ensureLeaderboardAsideBound() {
-    const toggle = $("wtdLeaderboardToggle");
     const aside = $("wtdLeaderboardAside");
-    if (!toggle || !aside || aside.dataset.wtdAsideBound) return;
+    if (!aside || aside.dataset.wtdAsideBound) return;
     aside.dataset.wtdAsideBound = "1";
-    toggle.addEventListener("click", () => {
+    /* The toggle lives in the auth slot and is re-created on every render — delegate. */
+    document.addEventListener("click", (e) => {
+      const toggle = e.target.closest("#wtdLeaderboardToggle");
+      if (!toggle) return;
+      e.preventDefault();
       setLeaderboardAsideOpen(!aside.classList.contains("is-open"));
     });
     const closeBtn = $("wtdLeaderboardAsideClose");
@@ -541,10 +536,6 @@
       const modal = $("wtdPlayerBreakdownModal");
       if (modal && !modal.hidden) return;
       setLeaderboardAsideOpen(false);
-    });
-    window.addEventListener("resize", () => {
-      if (!aside.classList.contains("is-open")) return;
-      setLeaderboardAsideOpen(true);
     });
   }
 
@@ -1713,6 +1704,7 @@
     setWtdMode,
     hydrateWtdModeFromHash,
     getWtdMode,
+    getStats: () => ({ points: totalPoints(), runs: loadBoard().length }),
     openGameHelp,
     closeGameHelp,
     setLeaderboardOpen: setLeaderboardAsideOpen,
