@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="appgen/assets/appgen-doc.css">
 <link rel="stylesheet" href="appgen/assets/appgen-print.css" media="print">
-<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261025-session-header-footer-v1">
+<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261025-ct-tabs-hud-v1">
 <style>
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -1343,7 +1343,7 @@
         <button class="btn big appgen-nav-btn" type="button" id="btnGenerateClassic" disabled onclick="generateClassic()" aria-label="Generate" title="Rule-based engine only (Tailor with AI off). No gap-align regenerate loop."><span class="appgen-nav-icon" aria-hidden="true">✨</span><span class="appgen-nav-label">Generate</span></button>
         <span class="intake-action-icon-cluster" aria-label="Saved applications and reset">
           <button class="btn ghost big appgen-nav-btn intake-action-icon-only" type="button" onclick="showSaved()" aria-label="Saved applications" title="Saved applications"><svg class="appgen-intake-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg><span class="appgen-nav-label">Saved applications</span></button>
-          <button class="btn ghost big appgen-nav-btn intake-action-icon-only" type="button" onclick="resetForm()" aria-label="Reset form" title="Clear the form and start over"><svg class="appgen-intake-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7-7-7-7-7zm-1 4v5l4.28 2.54.72-1.21-3.5-2.08V7H12z"/></svg><span class="appgen-nav-label">Reset</span></button>
+          <button class="btn ghost big appgen-nav-btn intake-action-icon-only" type="button" onclick="resetForm()" aria-label="Reset form" title="Clear the form and start over"><svg class="appgen-intake-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg><span class="appgen-nav-label">Reset</span></button>
         </span>
         <span class="form-error" id="formError" hidden></span>
       </div>
@@ -1767,7 +1767,7 @@
     <div class="wtd-hero intake-hero">
       <p class="wtd-eyebrow">Walk the Dragon · interview demo</p>
       <h1>Cognitive Training Lab</h1>
-      <p class="tagline">Neuroscience-inspired micro-training — inhibition, memory, switching, reasoning, attention, 3D spatial recall, and rainbow physics.</p>
+      <p class="tagline">Neuroscience-inspired micro-training — inhibition, memory, switching, reasoning, attention, 3D spatial recall.</p>
       <p class="wtd-lede">Earn Dragon Points from speed and accuracy. Leaderboard ranks fastest runs per level (cloud sync on deploy). Your Google account supplies your display name.</p>
     </div>
     <div class="wtd-stats-bar" role="group" aria-label="Your session totals">
@@ -1785,8 +1785,6 @@
         <div class="intake-mode-tabs" role="tablist" aria-label="Training mode">
           <button type="button" class="intake-mode-tab on" id="wtdTab2d" role="tab" aria-selected="true" aria-controls="wtdPanel2d" onclick="AppgenWtd.setWtdMode('2d')">Mini Games</button>
           <button type="button" class="intake-mode-tab" id="wtdTab3d" role="tab" aria-selected="false" aria-controls="wtdPanel3d" onclick="AppgenWtd.setWtdMode('3d')">Memory Trainer</button>
-          <button type="button" class="intake-mode-tab" id="wtdTabChess" role="tab" aria-selected="false" aria-controls="wtdPanelChess" onclick="AppgenWtd.setWtdMode('chess')">Chess</button>
-          <button type="button" class="intake-mode-tab" id="wtdTabSnL" role="tab" aria-selected="false" aria-controls="wtdPanelSnL" onclick="AppgenWtd.setWtdMode('snl')">Snakes &amp; Ladders</button>
         </div>
       </div>
 
@@ -1816,15 +1814,7 @@
         </section>
       </div>
 
-      <div id="wtdPanelRainbow" class="wtd-panel wtd-3d-panel intake-panel" role="tabpanel" aria-labelledby="wtdTabRainbow" tabindex="0" hidden>
-        <section id="wtdRainbowPlay" class="wtd-3d-play" aria-label="Rainbow 3D physics builder">
-          <div id="wtdRainbowHud" class="wtd-3d-hud"></div>
-          <div id="wtdRainbowCanvasHost" class="wtd-3d-canvas-host" aria-label="Rainbow physics workspace"></div>
-          <div id="wtdRainbowControls" class="wtd-3d-controls"></div>
-        </section>
-      </div>
-
-      <div id="wtdPanelChess" class="wtd-panel wtd-chess-panel intake-panel" role="tabpanel" aria-labelledby="wtdTabChess" tabindex="0" hidden>
+      <div id="wtdPanelChess" class="wtd-panel wtd-chess-panel intake-panel" role="tabpanel" aria-label="Chess tutor" tabindex="0" hidden>
         <section id="wtdChessPlay" class="wtd-chess-play wtd-3d-light" aria-label="Chess tutor game">
           <div id="wtdChessHud" class="wtd-3d-hud"></div>
           <div class="wtd-chess-layout">
@@ -1916,7 +1906,7 @@
         </div>
       </div>
 
-      <div id="wtdPanelSnL" class="wtd-panel wtd-snl-panel intake-panel" role="tabpanel" aria-labelledby="wtdTabSnL" tabindex="0" hidden>
+      <div id="wtdPanelSnL" class="wtd-panel wtd-snl-panel intake-panel" role="tabpanel" aria-label="Snakes and ladders" tabindex="0" hidden>
         <section id="wtdSnLPlay" class="wtd-chess-play wtd-snl-play wtd-3d-light" aria-label="Snakes and ladders game">
           <div id="wtdSnLHud" class="wtd-3d-hud"></div>
           <div class="wtd-snl-board-wrap">
@@ -2028,9 +2018,9 @@
   </div>
 
   <footer class="wtd-footer no-print">
-    
+    <p class="wtd-footnote">Scores sync to a shared cloud leaderboard (display name, level, time, and points only — no CogniFit or employer identifiers). Sign-in is required to enter the lab; your Google name is used on the leaderboard. Walk the Dragon Team View stays aggregate in production; this demo shows habit mechanics, not performance management. Spatial 3D reports an efficiency index.</p>
     <div class="wtd-footer-actions">
-      
+      <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only" type="button" id="wtdLeaderboardToggle" hidden aria-label="Leaderboard" aria-expanded="false" aria-controls="wtdLeaderboardAside" title="Leaderboard"><span class="appgen-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg></span><span class="appgen-nav-label">Leaderboard</span></button>
       <div class="wtd-footer-help">
         <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only wtd-game-help-btn" type="button" id="wtdGameHelpBtn" aria-label="Game help and rules" title="Help / rules" aria-controls="wtdGameHelpModal" aria-haspopup="dialog"><span class="appgen-nav-icon wtd-game-help-icon" aria-hidden="true">?</span><span class="appgen-nav-label">Help</span></button>
       </div>
@@ -2143,14 +2133,13 @@
 <script src="appgen/assets/appgen-kb.js"></script>
 <script src="appgen/assets/appgen-weave.js"></script>
 <script src="appgen/assets/appgen-auth.js?v=20261024-chrome-avatar-lb-v1"></script>
-<script src="appgen/assets/appgen-pwa.js?v=20261024-cognitive-training-route"></script>
-<script src="appgen/assets/appgen-wtd-session-modal.js?v=20261025-session-header-footer-v1"></script>
-<script src="appgen/assets/appgen-wtd.js?v=20261025-3d-exit-landing-v1"></script>
-<script type="module" src="appgen/assets/appgen-wtd-store.js?v=20261024-cognitive-3d-autostart"></script>
-<script type="module" src="appgen/assets/appgen-wtd-3d.js?v=20261024-cognitive-3d-autostart"></script>
-<script type="module" src="appgen/assets/appgen-wtd-rainbow.js"></script>
-<script type="module" src="appgen/assets/appgen-wtd-chess.js?v=20261024-cognitive-3d-autostart"></script>
-<script type="module" src="appgen/assets/appgen-wtd-snl.js?v=20261024-snl-invite-modal-v1"></script>
+<script src="appgen/assets/appgen-pwa.js?v=20261025-remove-rainbow-v1"></script>
+<script src="appgen/assets/appgen-wtd-session-modal.js?v=20261025-ct-tabs-hud-v1"></script>
+<script src="appgen/assets/appgen-wtd.js?v=20261025-remove-rainbow-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-store.js?v=20261025-remove-rainbow-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-3d.js?v=20261025-ct-tabs-hud-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-chess.js?v=20261025-remove-rainbow-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-snl.js?v=20261025-remove-rainbow-v1"></script>
 <script>
 "use strict";
 
@@ -6212,7 +6201,6 @@ function closeWtd() {
   if (!appgenIsAdmin()) return;
   if (window.AppgenWtd) window.AppgenWtd.onClose();
   if (window.AppgenWtd3d) window.AppgenWtd3d.onClose();
-  if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.onClose();
   if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
   $("wtdView").hidden = true;
   try { history.replaceState(null, "", location.pathname + location.search); } catch (_) { location.hash = ""; }

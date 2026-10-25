@@ -339,11 +339,22 @@ body.dark-copy .wtd-session-modal-footer .btn.ghost:hover {
   margin-left: auto;
 }
 
-.wtd-session-modal-restart {
-  font-size: 1.35rem;
-  line-height: 1;
-  padding: 6px 11px;
-  min-width: 2.75rem;
+/* Icon-only footer actions — 44px touch targets, monochrome currentColor glyphs. */
+.wtd-session-modal-restart,
+.wtd-session-modal-exit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.wtd-session-modal-restart svg,
+.wtd-session-modal-exit svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .wtd-session-modal-body {
@@ -1603,6 +1614,73 @@ body.dark-copy .wtd-leaderboard-aside {
 
 .wtd-3d-hud[hidden] {
   display: none !important;
+}
+
+/* Collapsible session HUD — title left, expand/collapse right; body collapsed by
+   default so the 3D canvas keeps maximum viewable area. */
+.wtd-3d-hud-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wtd-3d-hud-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--heading, var(--ink));
+  cursor: pointer;
+  text-align: left;
+}
+
+.wtd-3d-hud-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.wtd-3d-hud-title {
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  min-width: 0;
+}
+
+.wtd-3d-hud-chevron {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.wtd-3d-hud-toggle .wtd-3d-hud-chevron::before {
+  content: "\25B8";
+}
+
+.wtd-3d-hud-toggle[aria-expanded="true"] .wtd-3d-hud-chevron::before {
+  content: "\25BE";
+}
+
+.wtd-3d-hud-body {
+  min-width: 0;
+}
+
+.wtd-3d-hud-body[hidden] {
+  display: none !important;
+}
+
+.wtd-3d-hud:has(.wtd-3d-hud-body[hidden]) {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .wtd-panel .wtd-3d-controls {

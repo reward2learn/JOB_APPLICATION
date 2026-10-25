@@ -126,7 +126,7 @@ import {
   selectChessSessionSlice,
   selectInviteResumeState,
   selectChessOrbit
-} from "./appgen-wtd-store.js?v=20261024-cognitive-3d-autostart";
+} from "./appgen-wtd-store.js?v=20261025-remove-rainbow-v1";
 
 const LEVEL_ID = "chess";
 const COACH_API = "/api/wtd-chess-coach";

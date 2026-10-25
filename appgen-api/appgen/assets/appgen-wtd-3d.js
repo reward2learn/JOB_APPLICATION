@@ -168,8 +168,43 @@ function scoreForRun(timeMs, accuracyPct, wrongAttempts) {
   return Math.max(100, raw - attemptPenalty);
 }
 
+/**
+ * Session HUD chrome: title bar (left) + expand/collapse (right).
+ * Collapsed by default so the 3D canvas keeps maximum viewable area; the body
+ * holds the level instructions (Level 1 · Recall phase … Placed / timer).
+ */
+let hudExpanded = false;
+
+function setHudExpanded(expand) {
+  hudExpanded = !!expand;
+  const el = hudEl || $("wtd3dHud");
+  if (!el) return;
+  const body = el.querySelector(".wtd-3d-hud-body");
+  const toggle = el.querySelector(".wtd-3d-hud-toggle");
+  if (body) body.hidden = !hudExpanded;
+  if (toggle) toggle.setAttribute("aria-expanded", hudExpanded ? "true" : "false");
+}
+
 function setHud(html) {
-  if (hudEl) hudEl.innerHTML = html;
+  hudEl = hudEl || $("wtd3dHud");
+  if (!hudEl) return;
+  if (!hudEl.querySelector(".wtd-3d-hud-shell")) {
+    hudEl.innerHTML =
+      '<div class="wtd-3d-hud-shell">' +
+      '<button type="button" class="wtd-3d-hud-toggle" aria-expanded="false">' +
+      '<span class="wtd-3d-hud-title">3D Spatial Memory Lab</span>' +
+      '<span class="wtd-3d-hud-chevron" aria-hidden="true"></span>' +
+      "</button>" +
+      '<div class="wtd-3d-hud-body" hidden></div>' +
+      "</div>";
+    const toggle = hudEl.querySelector(".wtd-3d-hud-toggle");
+    if (toggle) {
+      toggle.addEventListener("click", () => setHudExpanded(!hudExpanded));
+    }
+  }
+  const body = hudEl.querySelector(".wtd-3d-hud-body");
+  if (body) body.innerHTML = html;
+  setHudExpanded(hudExpanded);
 }
 
 function setControls(html) {
@@ -1005,6 +1040,8 @@ function prepareSessionChrome() {
   hudEl = $("wtd3dHud");
   controlsEl = $("wtd3dControls");
   host = ensureCanvasHost();
+  /* Session starts collapsed — title bar only, max canvas area. */
+  hudExpanded = false;
   if (hudEl) {
     hudEl.hidden = false;
     hudEl.removeAttribute("hidden");
@@ -1361,9 +1398,10 @@ function showIntro() {
     host.removeAttribute("hidden");
   }
   const peak = loadProgress().peakLevel;
+  /* Intro must be open — the Start button sits in the body. */
+  hudExpanded = true;
   setHud(
-    "<h3>3D Spatial Memory Lab</h3>" +
-      "<p>Objects appear on a virtual workspace. Memorise <em>what</em> and <em>where</em>, then drag shapes from the in-scene dock onto the grid (or tap shape → tap tile on mobile).</p>" +
+    "<p>Objects appear on a virtual workspace. Memorise <em>what</em> and <em>where</em>, then drag shapes from the in-scene dock onto the grid (or tap shape → tap tile on mobile).</p>" +
       "<p>Progressive difficulty: start with <strong>" +
       START_OBJECTS +
       "</strong> shapes across <strong>" +
@@ -1380,31 +1418,6 @@ function showIntro() {
   setControls("");
 }
 
-/** Cancels a pending auto-start from a prior init() if mode closes / re-enters. */
-let autoStartTimer = 0;
-/** Bumps each init(); scheduled auto-start only runs for the latest visit token. */
-let autoStartVisitToken = 0;
-
-/**
- * One auto-start per 3d mode entry (Cognitive Training / 3d tab).
- * Keeps #wtd3dStart as fallback if auto-start does not run or fails.
- * Exit → showIntro() does not re-auto-start (manual Start / Again only).
- */
-function scheduleAutoStartSession() {
-  if (autoStartTimer) {
-    clearTimeout(autoStartTimer);
-    autoStartTimer = 0;
-  }
-  const visitToken = ++autoStartVisitToken;
-  autoStartTimer = setTimeout(() => {
-    autoStartTimer = 0;
-    if (visitToken !== autoStartVisitToken) return;
-    /* Still on intro chrome — skip if user already started or UI moved on. */
-    if (!document.getElementById("wtd3dStart")) return;
-    startSession();
-  }, 0);
-}
-
 function init() {
   hudEl = $("wtd3dHud");
   controlsEl = $("wtd3dControls");
@@ -1418,19 +1431,24 @@ function init() {
       }
     });
   }
+  /* Landing shows the intro — the user picks a tab / presses Start themselves. */
   showIntro();
-  scheduleAutoStartSession();
 }
 
 function onClose() {
-  if (autoStartTimer) {
-    clearTimeout(autoStartTimer);
-    autoStartTimer = 0;
-  }
-  autoStartVisitToken += 1;
   if (window.AppgenWtdSessionModal) window.AppgenWtdSessionModal.close(true);
   disposeEngine();
   window.removeEventListener("resize", resize);
 }
 
 window.AppgenWtd3d = { init, onClose, dispose: onClose };
+
+/* The shell can apply mode "3d" before this module executes (store binds first),
+   which left the landing with an empty HUD. Initialise now if 3d is already active. */
+if (
+  window.AppgenWtd &&
+  typeof window.AppgenWtd.getWtdMode === "function" &&
+  window.AppgenWtd.getWtdMode() === "3d"
+) {
+  init();
+}

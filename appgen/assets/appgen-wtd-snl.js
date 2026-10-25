@@ -52,7 +52,7 @@ import {
   selectSnlLobbyInvite,
   selectSnlLastRevision,
   selectSnlLastPresenceRevision
-} from "./appgen-wtd-store.js?v=20261024-cognitive-3d-autostart";
+} from "./appgen-wtd-store.js?v=20261025-remove-rainbow-v1";
 
 const SNL_INVITE_API = "/api/snl-invite";
 const PRESENCE_API = "/api/wtd-presence";
