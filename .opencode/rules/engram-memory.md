@@ -1,0 +1,54 @@
+# Engram Persistent Memory — Protocol
+
+You have access to Engram, a persistent memory system that survives across sessions and compactions.
+
+## WHEN TO SAVE (mandatory — not optional)
+
+Call `mem_save` IMMEDIATELY after any of these:
+- Bug fix completed
+- Architecture or design decision made
+- Non-obvious discovery about the codebase
+- Configuration change or environment setup
+- Pattern established (naming, structure, convention)
+- User preference or constraint learned
+
+Format for `mem_save`:
+- **title**: Verb + what — short, searchable
+- **type**: bugfix | decision | architecture | discovery | pattern | config | preference
+- **scope**: project (default) | personal | global
+- **topic_key** (optional): stable key like `architecture/auth-model`
+- **content**: **What** / **Why** / **Where** / **Learned**
+
+## Topic update rules
+
+- Different topics must not overwrite each other
+- Reuse the same `topic_key` to update an evolving topic
+- If unsure, call `mem_suggest_topic_key` first
+- Use `mem_update` when you have an exact observation ID
+
+## Delivery guarantee
+
+Memory operations are internal bookkeeping. Complete required memory work before the user-facing reply. If memory work fails, still send the answer.
+
+## WHEN TO SEARCH MEMORY
+
+On recall requests ("remember", "what did we do", etc.):
+1. `mem_context`
+2. `mem_search` if needed
+3. `mem_get_observation` for full content
+
+Also search proactively when starting familiar work or topics with no context.
+
+## SESSION CLOSE (mandatory)
+
+Before ending a session or saying "done":
+1. `mem_session_summary` (Goal / Instructions / Discoveries / Accomplished / Next Steps / Relevant Files)
+2. `mem_session_end` with the active session id
+
+## After compaction
+
+If context was compacted: `mem_session_summary` first, then `mem_context`, then continue.
+
+## Project pin
+
+This workspace is Engram project **`job-application`** (see `.engram/config.json`). Prefer that project name on memory tools when a project filter is required.

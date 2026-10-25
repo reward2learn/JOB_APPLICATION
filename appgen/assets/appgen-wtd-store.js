@@ -21,22 +21,17 @@ function cloneStoreSnapshot(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-/** @typedef {"2d" | "3d" | "rainbow" | "chess" | "snl"} WtdShellMode */
+/** @typedef {"2d" | "3d" | "chess" | "snl"} WtdShellMode */
 /** @typedef {"ai" | "pvp" | "pvp-waiting" | "practice"} ChessPlayMode */
 
-const WTD_SHELL_MODES = Object.freeze(["2d", "3d", "rainbow", "chess", "snl"]);
+const WTD_SHELL_MODES = Object.freeze(["2d", "3d", "chess", "snl"]);
 
 /**
  * @param {unknown} mode
  * @returns {WtdShellMode}
  */
 export function normalizeWtdMode(mode) {
-  if (
-    mode === "3d" ||
-    mode === "rainbow" ||
-    mode === "chess" ||
-    mode === "snl"
-  ) {
+  if (mode === "3d" || mode === "chess" || mode === "snl") {
     return mode;
   }
   return "2d";

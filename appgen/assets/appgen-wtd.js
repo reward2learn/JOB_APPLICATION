@@ -83,15 +83,6 @@
       intro: "Open the 3D Spatial trainer — memorise shapes on the grid, then recall placements. Three levels (3→5 shapes); perfect rounds level up."
     },
     {
-      id: "rainbow3d",
-      mode: "rainbow",
-      name: "Rainbow Physics",
-      domain: "Spatial planning + physics",
-      science:
-        "Ordering coloured blocks under gravity rehearses planning, motor prediction, and spectrum sequencing — a playful stand-in for prioritising workstreams.",
-      intro: "Open the Rainbow physics tab — drag and drop ROYGBIV blocks into left-to-right spectrum order."
-    },
-    {
       id: "chess",
       mode: "chess",
       name: "Chess Tutor",
@@ -120,17 +111,14 @@
     return window.matchMedia("(max-width: 720px)").matches;
   }
 
-  /** Full-viewport immersive layout (3D / rainbow / chess / SnL — not 2D mini-game hub). */
+  /** Full-viewport immersive layout (3D / chess / SnL — not 2D mini-game hub). */
   function isWtdChessLabUiActive() {
     const view = $("wtdView");
     const mode = getWtdMode();
     return !!(
       view &&
       !view.hidden &&
-      (mode === "3d" ||
-        mode === "rainbow" ||
-        mode === "chess" ||
-        mode === "snl")
+      (mode === "3d" || mode === "chess" || mode === "snl")
     );
   }
 
@@ -138,8 +126,16 @@
     const view = $("wtdView");
     if (!view) return;
     const gameLab = isWtdChessLabUiActive();
+    /* In-page immersive lab chrome (hides hero / stats / tabs / footer / game HUDs and
+       pins #wtdView to height:100dvh; overflow:hidden) belongs to the modes that play
+       straight in the page — chess and Snakes & Ladders. 3D always runs inside
+       the session modal, so for them this class only ever hid the landing: after
+       "Exit session" the intro HUD (Start 3D session), hero, tabs and footer were all
+       display:none and the page came back black. */
+    const mode = getWtdMode();
+    const inPageLab = mode === "chess" || mode === "snl";
     view.classList.toggle("wtd-game-lab", gameLab);
-    view.classList.toggle("wtd-mobile-chess-lab", gameLab);
+    view.classList.toggle("wtd-mobile-chess-lab", gameLab && inPageLab);
     window.requestAnimationFrame(() => {
       window.dispatchEvent(new Event("resize"));
     });
@@ -206,7 +202,7 @@
 
   function levelsForMode(mode) {
     const m =
-      mode === "3d" || mode === "rainbow" || mode === "chess" ? mode : "2d";
+      mode === "3d" || mode === "chess" ? mode : "2d";
     return LEVELS.filter((l) => l.mode === m);
   }
 
@@ -317,7 +313,6 @@
     "pattern",
     "sprint",
     "spatial3d",
-    "rainbow3d",
     "chess"
   ]);
 
@@ -444,7 +439,6 @@
       pattern: 550,
       sprint: 600,
       spatial3d: 650,
-      rainbow3d: 700,
       chess: 720
     }[levelId] || 400;
     const timeBonus = Math.max(0, Math.floor(800 - timeMs / 50));
@@ -493,7 +487,7 @@
       !window.AppgenAuth ||
       typeof window.AppgenAuth.isSessionReady !== "function" ||
       window.AppgenAuth.isSessionReady();
-    /* Cognitive Training (spatial 3D) only — hide on chess / SNL / rainbow / 2d hub */
+    /* Cognitive Training (spatial 3D) only — hide on chess / SNL / 2d hub */
     const show = !!sessionReady && !!authed && fallbackWtdMode === "3d";
     toggle.hidden = !show;
     if (!show) setLeaderboardAsideOpen(false);
@@ -591,10 +585,6 @@
           setWtdMode("3d");
           return;
         }
-        if (activeLevelId === "rainbow3d") {
-          setWtdMode("rainbow");
-          return;
-        }
         if (activeLevelId === "chess") {
           setWtdMode("chess");
           return;
@@ -614,23 +604,18 @@
    */
   function applyWtdShellMode(mode) {
     const m =
-      mode === "3d" || mode === "rainbow" || mode === "chess" || mode === "snl"
-        ? mode
-        : "2d";
+      mode === "3d" || mode === "chess" || mode === "snl" ? mode : "2d";
     fallbackWtdMode = m;
     const p2 = $("wtdPanel2d");
     const p3 = $("wtdPanel3d");
-    const pR = $("wtdPanelRainbow");
     const pC = $("wtdPanelChess");
     const pS = $("wtdPanelSnL");
     const t2 = $("wtdTab2d");
     const t3 = $("wtdTab3d");
-    const tR = $("wtdTabRainbow");
     const tC = $("wtdTabChess");
     const tS = $("wtdTabSnL");
     if (p2) p2.hidden = m !== "2d";
     if (p3) p3.hidden = m !== "3d";
-    if (pR) pR.hidden = m !== "rainbow";
     if (pC) pC.hidden = m !== "chess";
     if (pS) pS.hidden = m !== "snl";
     if (t2) {
@@ -640,10 +625,6 @@
     if (t3) {
       t3.classList.toggle("on", m === "3d");
       t3.setAttribute("aria-selected", m === "3d" ? "true" : "false");
-    }
-    if (tR) {
-      tR.classList.toggle("on", m === "rainbow");
-      tR.setAttribute("aria-selected", m === "rainbow" ? "true" : "false");
     }
     if (tC) {
       tC.classList.toggle("on", m === "chess");
@@ -657,28 +638,19 @@
     populateBoardLevelFilter();
     renderLeaderboard();
     if (m === "3d") {
-      if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.onClose();
       if (window.AppgenWtdChess) window.AppgenWtdChess.onClose();
       if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
       if (window.AppgenWtd3d) window.AppgenWtd3d.init();
-    } else if (m === "rainbow") {
-      if (window.AppgenWtd3d) window.AppgenWtd3d.onClose();
-      if (window.AppgenWtdChess) window.AppgenWtdChess.onClose();
-      if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
-      if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.init();
     } else if (m === "chess") {
       if (window.AppgenWtd3d) window.AppgenWtd3d.onClose();
-      if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.onClose();
       if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
       if (window.AppgenWtdChess) window.AppgenWtdChess.init();
     } else if (m === "snl") {
       if (window.AppgenWtd3d) window.AppgenWtd3d.onClose();
-      if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.onClose();
       if (window.AppgenWtdChess) window.AppgenWtdChess.onClose();
       if (window.AppgenWtdSnL) window.AppgenWtdSnL.init();
     } else {
       if (window.AppgenWtd3d) window.AppgenWtd3d.onClose();
-      if (window.AppgenWtdRainbow) window.AppgenWtdRainbow.onClose();
       if (window.AppgenWtdChess) window.AppgenWtdChess.onClose();
       if (window.AppgenWtdSnL) window.AppgenWtdSnL.onClose();
       runState = null;
@@ -724,12 +696,7 @@
   if (window.AppgenWtdStore) bindWtdShellStore(window.AppgenWtdStore);
 
   function normalizeShellMode(mode) {
-    return mode === "3d" ||
-      mode === "rainbow" ||
-      mode === "chess" ||
-      mode === "snl"
-      ? mode
-      : "2d";
+    return mode === "3d" || mode === "chess" || mode === "snl" ? mode : "2d";
   }
 
   /** Write-side entry: dispatch into Redux SSoT (fallback apply if store not ready). */
@@ -1605,16 +1572,6 @@
         "<li>Use orbit controls to look around the scene when available.</li>" +
         "</ul>"
     },
-    rainbow: {
-      title: "Rainbow physics — help",
-      html:
-        "<p>Order spectrum pieces under gravity — a physics-based attention / sequencing drill.</p>" +
-        "<ul>" +
-        "<li>Guide coloured pieces into the correct rainbow order.</li>" +
-        "<li>Gravity and collisions matter; plan before you push.</li>" +
-        "<li>Finish cleanly for a stronger efficiency score and leaderboard entry.</li>" +
-        "</ul>"
-    }
   };
 
   function gameHelpForMode(mode) {
@@ -1650,7 +1607,6 @@
       const modeByTab = {
         wtdTab2d: "2d",
         wtdTab3d: "3d",
-        wtdTabRainbow: "rainbow",
         wtdTabChess: "chess",
         wtdTabSnL: "snl"
       };

@@ -40,15 +40,25 @@
   
   // Agent definitions and capabilities
   "agent": {
-    "default": "director",
+  "director": {
+      "type": "director",
+      "description": "Central orchestrator - receives tasks, decomposes, delegates to sub-agents",
+      "tools": {
+        "create_task": true,
+        "list_tasks": true,
+        "read_task": true,
+        "update_task_progress": true
+      }
+    }, 
     "agents": {
       "director": {
         "type": "director",
         "description": "Central orchestrator - receives tasks, decomposes, delegates to sub-agents",
-        "tools": ["create_task", "list_tasks", "read_task", "update_task_progress"],
-        "permissions": {
-          "read": ["**/*"],
-          "write": ["**/*.md", "**/*.json", "**/*.yaml"]
+        "tools": {
+          "create_task": true,
+          "list_tasks": true,
+          "read_task": true,
+          "update_task_progress": true
         }
       },
       "coder": {

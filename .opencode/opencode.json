@@ -7,17 +7,22 @@
     "root": "/Users/iliashapiro/JOB_APPLICATION"
   },
   "agent": {
-    "default": "director",
-    "agents": {
-      "director": {
-        "type": "director",
+     "director": {
+        "mode": "primary",
         "description": "Central orchestrator - receives tasks, decomposes, delegates to sub-agents",
-        "tools": ["create_task", "list_tasks", "read_task", "update_task_progress", "run_background_process", "list_background_processes", "stop_background_process"],
-        "permissions": {
-          "read": ["**/*"],
-          "write": ["**/*.md", "**/*.json", "**/*.yaml", "**/*.yml"]
-        }
+       "tools": {
+        "create_task": true,
+        "list_tasks": true,
+        "read_task": true,
+        "update_task_progress": true,
+        "run_background_process": true,
+        "list_background_processes": true,
+        "stop_background_process": true
+      }
+        
       },
+    "agents": {
+      
       "coder": {
         "type": "coder",
         "description": "Individual file implementation - precise, scoped code changes",
@@ -96,19 +101,25 @@
       }
     }
   },
+  "instructions": [
+    ".opencode/rules/engram-memory.md",
+    ".opencode/rules/appgen-second-brain.md"
+  ],
   "mcp": {
     "servers": {
-      "vercel": {
-        "command": "npx",
-        "args": ["-y", "@vercel/mcp-server"],
-        "env": {
-          "VERCEL_TOKEN": "${VERCEL_TOKEN}"
+      "xerj": {
+        "type": "local",
+        "command": ["/Users/iliashapiro/.local/bin/xerj", "mcp"],
+        "environment": {
+          "XERJ_URL": "http://localhost:9200"
         }
       },
-      "xerj": {
-        "command": "xerj",
-        "args": ["mcp"],
-        "env": {}
+      "engram": {
+        "type": "local",
+        "command": ["/opt/homebrew/bin/engram", "mcp", "--project", "job-application"],
+        "environment": {
+          "ENGRAM_PROJECT": "job-application"
+        }
       }
     }
   },

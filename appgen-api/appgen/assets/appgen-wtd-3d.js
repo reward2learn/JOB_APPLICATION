@@ -1170,7 +1170,7 @@ function beginRecall() {
       " · Recall timer: <span id=\"wtd3dRecallTimer\">0.0s</span></p>"
   );
   setControls(
-    '<p class="wtd-3d-phase">Drag from the dock (or from a misplaced shape on the grid) — orbit view with empty space.</p>'
+    ''
   );
   setPendingDef(nextUnplacedTarget());
 

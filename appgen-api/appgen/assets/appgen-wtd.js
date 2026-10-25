@@ -138,8 +138,16 @@
     const view = $("wtdView");
     if (!view) return;
     const gameLab = isWtdChessLabUiActive();
+    /* In-page immersive lab chrome (hides hero / stats / tabs / footer / game HUDs and
+       pins #wtdView to height:100dvh; overflow:hidden) belongs to the modes that play
+       straight in the page — chess and Snakes & Ladders. 3D + rainbow always run inside
+       the session modal, so for them this class only ever hid the landing: after
+       "Exit session" the intro HUD (Start 3D session), hero, tabs and footer were all
+       display:none and the page came back black. */
+    const mode = getWtdMode();
+    const inPageLab = mode === "chess" || mode === "snl";
     view.classList.toggle("wtd-game-lab", gameLab);
-    view.classList.toggle("wtd-mobile-chess-lab", gameLab);
+    view.classList.toggle("wtd-mobile-chess-lab", gameLab && inPageLab);
     window.requestAnimationFrame(() => {
       window.dispatchEvent(new Event("resize"));
     });

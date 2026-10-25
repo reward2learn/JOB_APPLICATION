@@ -15,8 +15,7 @@
     snl: false,
     lab: true,
     "2d": true,
-    "3d": true,
-    rainbow: true
+    "3d": true
   };
 
   let deferredPrompt = null;

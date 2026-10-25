@@ -4,6 +4,7 @@
 
   let modal = null;
   let mountEl = null;
+  let headerSlot = null;
   let titleEl = null;
   let openFlag = false;
   let exitHandler = null;
@@ -14,7 +15,7 @@
   function rememberHome(el) {
     if (!el) return;
     /* Don't overwrite home while the node already lives inside the modal. */
-    if (mountEl && mountEl.contains(el)) return;
+    if (modal && modal.contains(el)) return;
     if (!el.parentNode) return;
     homes.set(el, { parent: el.parentNode, next: el.nextSibling });
   }
@@ -29,10 +30,12 @@
     }
   }
 
+  /** Put back every node we borrowed — session body nodes and the app top bar alike. */
   function restoreAll() {
-    if (!mountEl) return;
-    const nodes = Array.from(mountEl.children);
-    nodes.forEach((el) => restoreNode(el));
+    if (!modal) return;
+    Array.from(homes.keys()).forEach((el) => {
+      if (modal.contains(el)) restoreNode(el);
+    });
   }
 
   function ensureDom() {
@@ -45,15 +48,18 @@
     modal.setAttribute("aria-modal", "true");
     modal.setAttribute("aria-labelledby", "wtdSessionModalTitle");
     modal.innerHTML =
-      '<header class="wtd-session-modal-header">' +
+      /* Same app header as every other page — the live #wtdView bar is moved in on open. */
+      '<div class="wtd-session-modal-topbar" id="wtdSessionModalTopbar"></div>' +
+      '<div class="wtd-session-modal-body" id="wtdSessionModalMount"></div>' +
+      '<footer class="wtd-session-modal-footer">' +
       '<h1 class="wtd-session-modal-title" id="wtdSessionModalTitle">Training session</h1>' +
       '<div class="wtd-session-modal-actions">' +
       '<button type="button" class="btn ghost wtd-session-modal-restart" id="wtdSessionModalRestart" hidden aria-label="Restart game" title="Restart game">↻</button>' +
       '<button type="button" class="btn ghost wtd-session-modal-exit" id="wtdSessionModalExit">Exit session</button>' +
-      "</div></header>" +
-      '<div class="wtd-session-modal-body" id="wtdSessionModalMount"></div>';
+      "</div></footer>";
     document.body.appendChild(modal);
     mountEl = document.getElementById("wtdSessionModalMount");
+    headerSlot = document.getElementById("wtdSessionModalTopbar");
     titleEl = document.getElementById("wtdSessionModalTitle");
     restartBtn = document.getElementById("wtdSessionModalRestart");
     document.getElementById("wtdSessionModalExit").addEventListener("click", () => close());
@@ -66,6 +72,16 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && openFlag) close();
     });
+  }
+
+  /** Move the live app top bar (apps grid + auth) into the modal — no cloned markup, so
+   *  the lab picker, auth slot and back button keep their existing wiring. */
+  function mountAppHeader() {
+    if (!headerSlot) return;
+    const bar = document.querySelector("#wtdView > .appgen-top-bar");
+    if (!bar || headerSlot.contains(bar)) return;
+    rememberHome(bar);
+    headerSlot.appendChild(bar);
   }
 
   function notifyResize() {
@@ -101,6 +117,8 @@
       el.removeAttribute("hidden");
       mountEl.appendChild(el);
     });
+
+    mountAppHeader();
 
     mountEl.classList.remove("layout-2d", "layout-3d", "layout-chess", "layout-3d-results");
     if (layout === "3d") mountEl.classList.add("layout-3d");
