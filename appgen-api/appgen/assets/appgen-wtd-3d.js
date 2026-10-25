@@ -191,10 +191,13 @@ function setHud(html) {
   if (!hudEl.querySelector(".wtd-3d-hud-shell")) {
     hudEl.innerHTML =
       '<div class="wtd-3d-hud-shell">' +
+      '<div class="wtd-3d-hud-bar">' +
       '<button type="button" class="wtd-3d-hud-toggle" aria-expanded="false">' +
-      '<span class="wtd-3d-hud-title">3D Spatial Memory Lab</span>' +
+      '<span class="wtd-3d-hud-title" id="wtd3dHudTitle">3D Spatial Memory Lab</span>' +
       '<span class="wtd-3d-hud-chevron" aria-hidden="true"></span>' +
       "</button>" +
+      '<div class="wtd-3d-hud-actions" id="wtd3dHudActions"></div>' +
+      "</div>" +
       '<div class="wtd-3d-hud-body" hidden></div>' +
       "</div>";
     const toggle = hudEl.querySelector(".wtd-3d-hud-toggle");
@@ -202,9 +205,22 @@ function setHud(html) {
       toggle.addEventListener("click", () => setHudExpanded(!hudExpanded));
     }
   }
+  syncHudActions();
   const body = hudEl.querySelector(".wtd-3d-hud-body");
   if (body) body.innerHTML = html;
   setHudExpanded(hudExpanded);
+}
+
+/** While the session modal is open its ↻ / ✕ actions live in the HUD bar (right-aligned). */
+function syncHudActions() {
+  const slot = hudEl && hudEl.querySelector(".wtd-3d-hud-actions");
+  if (!slot) return;
+  const modalOpen =
+    window.AppgenWtdSessionModal && window.AppgenWtdSessionModal.isOpen();
+  const actions = document.querySelector(".wtd-session-modal-actions");
+  if (modalOpen && actions && actions.parentNode !== slot) {
+    slot.appendChild(actions);
+  }
 }
 
 function setControls(html) {
