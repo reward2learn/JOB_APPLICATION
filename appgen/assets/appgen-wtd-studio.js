@@ -66,6 +66,15 @@ export function flattenSphereBackdropOntoScene(scene, envSphere) {
   const mat = envSphere.material;
   if (mat instanceof THREE.MeshBasicMaterial) {
     if (mat.map) {
+      /* The sky-dome texture is configured as UVMapping (configureSphereSkyTexture)
+         so, assigned straight to scene.background, it renders as a STATIC
+         screen-space image that ignores camera orbit. Equirectangular mapping
+         makes three.js draw it as a world-locked skybox instead — the backdrop
+         now shifts as the user changes view, without reintroducing the visible
+         inner sphere that the flat pass removed. The shared texture is reset to
+         UVMapping by configureSphereSkyTexture before any sphere reuse. */
+      mat.map.mapping = THREE.EquirectangularReflectionMapping;
+      mat.map.needsUpdate = true;
       scene.background = mat.map;
       scene.backgroundColorSpace = THREE.SRGBColorSpace;
     } else {

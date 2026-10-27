@@ -150,8 +150,7 @@ function playerName() {
   if (window.AppgenWtd && typeof window.AppgenWtd.getPlayerName === "function") {
     return window.AppgenWtd.getPlayerName();
   }
-  const inp = $("wtdPlayerName");
-  return (inp && inp.value.trim()) || "Anonymous";
+  return "Anonymous";
 }
 
 function scoreForRun(timeMs, accuracyPct, wrongAttempts) {
@@ -1417,7 +1416,8 @@ function showIntro() {
   /* Intro must be open — the Start button sits in the body. */
   hudExpanded = true;
   setHud(
-    "<p>Objects appear on a virtual workspace. Memorise <em>what</em> and <em>where</em>, then drag shapes from the in-scene dock onto the grid (or tap shape → tap tile on mobile).</p>" +
+    '<img class="wtd-3d-banner" src="appgen/assets/spatial3d-banner.jpg" alt="" width="640" height="160">' +
+      "<p>Objects appear on a virtual workspace. Memorise <em>what</em> and <em>where</em>, then drag shapes from the in-scene dock onto the grid (or tap shape → tap tile on mobile).</p>" +
       "<p>Progressive difficulty: start with <strong>" +
       START_OBJECTS +
       "</strong> shapes across <strong>" +

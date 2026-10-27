@@ -1829,6 +1829,19 @@ function renderMobileCurriculumStrip() {
         })
       : "";
   }
+  /* Back — step to the previous curriculum strategy (hidden on the first one). */
+  const back = $("wtdChessMobileStepBack");
+  if (back) {
+    const prev = idx > 0 ? CHESS_STRATEGIES[idx - 1] : null;
+    if (prev) {
+      back.hidden = false;
+      back.setAttribute("data-next-kind", "game");
+      back.setAttribute("data-next-id", prev.id);
+    } else {
+      back.hidden = true;
+      back.removeAttribute("data-next-id");
+    }
+  }
 }
 
 function renderLessonList() {
@@ -2418,8 +2431,9 @@ function practiceControlsHtml() {
   return (
     nextStrategyButtonHtml(next, { advancePractice: true }) +
     boardEnvButtonHtml() +
-    chessIconButtonHtml("wtdChessExitPractice", "btn ghost", "Exit drill", "back") +
-    coachPanelToggleButtonHtml()
+    coachPanelToggleButtonHtml() +
+    /* last so margin-left:auto parks Exit drill at the flex-end */
+    chessIconButtonHtml("wtdChessExitPractice", "btn ghost", "Exit drill", "back")
   );
 }
 
@@ -4987,7 +5001,7 @@ function openSessionModal() {
     window.AppgenWtdSessionModal.open({
       title: "Chess tutor",
       layout: "chess",
-      nodeIds: ["wtdChessPlay"],
+      nodeIds: ["wtdChessControls", "wtdChessPlay"],
       onRestart: () => startSession(),
       onExit: () => showIntro()
     });

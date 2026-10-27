@@ -8,6 +8,11 @@
   let googleConfigured = false;
   let sessionReady = false;
   let fetchPromise = null;
+  /* Security groups — server truth from /api/auth/me (lib/security-groups.js).
+     PlayerGroup is the default; groups are an array so Admin+PlayerGroup is legal. */
+  let groups = [];
+  let grants = [];
+  let profileCompleted = false;
 
   function $(id) {
     return document.getElementById(id);
@@ -28,14 +33,19 @@
       .then((data) => {
         user = data && data.user ? data.user : null;
         googleConfigured = !!(data && data.googleConfigured);
+        groups = Array.isArray(data && data.groups) ? data.groups : [];
+        grants = Array.isArray(data && data.grants) ? data.grants : [];
+        profileCompleted = !!(data && data.profileCompleted);
         sessionReady = true;
         render();
-        maybePrefillPlayer();
         return user;
       })
       .catch(() => {
         user = null;
         googleConfigured = false;
+        groups = [];
+        grants = [];
+        profileCompleted = false;
         sessionReady = true;
         render();
         return null;
@@ -46,17 +56,39 @@
     return fetchPromise;
   }
 
+  /** Leaderboard name = the email local part (text before the @) — no editable display name. */
   function preferredPlayerName() {
-    if (user && user.name) return String(user.name).trim().slice(0, 40);
-    if (user && user.email) return String(user.email.split("@")[0]).slice(0, 40);
+    if (user && user.email) return String(user.email.split("@")[0]).trim().slice(0, 40);
     return "";
   }
 
   function isAppAdmin() {
     if (!user || !user.email) return false;
+    if (grants.includes("admin")) return true;
+    /* Legacy owner email keeps admin even before its record carries the group. */
     return (
       String(user.email).trim().toLowerCase() === APPGEN_ADMIN_EMAIL.toLowerCase()
     );
+  }
+
+  /** Capability test used to gate app areas (see lib/security-groups.js). */
+  function hasAccess(grant) {
+    if (!user) return false;
+    if (grants.includes(grant)) return true;
+    /* Signed-out visitors keep today's open access; groups govern signed-in users. */
+    return false;
+  }
+
+  function getGroups() {
+    return groups.slice();
+  }
+
+  function getGrants() {
+    return grants.slice();
+  }
+
+  function isProfileComplete() {
+    return profileCompleted;
   }
 
   let accessChangeTimer = null;
@@ -68,7 +100,15 @@
       accessChangeTimer = null;
       try {
         window.dispatchEvent(
-          new CustomEvent("appgen-access-change", { detail: { isAppAdmin: isAppAdmin() } })
+          new CustomEvent("appgen-access-change", {
+            detail: {
+              isAppAdmin: isAppAdmin(),
+              groups: groups.slice(),
+              grants: grants.slice(),
+              profileCompleted,
+              signedIn: !!user
+            }
+          })
         );
       } catch (_) {
         /* ignore */
@@ -99,7 +139,8 @@
   function syncWtdBackToAppgen() {
     const btn = $("wtdBackToAppgen");
     if (!btn) return;
-    btn.hidden = !isAppAdmin();
+    /* "Back to applications" needs the applicant grant (Admin holds it too). */
+    btn.hidden = !(grants.includes("applicant") || isAppAdmin());
   }
 
   function syncWtdLabAccess() {
@@ -167,19 +208,6 @@
       return;
     }
     pauseWtdGamesIfOpen();
-  }
-
-  function maybePrefillPlayer() {
-    const inp = $("wtdPlayerName");
-    if (!inp || !user) return;
-    const preferred = preferredPlayerName();
-    if (!preferred) return;
-    if (!inp.value.trim()) {
-      inp.value = preferred;
-      try {
-        localStorage.setItem("appgen_wtd_player_name", preferred);
-      } catch (_) { /* ignore */ }
-    }
   }
 
   const LOGOUT_ICON =
@@ -331,6 +359,9 @@
       await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
     } catch (_) { /* ignore */ }
     user = null;
+    groups = [];
+    grants = [];
+    profileCompleted = false;
     render();
   }
 
@@ -364,6 +395,10 @@
     isSignedIn: () => !!user,
     isSessionReady: () => sessionReady,
     isAppAdmin,
+    hasAccess,
+    getGroups,
+    getGrants,
+    isProfileComplete,
     adminEmail: APPGEN_ADMIN_EMAIL,
     syncWtdLabAccess,
     signInHref,

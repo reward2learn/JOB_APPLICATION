@@ -20,7 +20,44 @@
 
   const SHAPES = ["●", "■", "▲", "◆"];
   const SHAPE_COLORS = ["#c0392b", "#2980b9", "#27ae60", "#8e44ad"];
-  const ICONS = ["🧠", "🐉", "⚡", "🌿", "🔷", "✦"];
+
+  /* Working Memory Span — 3D-look glyph set. Each icon is a self-contained
+     <svg> with a radial highlight + shadowed base so it reads as a glossy
+     physical object instead of a flat emoji (which is font-dependent and
+     vanishes in headless/print). 24x24 viewBox; CSS sizes them in the tile. */
+  const ICON_SVGS = [
+    /* brain */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><radialGradient id="mb" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fbcfe8"/><stop offset=".55" stop-color="#f472b6"/><stop offset="1" stop-color="#be185d"/></radialGradient></defs><path d="M12.1 4.5c-1-.9-2.5-1.2-3.7-.6C7 3.4 5.4 4.1 4.8 5.4c-1.2 0-2.3 1-2.4 2.2-1 .5-1.5 1.7-1.1 2.8-.7.9-.5 2.2.4 2.9-.2 1.2.7 2.4 1.9 2.6.2 1.2 1.3 2.1 2.5 2 .5.8 1.5 1.2 2.4.9.5.3 1.2.4 1.7.2V4.8c-.1 0-.4-.1-.7-.3z" fill="url(#mb)"/><path d="M11.9 4.5c1-.9 2.5-1.2 3.7-.6 1.4-.5 3 .2 3.6 1.5 1.2 0 2.3 1 2.4 2.2 1 .5 1.5 1.7 1.1 2.8.7.9.5 2.2-.4 2.9.2 1.2-.7 2.4-1.9 2.6-.2 1.2-1.3 2.1-2.5 2-.5.8-1.5 1.2-2.4.9-.5.3-1.2.4-1.7.2V4.8c.1 0 .4-.1.7-.3z" fill="url(#mb)" opacity=".92"/><path d="M12 5.2v13.4" stroke="#9d174d" stroke-width="1.1" opacity=".7"/><ellipse cx="8.4" cy="7.6" rx="1.6" ry="1" fill="#fff" opacity=".45"/><ellipse cx="15.4" cy="10.4" rx="1.3" ry=".8" fill="#fff" opacity=".3"/></svg>',
+    /* snake */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><linearGradient id="ms" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset=".5" stop-color="#16a34a"/><stop offset="1" stop-color="#14532d"/></linearGradient></defs><path d="M5.6 19c3.4 0 2.6-3.4 5.6-3.4s2.6 3.4 5.6 3.4" fill="none" stroke="url(#ms)" stroke-width="4.4" stroke-linecap="round"/><path d="M5.6 15.4c1.2-2.4.2-4.6 1.4-6.6" fill="none" stroke="url(#ms)" stroke-width="4.4" stroke-linecap="round"/><path d="M7 8.8c.4-2.2 2.4-3.6 4.6-3.4" fill="none" stroke="url(#ms)" stroke-width="4.4" stroke-linecap="round"/><circle cx="13.4" cy="5.4" r="3.4" fill="url(#ms)"/><circle cx="14.6" cy="4.5" r=".8" fill="#052e16"/><circle cx="14.8" cy="4.3" r=".3" fill="#fff" opacity=".8"/><path d="M16.4 5.6 19 6.4" stroke="#ef4444" stroke-width="1" stroke-linecap="round"/><ellipse cx="10.6" cy="16.8" rx="1.6" ry=".9" fill="#fff" opacity=".3" transform="rotate(-18 10.6 16.8)"/></svg>',
+    /* lightning */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><linearGradient id="ml" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset=".5" stop-color="#facc15"/><stop offset="1" stop-color="#ca8a04"/></linearGradient></defs><path d="M13.8 2.2 5.2 13.6h5.1L9.4 21.8 18.8 10h-5.4z" fill="url(#ml)" stroke="#a16207" stroke-width="1" stroke-linejoin="round"/><path d="M12.8 5.6 8.8 12.2h3l-.8 4.4" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".65"/></svg>',
+    /* leaf */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><linearGradient id="mf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#86efac"/><stop offset=".5" stop-color="#22c55e"/><stop offset="1" stop-color="#15803d"/></linearGradient></defs><path d="M4.2 20.2c-.6-8.6 5.2-15 15.6-16 1 10.4-4.6 16.4-12.4 16.4-1.3 0-2.5-.1-3.2-.4z" fill="url(#mf)"/><path d="M4.2 20.2c3.8-6 7.6-9.4 13.6-11.6" fill="none" stroke="#14532d" stroke-width="1.4" stroke-linecap="round" opacity=".8"/><path d="M9.6 15.4c.2-2.4 1-4.2 2.4-5.8" fill="none" stroke="#14532d" stroke-width="1" stroke-linecap="round" opacity=".5"/><ellipse cx="8.6" cy="10.2" rx="1.8" ry="1" fill="#fff" opacity=".4" transform="rotate(-42 8.6 10.2)"/></svg>',
+    /* gem / diamond */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#93c5fd"/><stop offset=".5" stop-color="#3b82f6"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient></defs><path d="M12 2.5 21.2 9 12 21.5 2.8 9z" fill="url(#mg)" stroke="#1d4ed8" stroke-width=".9" stroke-linejoin="round"/><path d="M12 2.5 7 9h10z" fill="#bfdbfe" opacity=".8"/><path d="M2.8 9h18.4" stroke="#1d4ed8" stroke-width=".9" opacity=".7"/><path d="M7 9l5 12.5L17 9" fill="none" stroke="#1d4ed8" stroke-width=".8" opacity=".6"/><path d="M12 2.5 14.4 9 12 21.5 9.6 9z" fill="#dbeafe" opacity=".25"/></svg>',
+    /* sparkle / star */
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><defs><radialGradient id="mk" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#e9d5ff"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#6b21a8"/></radialGradient></defs><path d="M12 2.4c.7 5 2.3 7.6 9.2 8.8-6.9 1.2-8.5 3.8-9.2 8.8-.7-5-2.3-7.6-9.2-8.8 6.9-1.2 8.5-3.8 9.2-8.8z" fill="url(#mk)" stroke="#7e22ce" stroke-width=".7" stroke-linejoin="round"/><path d="M18.6 2.8c.2 1.4.7 2.1 2.6 2.5-1.9.4-2.4 1.1-2.6 2.5-.2-1.4-.7-2.1-2.6-2.5 1.9-.4 2.4-1.1 2.6-2.5z" fill="#c084fc" stroke="#7e22ce" stroke-width=".5"/><ellipse cx="10.6" cy="9" rx="1.4" ry=".9" fill="#fff" opacity=".4" transform="rotate(-32 10.6 9)"/></svg>'
+  ];
+
+  /* Attention sprint targets — collect the fruit, never the bomb. */
+  const FRUIT_SVGS = [
+    /* apple */
+    '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 8.5c-1.3-1.4-3.5-1.9-5.1-.8C4.9 9 5 11.9 6.3 14.1c.9 1.5 2.2 2.4 3.3 2.4.7 0 1.3-.3 2.4-.3s1.7.3 2.4.3c1.1 0 2.4-.9 3.3-2.4 1.3-2.2 1.4-5.1-.6-6.4-1.6-1.1-3.8-.6-5.1.8z" fill="#ef4444"/><path d="M12 8.5c0-1.9 1.2-3.3 3-3.8" fill="none" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/><path d="M13.4 7c1.5-.6 2.9 0 3.3 1.4-1.6.5-2.9-.1-3.3-1.4z" fill="#22c55e"/></svg>',
+    /* orange */
+    '<svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="14" r="7.5" fill="#f97316"/><path d="M12 6.5c0-2 1.5-3.5 3.5-3.8-.2 2.2-1.6 3.5-3.5 3.8z" fill="#22c55e"/><path d="M12 7V5.4" stroke="#15803d" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    /* grapes */
+    '<svg viewBox="0 0 24 24" focusable="false"><g fill="#8b5cf6"><circle cx="9" cy="10" r="3"/><circle cx="15" cy="10" r="3"/><circle cx="12" cy="14.5" r="3"/><circle cx="8" cy="15.5" r="3"/><circle cx="16" cy="15.5" r="3"/><circle cx="12" cy="19.5" r="2.6"/></g><path d="M12 7V4.6" stroke="#15803d" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    /* banana */
+    '<svg viewBox="0 0 24 24" focusable="false"><path d="M5.5 5.5a12 12 0 0 0 13 13" fill="none" stroke="#facc15" stroke-width="6" stroke-linecap="round"/><path d="M5.5 5.5 4.2 4.2M18.5 18.5l1.3 1.3" stroke="#a16207" stroke-width="2" stroke-linecap="round"/></svg>',
+    /* cherries */
+    '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 5c-2 2-4.5 4-5.5 7M12 5c2 2 4 4.5 4.5 7" fill="none" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/><circle cx="6.5" cy="16.5" r="4.2" fill="#ef4444"/><circle cx="16.5" cy="16.5" r="4.2" fill="#dc2626"/></svg>'
+  ];
+  const BOMB_SVG =
+    '<svg viewBox="0 0 24 24" focusable="false"><circle cx="10.5" cy="14.5" r="7" fill="#1f2937"/>' +
+    '<rect x="13" y="4.6" width="3.2" height="5" rx="1.2" fill="#6b7280" transform="rotate(35 14.6 7.1)"/>' +
+    '<path d="M16.4 5.6c1.4-1.2 3.2-.8 3.8.9" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/>' +
+    '<path d="M20.4 3.4l.8 1.5M21.4 6.4l1.5.3" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round"/></svg>';
 
   const LEVELS = [
     {
@@ -417,10 +454,8 @@
       const fromGoogle = window.AppgenAuth.preferredPlayerName();
       if (fromGoogle) return fromGoogle.slice(0, 40);
     }
-    const inp = $("wtdPlayerName");
-    const v = (inp && inp.value.trim()) || localStorage.getItem(PLAYER_KEY) || "Anonymous";
-    if (inp && inp.value.trim()) localStorage.setItem(PLAYER_KEY, inp.value.trim());
-    return v.slice(0, 40);
+    /* Signed out: fall back to whatever was stored before the field was removed. */
+    return (localStorage.getItem(PLAYER_KEY) || "Anonymous").slice(0, 40);
   }
 
   function formatMs(ms) {
@@ -547,6 +582,91 @@
     return () => performance.now() - t0;
   }
 
+  /** Per-level card banner: gradient + flat white glyph (inline SVG, no extra files). */
+  const LEVEL_ART = {
+    inhibit: {
+      from: "#f97316",
+      to: "#db2777",
+      icon:
+        '<rect x="2" y="5" width="5.5" height="14" rx="2.2" fill="#fff"/>' +
+        '<rect x="9.25" y="5" width="5.5" height="14" rx="2.2" fill="rgba(255,255,255,.72)"/>' +
+        '<rect x="16.5" y="5" width="5.5" height="14" rx="2.2" fill="rgba(255,255,255,.45)"/>'
+    },
+    memory: {
+      from: "#2563eb",
+      to: "#7c3aed",
+      icon:
+        '<circle cx="5" cy="12" r="3.2" fill="#fff"/>' +
+        '<circle cx="12" cy="12" r="3.2" fill="rgba(255,255,255,.75)"/>' +
+        '<circle cx="19" cy="12" r="3.2" fill="rgba(255,255,255,.5)"/>'
+    },
+    switch: {
+      from: "#0d9488",
+      to: "#2563eb",
+      icon:
+        '<path d="M11 4 3.5 12 11 20V4z" fill="#fff"/>' +
+        '<path d="M13 4l7.5 8L13 20V4z" fill="rgba(255,255,255,.65)"/>'
+    },
+    pattern: {
+      from: "#7c3aed",
+      to: "#db2777",
+      icon: [5, 12, 19]
+        .map((y) =>
+          [5, 12, 19]
+            .map((x) => '<circle cx="' + x + '" cy="' + y + '" r="2.3" fill="#fff"/>')
+            .join("")
+        )
+        .join("")
+    },
+    sprint: {
+      from: "#16a34a",
+      to: "#84cc16",
+      icon:
+        '<circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"/>' +
+        '<circle cx="12" cy="12" r="4.5" fill="#fff"/>' +
+        '<path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'
+    },
+    spatial3d: {
+      from: "#0ea5e9",
+      to: "#6366f1",
+      icon:
+        '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>' +
+        '<path d="M4 7.5l8 4.5 8-4.5M12 12v9" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>'
+    },
+    chess: {
+      from: "#a16207",
+      to: "#7c2d12",
+      icon:
+        '<path d="M12 3a2.4 2.4 0 0 1 1.4 4.35c1.1.75 1.85 2 2.05 3.65H8.55c.2-1.65.95-2.9 2.05-3.65A2.4 2.4 0 0 1 12 3zM8.2 13h7.6l1.1 4.6H7.1L8.2 13zM6.5 18.6h11v1.9h-11z" fill="#fff"/>'
+    }
+  };
+
+  function levelArt(lv) {
+    const a = LEVEL_ART[lv.id] || LEVEL_ART.inhibit;
+    const gid = "lvgrad-" + lv.id;
+    return (
+      '<span class="wtd-lv-art" aria-hidden="true">' +
+      '<svg viewBox="0 0 320 96" preserveAspectRatio="xMidYMid meet" focusable="false">' +
+      '<defs><linearGradient id="' +
+      gid +
+      '" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="' +
+      a.from +
+      '"/><stop offset="1" stop-color="' +
+      a.to +
+      '"/></linearGradient></defs>' +
+      '<rect width="320" height="96" fill="url(#' +
+      gid +
+      ')"/>' +
+      '<circle cx="46" cy="92" r="52" fill="rgba(255,255,255,.12)"/>' +
+      '<circle cx="292" cy="6" r="44" fill="rgba(255,255,255,.10)"/>' +
+      '<g transform="translate(132 20) scale(2.3)">' +
+      a.icon +
+      "</g>" +
+      "</svg></span>"
+    );
+  }
+
   function renderLevelList() {
     const list = $("wtdLevelList");
     if (!list) return;
@@ -560,7 +680,9 @@
         (lv.id === activeLevelId ? " on" : "") +
         '" data-level="' +
         lv.id +
-        '"><span class="wtd-lv-name">' +
+        '">' +
+        levelArt(lv) +
+        '<span class="wtd-lv-name">' +
         lv.name +
         '</span><span class="wtd-lv-domain">' +
         lv.domain +
@@ -585,6 +707,8 @@
         setWtdMode("2d");
         renderLevelList();
         renderArena();
+        /* Clicking a level starts it straight away — no second "Start level" click. */
+        startLevel(activeLevelId);
       });
     });
   }
@@ -1253,7 +1377,7 @@
     const level = LEVELS.find((l) => l.id === "memory");
     const seq = [];
     while (seq.length < level.span) {
-      const ic = ICONS[Math.floor(Math.random() * ICONS.length)];
+      const ic = ICON_SVGS[Math.floor(Math.random() * ICON_SVGS.length)];
       if (seq[seq.length - 1] !== ic) seq.push(ic);
     }
     let phase = "show";
@@ -1293,7 +1417,7 @@
         const t = document.createElement("button");
         t.type = "button";
         t.className = "wtd-tile";
-        t.textContent = sym;
+        t.innerHTML = sym;
         t.addEventListener("click", () => {
           if (phase !== "recall") return;
           if (sym === seq[pickIdx]) {
@@ -1485,21 +1609,46 @@
       const el = document.createElement("button");
       el.type = "button";
       el.className = "wtd-sprint-target " + (good ? "good" : "bad");
-      el.textContent = good ? (Math.random() < 0.5 ? "🧠" : "🐉") : "✦";
+      el.innerHTML = good
+        ? FRUIT_SVGS[Math.floor(Math.random() * FRUIT_SVGS.length)]
+        : BOMB_SVG;
       el.style.left = 8 + Math.random() * (arena.clientWidth - 60) + "px";
       el.style.top = 8 + Math.random() * (arena.clientHeight - 60) + "px";
       el.addEventListener("click", () => {
         if (good) {
           hits++;
           $("wtdHits").textContent = String(hits);
-        } else {
-          misses++;
-          $("wtdMisses").textContent = String(misses);
+          el.remove();
+          return;
         }
-        el.remove();
+        misses++;
+        $("wtdMisses").textContent = String(misses);
+        explodeBomb(el);
       });
       arena.appendChild(el);
       setTimeout(() => el.remove(), good ? 1400 : 1100);
+    }
+
+    /** Bomb hit: flash + burst + a short arena shake, then clear the node. */
+    function explodeBomb(bomb) {
+      if (!bomb || !bomb.isConnected) return;
+      bomb.classList.add("exploding");
+      bomb.style.pointerEvents = "none";
+      const br = bomb.getBoundingClientRect();
+      const ar = arena.getBoundingClientRect();
+      const burst = document.createElement("span");
+      burst.className = "wtd-sprint-burst";
+      burst.style.left = br.left - ar.left + br.width / 2 + "px";
+      burst.style.top = br.top - ar.top + br.height / 2 + "px";
+      arena.appendChild(burst);
+      arena.classList.remove("boom");
+      void arena.offsetWidth; /* restart the shake */
+      arena.classList.add("boom");
+      setTimeout(() => burst.remove(), 560);
+      setTimeout(() => {
+        arena.classList.remove("boom");
+        bomb.remove();
+      }, 480);
     }
 
     const spawnIv = setInterval(spawn, 700);
@@ -1637,16 +1786,6 @@
     ensureLeaderboardAccessListener();
     ensureLeaderboardAsideBound();
     ensureStartLevelDelegation();
-    const nameInp = $("wtdPlayerName");
-    if (nameInp && !nameInp.dataset.wtdBound) {
-      nameInp.dataset.wtdBound = "1";
-      const saved = localStorage.getItem(PLAYER_KEY);
-      if (saved) nameInp.value = saved;
-      nameInp.addEventListener("change", () => {
-        localStorage.setItem(PLAYER_KEY, nameInp.value.trim().slice(0, 40));
-        renderLeaderboard();
-      });
-    }
     const filter = $("wtdBoardLevel");
     if (filter && !filter.dataset.wtdBound) {
       filter.dataset.wtdBound = "1";

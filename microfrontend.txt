@@ -1,0 +1,904 @@
+Getting started with microfrontends
+This quickstart guide will help you set up microfrontends on Vercel. Microfrontends can be used with different frameworks, and separate frameworks can be combined in a single microfrontends group.
+
+Agent Prompt
+Help me set up microfrontends on Vercel. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Configure multi-zone routing with `vercel microfrontends` so multiple applications can be composed under a single domain. 2. Use `vercel link` on each project and deploy with `vercel --prod`.
+
+Prerequisites
+Have at least two Vercel projects created on Vercel that will be part of the same microfrontends group.
+If you're using a coding agent, install the microfrontends skill:
+terminal
+npx skills add vercel/microfrontends
+Key concepts
+Before diving into implementation, it's helpful to understand these core concepts:
+
+Default app: The main application that manages the microfrontends.json configuration file and handles routing decisions. The default app will also handle any request not handled by another microfrontend.
+Shared domain: All microfrontends appear under a single domain, allowing microfrontends to reference relative paths that point to the right environment automatically.
+Path-based routing: Requests are automatically directed to the appropriate microfrontend based on URL paths.
+Independent deployments: Teams can deploy their microfrontends without affecting other parts of the application.
+Set up microfrontends on Vercel
+Create a microfrontends group
+You can create a group using the CLI or the dashboard.
+
+Using the CLI:
+
+Run the following command and follow the interactive prompts to name the group, add projects, and choose the default application:
+
+terminal
+vercel microfrontends create-group
+Using the dashboard:
+
+Navigate to your Vercel dashboard and make sure that you have selected your team from the team switcher.
+Visit the Settings section in the sidebar.
+Find the Microfrontends section in the sidebar from the Settings navigation menu.
+Click Create Group in the upper right corner.
+Follow the instructions to add projects to the microfrontends group and choose one of those applications to be the default application.
+Creating a microfrontends group and adding projects to that group does not change any behavior for those applications until you deploy a microfrontends.json file to production.
+
+Define microfrontends.json
+Once the microfrontends group is created, you can define a microfrontends.json file at the root in the default application. This configuration file is only needed in the default application, and it will control the routing for microfrontends. In this example, web is the default application.
+
+Production behavior will not be changed until the microfrontends.json file is merged and promoted, so you test in the Preview environment before deploying changes to production.
+
+On the Settings page for the new microfrontends group, click the Add Config button to copy the microfrontends.json to your code.
+
+You can also create the configuration manually in code:
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {
+      "development": {
+        "fallback": "TODO: a URL in production that should be used for requests to apps not running locally"
+      }
+    },
+    "docs": {
+      "routing": [
+        {
+          "group": "docs",
+          "paths": ["/docs/:path*"]
+        }
+      ]
+    }
+  }
+}
+Application names in microfrontends.json should match the Vercel project names, see the microfrontends configuration documentation for more information.
+
+See the routing documentation for details on how to configure routing for your microfrontends.
+
+Install the @vercel/microfrontends package
+In the directory of the microfrontend application, install the package using the following command:
+
+
+pnpm
+
+yarn
+
+npm
+
+bun
+Terminal
+pnpm i @vercel/microfrontends
+You need to perform this step for every microfrontend application.
+
+Set up microfrontends with your framework
+Once the microfrontends.json file has been added, Vercel will be able to start routing microfrontend requests to each microfrontend. However, the specifics of each framework, such as JS, CSS, and images, also need to be routed to the correct application.
+
+Choose a framework to optimize documentation to
+To handle JavaScript and CSS assets in Next.js, add the withMicrofrontends wrapper to your next.config.js file.
+
+If this application also has routed pages in pages/, pass supportPagesRouter: true to withMicrofrontends(). This applies to mixed App Router and Pages Router applications.
+
+next.config.ts
+Next.js (/app)
+
+Next.js (/app)
+TypeScript
+
+TypeScript
+import type { NextConfig } from 'next';
+import { withMicrofrontends } from '@vercel/microfrontends/next/config';
+ 
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+ 
+export default withMicrofrontends(nextConfig);
+Use supportPagesRouter only when a Next.js microfrontend includes Pages Router routes. The option enables Pages Router support in the Next.js config transform. It changes Webpack chunk behavior to use deterministic module and chunk IDs, and it generates a build ID for child applications so Pages Router /_next/data requests route to the correct microfrontend. Applications that already set generateBuildId manually cannot use supportPagesRouter.
+
+The withMicrofrontends function will automatically add an asset prefix to the application so that you do not have to worry about that. Next.js applications that use basePath are not supported right now.
+
+vite.config.ts
+SvelteKit
+
+SvelteKit
+TypeScript
+
+TypeScript
+import { microfrontends } from '@vercel/microfrontends/experimental/vite';
+ 
+export default defineConfig({
+  plugins: [microfrontends()],
+});
+Any static asset not covered by the framework instructions above, such as images or any file in the public/ directory, will also need to be added to the microfrontends configuration file or be moved to a path prefixed by the application's asset prefix. An asset prefix of /vc-ap-<hash of application name> (in 2.0.0, or /vc-ap-<application name> in prior versions) is automatically set up by the Vercel microfrontends support.
+
+Run through steps 3 and 4 for all microfrontend applications in the group
+Set up the other microfrontends in the group by running through steps 3 and 4 for every application.
+
+Set up the local development proxy
+To provide a seamless local development experience, @vercel/microfrontends provides a microfrontends aware local development proxy to run alongside your development servers. This proxy allows you to only run a single microfrontend locally while making sure that all microfrontend requests still work.
+
+If you are using Turborepo, the proxy will automatically run when you run the development task for your microfrontend.
+
+If you don't use turbo, you can set this up by adding a script to your package.json like this:
+
+package.json
+"scripts": {
+  "proxy": "microfrontends proxy --local-apps my-local-app-name"
+}
+Next, use the auto-generated port in your dev command so that the proxy knows where to route the requests to:
+
+package.json
+"scripts": {
+  "dev": "next dev --port $(microfrontends port)"
+}
+Once you have your application and the local development proxy running (either via turbo or manually), visit the "Microfrontends Proxy" URL in your terminal output. Requests will be routed to your local app or your production fallback app. Learn more in the local development guide.
+
+Deploy your microfrontends to Vercel
+You can now deploy your code to Vercel. Once live, you can then visit the domain for that deployment and visit any of the paths configured in microfrontends.json. These paths will be served by the other microfrontend applications.
+
+In the example above, visiting the / page will see the content from the web microfrontend while visiting /docs will see the content from the docs microfrontend.
+
+Microfrontends functionality can be tested in Preview before deploying the code to production.
+
+Next steps
+Learn how to use the @vercel/microfrontends package to manage local development.
+For polyrepo setups (separate repositories), see the polyrepo configuration guide.
+Route more paths to your microfrontends.
+To learn about other microfrontends features, visit the Managing Microfrontends documentation.
+Set up the Vercel Toolbar for access to developer tools to debug and manage microfrontends.
+Microfrontends changes how paths are routed to your projects
+
+Microfrontends Configuration
+The microfrontends.json file is used to configure your microfrontends. If this file is not deployed with your default application, the deployment will not be a microfrontend.
+
+Schema
+Config
+Property	Type	Description	Required
+$schema	string	See https://openapi.vercel.sh/microfrontends.json.	
+version	string	The version of the microfrontends config schema.	
+applications	ApplicationRouting	Mapping of Vercel project names to their microfrontend configurations.	Required
+options	Options	Optional configuration options for the microfrontend.	
+ApplicationRouting
+[key: string]: Application
+
+
+Mapping of Vercel project names to their microfrontend configurations.
+
+
+key: The Vercel project name of the microfrontend application. Note: If this name does not also match the name `name` from the `package.json`, set `packageName` with the name used in `package.json`. See. application naming.
+
+Application
+DefaultApplication or ChildApplication.
+
+The configuration for a microfrontend application. There must always be one default application.
+DefaultApplication
+Property	Type	Description	Required
+packageName	string	The name used to run the application, e.g. the `name` field in the `package.json`. This is used by the local proxy to map the application config to the locally running app. This is only necessary when the application name does not match the `name` used in `package.json`. See. application naming.	
+development	DefaultDevelopment	Development configuration for the default application.	Required
+DefaultDevelopment
+Property	Type	Description	Required
+local	number | string	A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional). Examples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080. The default value is http://localhost:<port> where port is a stable, unique port number (based on the application name). See. local development.	
+task	string	The task to run when starting the development server. Should reference a script in the package.json of the application. The default value is "dev". See. local development.	
+fallback	string	Fallback for local development, could point to any environment. This is required for the default app. This value is used as the fallback for child apps as well if they do not have a fallback. If passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS. See. local development.	Required
+ChildApplication
+Property	Type	Description	Required
+packageName	string	The name used to run the application, e.g. the `name` field in the `package.json`. This is used by the local proxy to map the application config to the locally running app. This is only necessary when the application name does not match the `name` used in `package.json`. See. application naming.	
+development	ChildDevelopment	Development configuration for the child application.	
+routing	Routing	Groups of path expressions that are routed to this application. See. path routing.	Required
+assetPrefix	string	The name of the asset prefix to use instead of the auto-generated name. The asset prefix is used to prefix all paths to static assets, such as JS, CSS, or images that are served by a specific application. It is necessary to ensure there are no conflicts with other applications on the same domain. An auto-generated asset prefix of the form `vc-ap-<hash>` is used when this field is not provided. When this field is provided, `/${assetPrefix}/:path*` must also be added to the list of paths in the `routing` field. Changing the asset prefix after a microfrontend application has already been deployed is not a forwards and backwards compatible change, and the asset prefix should be added to the `routing` field and deployed before setting the `assetPrefix` field. The default value is the auto-generated asset prefix of the form `vc-ap-<hash>`. See. asset prefix.	
+ChildDevelopment
+Property	Type	Description	Required
+local	number | string	A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional). Examples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080. The default value is http://localhost:<port> where port is a stable, unique port number (based on the application name). See. local development.	
+task	string	The task to run when starting the development server. Should reference a script in the package.json of the application. The default value is "dev". See. local development.	
+fallback	string	Fallback for local development, could point to any environment. If not provided for child apps, the fallback of the default app will be used. If passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS. See. local development.	
+Routing
+PathGroup[]
+
+
+A list of path groups that are routed to this application.
+
+PathGroup
+Property	Type	Description	Required
+group	string	Group name for the paths.	
+flag	string	The name of the feature flag that controls routing for this group of paths. See. routing changes safely with flags.	
+paths	string[]	A list of path expressions that are routed to this application. See. supported path expressions.	Required
+Options
+Property	Type	Description	Required
+disableOverrides	boolean	If you want to disable the overrides for the site. For example, if you are managing rewrites between applications externally, you may wish to disable the overrides on the toolbar as they will have no effect. See. routing overrides.	
+localProxyPort	number	The port number used by the local proxy server. The default value is 3024. See. local development.	
+Example
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "nextjs-pages-dashboard": {
+      "development": {
+        "fallback": "nextjs-pages-dashboard.vercel.app"
+      }
+    },
+    "nextjs-pages-blog": {
+      "routing": [
+        {
+          "paths": ["/blog/:path*"]
+        },
+        {
+          "flag": "enable-flagged-blog-page",
+          "paths": ["/flagged/blog"]
+        }
+      ]
+    }
+  }
+}
+Application Naming
+If the application name differs from the name field in package.json for the application, you should either rename the name field in package.json to match or add the packageName field to the microfrontends configuration.
+
+microfrontends.json
+    "docs": {
+      "packageName": "name-from-package-json",
+      "routing": [
+        {
+          "group": "docs",
+          "paths": ["/docs/:path*"]
+        }
+      ]
+    }
+File Naming
+The microfrontends configuration file can be named either microfrontends.json or microfrontends.jsonc.
+
+You can also define a custom configuration file by setting the VC_MICROFRONTENDS_CONFIG_FILE_NAME environment variable (for example, microfrontends-dev.json). The file name must end with either .json or .jsonc, and it may include a path, such as /path/to/microfrontends.json. The filename / path specified is relative to the root directory for the default application.
+
+Be sure to add the environment variable to all projects within the microfrontends group.
+
+Using a custom file name allows the same repository to support multiple microfrontends groups, since each group can have its own configuration file.
+
+If you're using Turborepo, define the environment variable outside of the Turbo invocation when running turbo dev, so the local proxy can detect and use the correct configuration file.
+
+VC_MICROFRONTENDS_CONFIG_FILE_NAME="microfrontends-dev.json" turbo dev
+
+
+
+Microfrontends Routing
+Microfrontends routing determines which application handles a path and which deployment of that application receives the request. Vercel makes both routing decisions in its network infrastructure.
+
+When Vercel receives a request to a domain that uses microfrontends, it reads the microfrontends.json file in the live deployment to determine which application handles the path. This happens within the same request. It is not a rewrite that results in a second outbound request to the child application's URL, so there is no additional network hop.
+
+How Vercel's network infrastructure routes microfrontend paths.
+How Vercel's network infrastructure routes microfrontend paths.
+You can also route paths to a different microfrontend based on custom application logic using middleware.
+
+Configure path routing
+To route paths to a new microfrontend, modify the microfrontends.json file in your default application. In the routing section for the application that should handle the path, add the new path:
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {},
+    "docs": {
+      "routing": [
+        {
+          "paths": ["/docs/:path*", "/new-path-to-route"]
+        }
+      ]
+    }
+  }
+}
+The routing for this new path will take effect when the code is merged and the deployment is live. You can test the routing changes in Preview or pre-Production to make sure it works as expected before rolling out the change to end users.
+
+Additionally, if you need to revert, you can use Instant Rollback to rollback the project to a deployment before the routing change to restore the old routing rules.
+
+Changes to separate microfrontends are not rolled out in lockstep. If you need to modify microfrontends.json, make sure that the new application can handle the requests before merging the change. Otherwise use flags to control whether the path is routed to the microfrontend.
+
+Supported path expressions
+You can use following path expressions in microfrontends.json:
+
+/path - Constant path.
+/:path - Wildcard that matches a single path segment.
+/:path/suffix - Wildcard that matches a single path segment with a constant path at the end.
+/prefix/:path* - Path that ends with a wildcard that can match zero or more path segments.
+/prefix/:path+ - Path that ends with a wildcard that matches one or more path segments.
+/\\(a\\) - Path is /(a), special characters in paths are escaped with a backslash.
+/:path(a|b) - Path is either /a or /b.
+/:path(a|\\(b\\)) - Path is either /a or /(b), special characters are escaped with a backslash.
+/:path((?!a|b).*) - Path is any single path except /a or /b.
+/prefix-:path-suffix - Path that starts with /prefix-, ends with -suffix, and contains a single path segment.
+The following are not supported:
+
+Conflicting or overlapping paths: Paths must uniquely map to one microfrontend
+Regular expressions not included above
+Wildcards that can match multiple path segments (+, *) that do not come at the end of the expression
+Test your path expression
+
+Path expression
+Enter a path expression
+Path to test
+Enter a path to test
+To assert whether the path expressions will work for your path, use the validateRouting test utility to add unit tests that ensure paths get routed to the correct microfrontend.
+
+Configure an asset prefix
+An asset prefix is a unique prefix prepended to paths in URLs of static assets, like JavaScript, CSS, or images. This is needed so that URLs are unique across microfrontends and can be correctly routed to the appropriate project. Without this, these static assets may collide with each other and not work correctly.
+
+When using withMicrofrontends, a default auto-generated asset prefix is automatically added. The default value is an obfuscated hash of the project name, like vc-ap-b3331f, so the project name isn't exposed to users.
+
+If you would like to use a human readable asset prefix, you can also set the asset prefix that is used in microfrontends.json.
+
+microfrontends.json
+"your-application": {
+  "assetPrefix": "marketing-assets",
+  "routing": [...]
+}
+Changing the asset prefix is not guaranteed to be backwards compatible. Make sure that the asset prefix that you choose is routed to the correct project in production before changing the assetPrefix field.
+
+Next.js
+JavaScript and CSS URLs are automatically prefixed with the asset prefix, but content in the public/ directory needs to be manually moved to a subdirectory with the name of the asset prefix.
+
+Set a default route
+Some functionality in the Vercel Dashboard, such as screenshots and links to the deployment domain, automatically links to the / path. Microfrontends deployments may not serve any content on the / path so that functionality may appear broken. You can set a default route in the dashboard so that the Vercel Dashboard instead always links to a valid route in the microfrontends deployment.
+
+To update the default route, visit the Microfrontends Settings page.
+
+Open Settings in the sidebar for your project and select Microfrontends
+Search for the Default Route setting
+Enter a new default path (starting with /) such as /docs and click Save
+Setting to specify the default route for the project.
+Setting to specify the default route for the project.
+Deployments created after this change will now use the provided path as the default route.
+
+Route to externally hosted applications
+If a microfrontend is not yet hosted on Vercel, you can create a new Vercel project to rewrite requests to the external application. You will then use this Vercel project in your microfrontends configuration on Vercel.
+
+Roll out routing changes safely with flags
+This is only compatible with Next.js.
+If you want to dynamically control the routing for a path, you can use flags to make sure that the change is safe before enabling the routing change permanently. Instead of automatically routing the path to the microfrontend, the request will be sent to the default application which then decides whether the request should be routed to the microfrontend.
+
+This is compatible with the Flags SDK or it can be used with custom feature flag implementations.
+
+If using this with the Flags SDK, make sure to share the same value of the FLAGS_SECRET environment between all microfrontends in the same group.
+
+Specify a flag name
+In your microfrontends.json file, add a name in the flag field for the group of paths:
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {},
+    "docs": {
+      "routing": [
+        {
+          "flag": "name-of-feature-flag",
+          "paths": ["/flagged-path"]
+        }
+      ]
+    }
+  }
+}
+Instead of being automatically routed to the docs microfrontend, requests to /flagged-path will now be routed to the default application to make the decision about routing.
+
+Add microfrontends middleware
+The @vercel/microfrontends package uses middleware to route requests to the correct location for flagged paths and based on what microfrontends were deployed for your commit. Only the default application needs microfrontends middleware.
+
+You can add it to your Next.js application with the following code:
+
+middleware.ts
+import type { NextRequest } from 'next/server';
+import { runMicrofrontendsMiddleware } from '@vercel/microfrontends/next/middleware';
+ 
+export async function middleware(request: NextRequest) {
+  const response = await runMicrofrontendsMiddleware({
+    request,
+    flagValues: {
+      'name-of-feature-flag': async () => { ... },
+    }
+  });
+  if (response) {
+    return response;
+  }
+}
+ 
+// Define routes or paths where this middleware should apply
+export const config = {
+  matcher: [
+    '/.well-known/vercel/microfrontends/client-config', // For prefetch optimizations for flagged paths
+    '/flagged-path',
+  ],
+};
+Your middleware matcher should include /.well-known/vercel/microfrontends/client-config. This endpoint is used by the client to know which application the path is being routed to for prefetch optimizations. The client will make a request to this well known endpoint to fetch the result of the path routing decision for this session.
+
+Make sure that any flagged paths are also configured in the middleware matcher so that middleware runs for these paths.
+
+Any function that returns Promise<boolean> can be used as the implementation of the flag. This also works directly with feature flags on Vercel.
+
+If the flag returns true, the microfrontends middleware will route the path to the microfrontend specified in microfrontends.json. If it returns false, the request will continue to be handled by the default application.
+
+We recommend setting up validateMiddlewareConfig and validateMiddlewareOnFlaggedPaths tests to prevent many common middleware misconfigurations.
+
+How deployment routing works
+Vercel automatically determines which deployment to route a request to for the microfrontends projects in the same group. This allows developers to build and test any combination of microfrontends without having to build them all on the same commit.
+
+Domains that use this microfrontends routing will have an M icon next to the name on the deployment page.
+
+The M icon on the deployment page indicates that the domain has microfrontends routing.
+The M icon on the deployment page indicates that the domain has microfrontends routing.
+Vercel sets microfrontends routing for a domain when the domain is created or updated, such as when a deployment is built, promoted, or rolled back. For each project in the microfrontends group, the domain or URL type determines which deployment Vercel selects:
+
+Domain or URL	Routing order for each microfrontend	When routing changes
+Production domain	The project's current production deployment.	When you promote or roll back the project's production deployment.
+Custom environment domain	A deployment in the custom environment with the same name. If one is unavailable, Vercel uses the group's configured fallback environment.	When the matching custom environment or fallback environment receives a deployment.
+Branch URL or domain assigned to a Git branch	The latest deployment for the matching Git branch. If one is unavailable, Vercel uses the group's configured fallback environment.	When the branch or fallback environment receives a deployment.
+Deployment URL	A deployment from the same commit. If one is unavailable, Vercel uses the branch deployment captured when the URL was created, followed by the fallback deployment captured at the same time.	The routing targets remain fixed to the point in time when Vercel created the URL.
+Custom domain routing
+Domains assigned to the production environment always route to each project's current production deployment. This is the same deployment available through the project's production domain. If you roll back a microfrontend project, microfrontends routing uses the rollback deployment.
+
+Domains assigned to a custom environment route requests to other microfrontends in custom environments with the same name. If a matching deployment is unavailable, Vercel uses the fallback environment configuration.
+
+Branch URL routing
+Automatically generated branch URLs and domains assigned to a Git branch route to the latest deployment for each project on that branch.
+
+Projects in a monorepo share a Git repository, commits, and branches, so Vercel links their Preview Deployments using the shared commit. For Git-connected projects in separate repositories, open the default application's Settings, select Microfrontends, enable Cross-Repository Branch Routing, and save. Vercel then links the latest Preview Deployments whose branch names match.
+
+For example, when you preview the new-checkout branch of one project, requests to other projects in the microfrontends group use their latest new-checkout Preview Deployments when available.
+
+If no deployment exists for the project on the branch, Vercel routes requests using the fallback environment configuration.
+
+Deployment URL routing
+Automatically generated deployment URLs preserve the state of the microfrontends group when Vercel creates the URL. For each project, Vercel first routes to a deployment from the same commit. If that deployment is unavailable, Vercel routes to the branch deployment captured when the URL was created, then to the fallback environment deployment captured at the same time.
+
+Future deployments do not change these targets, so the deployment URL continues to represent the same point in time across the microfrontends group.
+
+Identify the microfrontend for a path
+To identify which microfrontend is responsible for serving a specific path, you can use the Deployment Summary or the Vercel Toolbar.
+
+Using the Vercel dashboard
+Go to the Project page for the default microfrontend application.
+Click on the Deployment for the production deployment.
+Open the Deployment Summary for the deployment.
+Open up the Microfrontends accordion to see all paths that are served to that microfrontend. If viewing the default application, all paths for all microfrontends will be displayed.
+Listing of all paths served by a microfrontend in the Deployment Summary.
+Listing of all paths served by a microfrontend in the Deployment Summary.
+Using the Vercel Toolbar
+On any page in the microfrontends group, open up the Vercel Toolbar.
+Open up the Microfrontends Panel.
+Look through the Directory of each microfrontend to find the application that serves the path. If no microfrontends match, the path is served by the default application.
+Listing of all paths served by a microfrontend in the Vercel Toolbar.
+Listing of all paths served by a microfrontend in the Vercel Toolbar.
+
+
+
+
+Managing microfrontends security
+Understand how and where you manage Deployment Protection and Vercel Firewall for each microfrontend application.
+
+Deployment Protection and microfrontends
+Vercel Firewall and microfrontends
+Deployment Protection and microfrontends
+Because each URL is protected by the Deployment Protection settings of the project it belongs to, the deployment protection for the microfrontend experience as a whole is determined by the default application.
+
+For requests to a microfrontend host (a domain belonging to the microfrontend default application):
+
+Requests are only verified by the Deployment Protection settings for the project of your default application
+For requests directly to a child application (a domain belonging to a child microfrontend):
+
+Requests are only verified by the Deployment Protection settings for the project of the child application
+This applies to the following protection methods and bypass methods:
+
+Vercel Authentication
+Password Protection
+Trusted IPs
+Shareable Links
+Protection Bypass for Automation
+Deployment Protection Exceptions
+OPTIONS Allowlist.
+Managing Deployment Protection for your microfrontend
+Use the Deployment Protection settings for the project of the default application to control access to the microfrontend.
+
+We recommend the following configuration:
+
+Default app: Use Standard Protection so that end users can access the microfrontend through the default app's URL.
+Child apps: Enable protection for all deployments so that child apps are not directly accessible. Since child app content is served through the default app's URL, child apps can only be accessed via the URL of the default project.
+This works because Vercel handles routing to child apps within a single request at the network layer, as explained in routing. It is not a rewrite that results in a separate request to the child app's URL. Deployment protection on the child app therefore applies only when the child app's URL is accessed directly.
+
+On URLs with microfrontends routing, Passport is configured on the default application and its configuration protects every child path. Child applications cannot have an independent Passport connection while they belong to the group. Direct requests to a child application's domains do not use the default application's Passport configuration. While a child belongs to a group, protect its direct domains with another Deployment Protection method. To configure Passport on the child project, remove it from the group first.
+
+The default application handles the /.well-known/vercel/passport/callback request before application routing, so neither application needs to implement the callback path.
+
+Vercel Firewall and microfrontends
+The Platform-wide firewall is applied to all requests.
+The customizable Web Application Firewall (WAF) from the default application and the corresponding child application is applied for a request.
+Vercel WAF and microfrontends
+For requests to a microfrontend host (a domain belonging to the microfrontend default application):
+
+All requests are verified by the Vercel WAF for the project of your default application
+Requests to child applications are additionally verified by the Vercel WAF for their project
+For requests directly to a child application (a domain belonging to a child microfrontend):
+
+Requests are only verified by the Vercel WAF for the project of the child application.
+This applies for the entire Vercel WAF, including Custom Rules, IP Blocking, WAF Managed Rulesets, and Attack Mode.
+
+Managing the Vercel WAF for your microfrontend
+To set a WAF rule that applies to all requests to a microfrontend, use the Vercel WAF for your default application.
+
+To set a WAF rule that applies only to requests to paths of a child application, use the Vercel WAF for the child project.
+
+
+
+Microfrontends local development
+To provide a seamless local development experience, @vercel/microfrontends provides a microfrontends aware local development proxy to run alongside your development servers. This proxy allows you to only run a single microfrontend locally while making sure that all microfrontend requests still work.
+
+The need for a microfrontends proxy
+Microfrontends allow teams to split apart an application and only run an individual microfrontend to improve developer velocity. A downside of this approach is that requests to the other microfrontends won't work unless that microfrontend is also running locally. The microfrontends proxy solves this by intelligently falling back to route microfrontend requests to production for those applications that are not running locally.
+
+For example, if you have two microfrontends web and docs:
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {
+      "development": {
+        "fallback": "vercel.com"
+      }
+    },
+    "docs": {
+      "routing": [
+        {
+          "paths": ["/docs/:path*"]
+        }
+      ]
+    }
+  }
+}
+A developer working on /docs only runs the Docs microfrontend, while a developer working on /blog only runs the Web microfrontend. If a Docs developer wants to test a transition between /docs and /blog , they need to run both microfrontends locally. This is not the case with the microfrontends proxy as it routes requests to /blog to the instance of Web that is running in production.
+
+Therefore, the microfrontends proxy allows developers to run only the microfrontend they are working on locally and be able to test paths in other microfrontends.
+
+When developing locally with Next.js any traffic a child application receives will be redirected to the local proxy. Setting the environment variable MFE_DISABLE_LOCAL_PROXY_REWRITE=1 will disable the redirect and allow you to visit the child application directly.
+
+Setting up microfrontends proxy
+Prerequisites
+Set up your microfrontends on Vercel
+All applications that are part of the microfrontend have @vercel/microfrontends listed as a dependency
+Optional: Turborepo in your repository
+Application setup
+In order for the local proxy to redirect traffic correctly, it needs to know which port each application's development server will be using. To keep the development server and the local proxy in sync, you can use the microfrontends port command provided by @vercel/microfrontends which will automatically assign a port.
+
+package.json
+{
+  "name": "web",
+  "scripts": {
+    "dev": "next --port $(microfrontends port)"
+  },
+  "dependencies": {
+    "@vercel/microfrontends": "latest"
+  }
+}
+If you would like to use a specific port for each application, you may configure that in microfrontends.json:
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {},
+    "docs": {
+      "routing": [
+        {
+          "paths": ["/docs/:path*"]
+        }
+      ],
+      "development": {
+        "task": "start",
+        "local": 3001
+      }
+    }
+  }
+}
+The local field may also contain a host or protocol (for example, my.special.localhost.com:3001 or https://my.localhost.com:3030).
+
+If the name of the application in microfrontends.json (such as web or docs) does not match the name used in package.json, you can also set the packageName field for the application so that the local development proxy knows if the application is running locally.
+
+microfrontends.json
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {},
+    "docs": {
+      "routing": [
+        {
+          "paths": ["/docs/:path*"]
+        }
+      ],
+      "packageName": "my-docs-package"
+    }
+  }
+}
+package.json
+{
+  "name": "my-docs-package",
+  "scripts": {
+    "dev": "next --port $(microfrontends port)"
+  },
+  "dependencies": {
+    "@vercel/microfrontends": "latest"
+  }
+}
+Starting local proxy
+The local proxy is started automatically when running a microfrontend development task with turbo. By default a microfrontend application's dev script is selected as the development task, but this can be changed with the task field in microfrontends.json.
+
+Running turbo web#dev will start the web microfrontends development server along with a local proxy that routes all requests for docs to the configured production host.
+
+This requires version 2.3.6 or 2.4.2 or newer of the turbo package.
+
+Setting up your monorepo
+Option 1: Adding Turborepo to a monorepo
+Turborepo is the suggested way to work with microfrontends as it provides a managed way for running multiple applications and a proxy simultaneously.
+
+If you don't already use Turborepo in your monorepo, turbo can infer a configuration from your microfrontends.json. This allows you to start using Turborepo in your monorepo without any additional configuration.
+
+To get started, follow the Installing turbo guide.
+
+Once you have installed turbo, run your development tasks using turbo instead of your package manager. This will start the local proxy alongside the development server.
+
+You can start the development task for the Web microfrontend by running turbo run dev --filter=web. Review Turborepo's filter documentation for details about filtering tasks.
+
+For more information on adding Turborepo to your repository, review adding Turborepo to an existing repository.
+
+Option 2: Using without Turborepo
+If you do not want to use Turborepo, you can invoke the proxy directly.
+
+package.json
+{
+  "name": "web",
+  "scripts": {
+    "dev": "next --port $(microfrontends port)",
+    "proxy": "microfrontends proxy microfrontends.json --local-apps web"
+  },
+  "dependencies": {
+    "@vercel/microfrontends": "latest"
+  }
+}
+Review Understanding the proxy command for more details.
+
+Accessing the microfrontends proxy
+When testing locally, you should use the port from the microfrontends proxy to test your application. For example, if docs runs on port 3001 and the microfrontends proxy is on port 3024, you should visit http://localhost:3024/docs to test all parts of their application.
+
+When testing Next.js Pages Router routes, navigate through the proxy and inspect /_next/data requests.
+
+See the Pages Router QA checklist for cross-app navigation cases to verify.
+
+You can change the port of the local development proxy by setting options.localProxyPort in microfrontends.json:
+
+microfrontends.json
+{
+  "applications": {
+    // ...
+  },
+  "options": {
+    "localProxyPort": 4001
+  }
+}
+Debug routing
+To debug issues with microfrontends locally, enable microfrontends debug mode when running your application. Details about changes to your application, such as environment variables and rewrites, will be printed to the console. If using the local development proxy, the logs will also print the name of the application and URL of the destination where each request was routed to.
+
+Set an environment variable MFE_DEBUG=1
+Or, set debug to true when calling withMicrofrontends
+Polyrepo setup
+If you're working with a polyrepo setup where microfrontends are distributed across separate repositories, you'll need additional configuration since the microfrontends.json file won't be automatically detected.
+
+Accessing the configuration file
+First, ensure that each microfrontend repository has access to the shared configuration:
+
+Option 1: Use the Vercel CLI to fetch the configuration:
+
+vercel microfrontends pull
+This command will download the microfrontends.json file from your default application to your local repository.
+
+If you haven't linked your project yet, the command will prompt you to link your project to Vercel first.
+
+This command requires the Vercel CLI 44.2.2 to be installed.
+
+Option 2: Set the VC_MICROFRONTENDS_CONFIG environment variable with a path pointing to your microfrontends.json file:
+
+export VC_MICROFRONTENDS_CONFIG=/path/to/microfrontends.json
+You can also add this to your .env file:
+
+.env
+VC_MICROFRONTENDS_CONFIG=/path/to/microfrontends.json
+Running the local development proxy
+In a polyrepo setup, you'll need to start each microfrontend application separately since they're in different repositories. Unlike monorepos where Turborepo can manage multiple applications, polyrepos require manual coordination:
+
+Start your local microfrontend application
+Start your microfrontend application with the proper port configuration. Follow the Application setup instructions to configure your development script with the microfrontends port command.
+
+Run the microfrontends proxy
+In the same or a separate terminal, start the microfrontends proxy:
+
+microfrontends proxy --local-apps your-app-name
+Make sure to specify the correct application name that matches your microfrontends.json configuration.
+
+To test several microfrontends together, start each one in its own repository, then pass all of them to a single proxy as a space-separated list:
+
+microfrontends proxy --local-apps web docs
+You run only one proxy regardless of how many applications you run locally. The proxy routes requests for the listed applications to your local processes and sends everything else to the fallback URLs in your configuration.
+
+Access your application
+Visit the proxy URL shown in the terminal output (typically http://localhost:3024) to test the full microfrontends experience. This URL will route requests to your local app or production fallbacks as configured.
+
+Since you're working across separate repositories, you'll need to manually start any other microfrontends you want to test locally, each in their respective repository.
+
+Understanding the proxy command
+When setting up your monorepo without turborepo, the proxy command used inside the package.json scripts has the following specifications:
+
+microfrontends is an executable provided by the @vercel/microfrontends package.
+You can also run it with a command like npm exec microfrontends ... (or the equivalent for your package manager), as long as it's from a context where the @vercel/microfrontends package is installed.
+proxy is a sub-command to run the local proxy.
+microfrontends.json is the path to your microfrontends configuration file. If you have a monorepo, you may also leave this out and the script will attempt to locate the file automatically.
+--local-apps is followed by a space separated list of the applications running locally. For the applications provided in this list, the local proxy will route requests to those local applications. Requests for other applications will be routed to the fallback URL specified in your microfrontends configuration for that app.
+For example, if you are running the Web and Docs microfrontends locally, this command would set up the local proxy to route requests locally for those applications, and requests for the remaining applications to their fallbacks:
+
+microfrontends proxy microfrontends.json --local-apps web docs
+We recommend having a proxy command associated with each application in your microfrontends group. For example:
+
+If you run npm run docs-dev to start up your docs application for local development, set up npm run docs-proxy as well
+This should pass --local-apps docs so it sends requests to the local docs application, and everything else to the fallback.
+Therefore, you can run npm run docs-dev and npm run docs-proxy to get the full microfrontends setup running locally.
+
+Falling back to protected deployments
+When the local proxy falls back to a Vercel deployment protected with Deployment Protection, it needs a Protection Bypass for Automation secret to reach the protected deployment.
+
+The preferred approach is to set a single shared VERCEL_AUTOMATION_BYPASS_SECRET in the default application's local environment. The local proxy reads this value and sends it as the x-vercel-protection-bypass header when proxying to protected child project deployments. When Protection Bypass for Automation is enabled on the default application's project, Vercel sets VERCEL_AUTOMATION_BYPASS_SECRET automatically as a system environment variable, so running vercel env pull in the default app brings it down to your local environment.
+
+For one shared secret to authorize requests to every protected child project, each child project must recognize the same bypass secret value. Copy the default application's secret and add it to each protected child project.
+
+Share one bypass secret across projects
+Enable Protection Bypass for Automation on the default app
+Navigate to the Vercel project for the default application
+Click on the Settings tab
+Click on Deployment Protection
+Under Protection Bypass for Automation, create a secret if one does not already exist
+Copy the value of the secret
+Add the same secret to each protected child project
+Navigate to the Vercel project for a protected child application
+Click on the Settings tab
+Click on Deployment Protection
+Under Protection Bypass for Automation, set the secret to the same value you copied from the default app
+Repeat for every protected child project you want the proxy to reach
+Pull the secret into your local environment
+Ensure you have the Vercel CLI installed
+Navigate to the root of the default app folder
+Run vercel login to authenticate with Vercel
+Run vercel link to link the folder to the Vercel project
+Run vercel env pull to pull VERCEL_AUTOMATION_BYPASS_SECRET into your local environment file (for example, .env.local)
+Update your README.md
+Include the previous step in your repository setup instructions, so that other developers pull the secret and have it available locally.
+
+Use a per-app secret for distinct bypass values
+If a project needs its own distinct bypass secret rather than a shared one, set a per-app environment variable named AUTOMATION_BYPASS_<transformed app name> in the default application's local environment. When both VERCEL_AUTOMATION_BYPASS_SECRET and the per-app variable are set for an application, the per-app variable takes precedence.
+
+The name is transformed to be uppercase, and any character that is not a letter or number is replaced with an underscore. For example, the variable name for an app named my-docs-app would be AUTOMATION_BYPASS_MY_DOCS_APP.
+
+Set this variable to the value of the protected project's Protection Bypass for Automation secret, scope it to the Development environment on the default application's project, and run vercel env pull in the default app to bring it down locally.
+
+
+Managing microfrontends
+Once you have configured the basic structure of your microfrontends,
+
+Learn the different ways in which you can route paths to different microfrontends as well as available options
+Learn how to manage your microfrontends to add and remove microfrontends, share settings, route observability and manage the security of each microfrontend.
+Learn how to optimize navigations between different microfrontends
+Use the Vercel Toolbar to manage different aspects of microfrontends such as overriding microfrontend routing.
+Learn how to troubleshoot your microfrontends setup or add unit tests to ensure everything works.
+Limits and pricing
+Teams on all plans can use microfrontends support with plan-specific limits. Hobby and Pro include two microfrontend projects. Pro teams can add more projects, and Vercel bills Pro teams for routed requests as shown below. Enterprise pricing is custom.
+
+
+How Vercel adopted microfrontends
+
+
+5 min read
+
+
+Copy
+Learn how Vercel cut build times and improved developer velocity while maintaining a smooth user experience with microfrontends.
+
+Vercel's main website, once a single large Next.js application, serves both our website visitors and logged-in dashboard. But, as Vercel grew, this setup revealed opportunities for improvement. Build times grew, dependency management became more intricate, and workflows needed optimization. Minor changes triggered full builds, affecting isolated development and CI pipelines.
+
+It was clear a change was needed.
+
+By rethinking our architecture, we shifted to vertical microfrontends, leading to a simpler development experience and over a 40% improvement in preview build times and local development compilation. Streamlined dependencies by removing code for the other microfrontends also reduced page weight and boosted end-user performance, with gains in Core Web Vitals like Largest Contentful Paint (LCP) and Interaction to Next Paint (INP).
+
+Building on Vercel's support for microfrontends, this overhaul improved the developer experience (DX) and highlighted areas for further optimization. Through dogfooding a large-scale app migration, our shift revealed new ways to streamline the platform for all users. While this blog shares our journey, it also shows where we can smooth the process for everyone. As we continue refining, we’re also making single applications build faster—enabling even greater DX without compromising end-user performance.
+
+Let's look at how we did it.
+Copy link to headingLeveraging Turbo
+Our first step was to focus on improving local compilation, build times, and CI workflows. Vercel’s monorepo is powered by Turborepo, which allowed us to optimize tasks with features like Vercel Remote Cache and --affected. Adopting Turbopack provided a great speed improvement for local development.
+
+But as we made these improvements, we realized the single-app model was also no longer necessary for Vercel.com. Logical splits within the application meant we could avoid unnecessary work on every build and compile, delivering even more major developer velocity gains.
+
+Copy link to headingWeighing a horizontal or vertical split
+Microfrontends offer a way to break down large applications into smaller, independent units, allowing parallel development across product areas and engineering teams. While single applications are cohesive, microfrontends help address scaling issues as both applications and organizations grow. There are two main strategies:
+
+Vertical microfrontends: Split by path, where each page is handled by a single app
+
+Horizontal microfrontends: Split by features, where multiple applications run on the same page
+
+Two common approaches to microfrontends: Multiple microfrontends within a single page (horizontal split) or having a single microfrontend manage an entire page (vertical split).
+Two common approaches to microfrontends: Multiple microfrontends within a single page (horizontal split) or having a single microfrontend manage an entire page (vertical split).
+There is no right or wrong answer, and each has its trade-offs. Each approach can deliver substantial benefits depending on the use case. Luca Mezzalira's book on microfrontends is a good resource on this topic.
+
+Vertical splits offer cohesion, but may cause hard navigations when switching between applications supported by different microfrontends. Techniques like prefetching and APIs like Chromium’s Speculation Rules can help, but come with limitations, such as increased resource usage and limited browser support.
+
+With horizontal splits, testing, releasing, monitoring, and debugging become more complex, as multiple microfrontends operate on the same page.
+
+We adopted vertical microfrontends—splitting the app into logical sections users rarely cross—to reduce build times and simplify dependencies, all while maintaining a unified monorepo.
+
+Deploy microfrontends on Vercel
+
+Vercel makes it easy to deploy vertical microfrontends. Learn whether Next.js Multi-Zones can work for you.
+
+View template
+
+Early tests showed this approach could halve build times and streamline ownership across both development and production, giving developers the feel of working on a single application.
+
+Copy link to headingOur migration path
+The next step was migrating our monolithic frontend app into smaller vertical applications without disrupting development or the user experience. We broke the application down into three core areas:
+
+marketing
+
+documentation
+
+logged-in dashboard
+
+These areas were naturally distinct. Users don't frequently cross between them, and they maintain distinct user interfaces, making them ideal for separation.
+
+Users experience soft navigations within a single microfrontend and hard navigations when moving between microfrontends.
+Users experience soft navigations within a single microfrontend and hard navigations when moving between microfrontends.
+Since we use Next.js, we used the Next.js Multi-Zones feature, which supports vertical microfrontends.
+
+Incremental migration was a priority for us. We opted to create brand new applications, instead of forking the original codebase. Forking seemed easier on the surface, but would have introduced risks. Shared components like headers, footers, and design systems would need to be duplicated and maintained across multiple repositories, leading to synchronization issues and potential inconsistencies.
+
+By continuing with the monorepo, and centralizing code into packages within the monorepo, we ensured consistency of the shared components while still easily, gradually breaking out key areas. Tools like Turborepo and Dependency Cruiser helped simplify this process.
+
+Vercel's monorepo is structured with independent microfrontends in the "apps" folder, while shared packages are promoted for seamless access across all apps.
+Vercel's monorepo is structured with independent microfrontends in the "apps" folder, while shared packages are promoted for seamless access across all apps.
+Using feature flags, we were able to incrementally route traffic from the still-live monolithic frontend app to the new microfrontends. This allowed us to minimize risk and validate performance improvements before removing the old code. When the new page had been serving traffic for at least a week without error, we removed the code from the existing application, incrementally reducing the dependencies and build times.
+
+During incremental migration, the page exists in both the original frontend monolith and the new microfrontend. Feature flags control routing until the microfrontend version goes fully live.
+During incremental migration, the page exists in both the original frontend monolith and the new microfrontend. Feature flags control routing until the microfrontend version goes fully live.
+With this monorepo setup and vertical split approach, we felt confident and in control. We were able to move very quickly while preserving consistency, reducing build times, and keeping app development simple.
+
+Copy link to headingLessons learned and managing the trade-offs
+After the successful adoption of microfrontends for Vercel.com, we expanded the same approach to other sites like the 2024 Next.js Conf page, which runs as a separate application from nextjs.org. With this infrastructure, we could extract distinct areas into independent applications, speeding up development cycles as the Next.js Conf team and Next.js development teams could iterate quickly and independently.
+
+That said, there were challenges. We encountered some issues and worked on ensuring performance didn’t regress, specifically using tools like Speed Insights to monitor real world usage and Vercel Toolbar for layout shift and interaction timing alerts.
+
+We recognized early on that testing microfrontends locally and in previews was challenging. Features like Draft Mode didn't work correctly, and performance bottlenecks—like hard navigations—were known issues. To resolve these issues we adopted strategies likes prefetching and prerendering using Chromium’s Speculation Rules.
+
+An example of overcoming trade-offs:
+
+To reduce the impact of hard navigations, we start by downloading the initial page's resources (JavaScript and CSS) to prime the browser cache as soon as a link becomes visible. This means when a user navigates, those assets load from the cache. However, the page still requires rendering and fetching remaining assets, like HTML.
+
+We take it a step further by prerendering pages when the user interacts (e.g. tapping a link). This renders the page in the background, including all network requests and processing, so when the user arrives, it feels instantaneous. This approach balances performance with resource usage—only prefetching and prerendering at the right time to avoid overloading the device while still delivering the desired experience.
+
+Pages prerender or prefetch on user interaction, delivering smooth navigation while optimizing performance and resource use.
+Pages prerender or prefetch on user interaction, delivering smooth navigation while optimizing performance and resource use.
+Copy link to headingLooking ahead
+With the improvements in iteration speed, we're doubling down on enhancing microfrontends across the platform. Our focus is on refining routing, streamlining the preview workflow, and optimizing hard navigation performance. We’re also enhancing the dashboard experience and addressing workflow challenges to improve microfrontend development from start to finish.
+
+The shift to vertical microfrontends has greatly improved developer velocity and cut build times. Teams now work more independently while staying aligned through shared packages, creating a system that balances autonomy with unified development.
+
+As we continue to refine this architecture, we’re excited about its potential. Whether you’re exploring microfrontends—or sticking with a single application—Vercel is committed to ensuring the best possible developer experience.
+
+
+

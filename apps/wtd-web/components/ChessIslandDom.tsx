@@ -8,6 +8,7 @@ export function ChessIslandDom() {
       aria-labelledby="wtdTabChess"
       tabIndex={0}
     >
+      <header id="wtdChessControls" className="wtd-3d-controls" ></header>
       <section id="wtdChessPlay" className="wtd-chess-play wtd-3d-light" aria-label="Chess tutor game">
         <div id="wtdChessHud" className="wtd-3d-hud" />
         <div className="wtd-chess-layout">
@@ -76,7 +77,7 @@ export function ChessIslandDom() {
             <div id="wtdChessMobileStepActions" className="wtd-chess-mobile-step-actions" />
           </div>
         </div>
-        <div id="wtdChessControls" className="wtd-3d-controls" />
+        
         <div id="wtdChess101Panel" className="wtd-chess-101-panel" hidden aria-label="Chess 101 practice drills" />
       </section>
       <div

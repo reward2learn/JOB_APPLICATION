@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="appgen/assets/appgen-doc.css">
 <link rel="stylesheet" href="appgen/assets/appgen-print.css" media="print">
-<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261025-header-settings-v1">
+<link rel="stylesheet" href="appgen/assets/appgen-wtd.css?v=20261026-mem-3d-icons-v1">
 <style>
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -85,7 +85,7 @@
   body.dark-copy .intake-bottom-bar {
     box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.35);
   }
-  .toolbar span { font-size: 13px; color: var(--muted); }
+  .toolbar span { font-size: 13px; color: var(--accent-soft); }
 
   .preview-doc-toolbar {
     flex-direction: column;
@@ -127,6 +127,25 @@
     color: var(--muted);
     margin: 0;
     white-space: nowrap;
+  }
+  .toolbar-group-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+  .toolbar-group-actions .btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toolbar-group-actions svg {
+    width: 18px;
+    height: 18px;
+    display: block;
   }
   .toolbar-group-primary {
     flex: 0 0 auto;
@@ -405,7 +424,7 @@
     right: 0;
     bottom: 0;
     z-index: 30;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 0px 16px calc(12px + env(safe-area-inset-bottom, 0px));
     background: var(--shell-bar);
     backdrop-filter: blur(10px);
     border-top: 1px solid var(--line);
@@ -840,6 +859,152 @@
     background: color-mix(in srgb, var(--accent) 12%, var(--paper));
     outline: none;
   }
+  /* Access gating: [hidden] must win over the flex/grid display above. */
+  .appgen-lab-picker-item[hidden],
+  .intake-mode-tabs .intake-mode-tab[hidden] {
+    display: none !important;
+  }
+
+  /* ===== Profile onboarding (new Google accounts) ===== */
+  .appgen-onboard {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: var(--paper, #fff);
+  }
+  body.appgen-onboarding { overflow: hidden; }
+  .appgen-onboard-card {
+    width: min(720px, 100%);
+    max-height: 92vh;
+    overflow: auto;
+    padding: 22px 24px 18px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper, #fff);
+    box-shadow: 0 18px 50px rgb(0 0 0 / 14%);
+  }
+  .appgen-onboard-card h2 { margin: 0 0 6px; font-size: 1.45rem; }
+  .appgen-onboard-sub { margin: 0 0 16px; color: var(--muted); font-size: 0.9rem; }
+  .appgen-onboard-card label b { color: var(--accent); }
+  .appgen-onboard-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 18px;
+  }
+  .appgen-onboard-actions .btn.ghost { margin-right: auto; }
+  .appgen-onboard-error { margin: 10px 0 0; color: #b42318; font-size: 0.88rem; }
+  .appgen-onboard [readonly] { opacity: 0.75; }
+
+  /* ===== Admin: Group permissions ===== */
+  .perm-matrix { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .perm-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) repeat(4, minmax(0, 1fr));
+    gap: 8px 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ink) 3%, transparent);
+  }
+  .perm-row--head {
+    background: transparent;
+    border: none;
+    padding: 0 12px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .perm-group-name { font-weight: 650; }
+  .perm-group-hint { display: block; font-weight: 400; font-size: 0.78rem; color: var(--muted); }
+  .perm-cell { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+  .perm-cell input { accent-color: var(--accent, #0d5c63); }
+  .perm-cell label { cursor: pointer; }
+  .perm-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .perm-status { font-size: 0.85rem; color: var(--muted); }
+  .perm-status.ok { color: #0f7a3d; }
+  .perm-status.err { color: #b42318; }
+  .perm-answers-title { margin: 22px 0 4px; font-size: 1.05rem; }
+  .perm-answers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px; }
+  .perm-answer-card {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+  }
+  .perm-answer-card h4 { margin: 0 0 6px; font-size: 0.9rem; }
+  .perm-answer-card ul { margin: 0; padding-left: 16px; font-size: 0.82rem; color: var(--muted); }
+  .perm-answer-card li { margin: 2px 0; }
+  .perm-answer-card .none { color: var(--muted); font-style: italic; }
+  @media (max-width: 760px) {
+    .perm-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .perm-row--head { display: none; }
+  }
+
+  /* ===== Admin: Users & Access ===== */
+  .users-access-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .user-access-row {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1.6fr) minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ink) 3%, transparent);
+  }
+  .user-access-pick input { accent-color: var(--accent, #0d5c63); }
+  .user-access-selectall { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); }
+  .user-access-selectall input { accent-color: var(--accent, #0d5c63); }
+  .users-bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 12px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    font-size: 0.85rem;
+  }
+  .users-bulk-count { font-weight: 650; }
+  .users-bulk-label { color: var(--muted); }
+  .users-bulk-groups { display: inline-flex; flex-wrap: wrap; gap: 6px 12px; }
+  .users-bulk-groups label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; white-space: nowrap; }
+  .user-access-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .user-access-id img, .user-access-id .user-access-fallback {
+    width: 34px; height: 34px; border-radius: 50%; flex: 0 0 auto; object-fit: cover;
+  }
+  .user-access-fallback {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent); font-weight: 700; font-size: 0.9rem;
+  }
+  .user-access-name { font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-access-email { color: var(--muted); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-access-meta { color: var(--muted); font-size: 0.8rem; }
+  .user-access-groups { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+  .user-access-groups label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.85rem; cursor: pointer; white-space: nowrap;
+  }
+  .user-access-status { font-size: 0.78rem; color: var(--muted); min-width: 5.5rem; text-align: right; }
+  .user-access-status.ok { color: #0f7a3d; }
+  .user-access-status.busy { color: var(--muted); }
+  .user-access-status.err { color: #b42318; }
+  .users-access-error { color: #b42318; }
+  .users-access-empty { color: var(--muted); }
+  @media (max-width: 760px) {
+    .user-access-row { grid-template-columns: auto auto minmax(0, 1fr); }
+  }
   .appgen-lab-picker-icon {
     display: inline-flex;
     align-items: center;
@@ -851,6 +1016,82 @@
     width: 18px;
     height: 18px;
     display: block;
+  }
+
+  /* Applications aside — header + icon grid (was a compact dropdown list). */
+  .appgen-lab-picker-menu.appgen-lab-aside {
+    min-width: 420px;
+    max-width: min(520px, calc(100vw - 24px));
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .appgen-lab-aside__head {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .appgen-lab-aside__title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .appgen-lab-aside__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .appgen-lab-aside__close:hover {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+  }
+  .appgen-lab-aside__close svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  .appgen-lab-aside .appgen-lab-picker-row {
+    display: contents;
+  }
+  .appgen-lab-aside .appgen-lab-picker-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 14px 6px 12px;
+    min-height: 104px;
+    border-radius: 10px;
+    flex: none;
+  }
+  .appgen-lab-aside .appgen-lab-picker-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent) 12%, var(--paper));
+    border: 1px solid var(--line);
+  }
+  .appgen-lab-aside .appgen-lab-picker-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+  .appgen-lab-aside .appgen-lab-picker-status {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 2px 14px 12px;
   }
   .appgen-lab-picker-status {
     margin: 4px 12px 10px;
@@ -979,6 +1220,61 @@
     font-weight: 700;
     letter-spacing: -0.02em;
   }
+  .saved-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: min(340px, 100%);
+    flex: 1 1 240px;
+    max-width: 420px;
+  }
+  .saved-search-icon {
+    position: absolute;
+    left: 11px;
+    width: 16px;
+    height: 16px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .saved-search input[type="search"] {
+    width: 100%;
+    padding: 9px 34px 9px 34px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper, #fff);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .saved-search input[type="search"]:focus {
+    border-color: var(--accent, #0d5c63);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #0d5c63) 18%, transparent);
+  }
+  .saved-search input[type="search"]::-webkit-search-cancel-button { display: none; }
+  .saved-search-clear {
+    position: absolute;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ink) 10%, transparent);
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .saved-search-clear:hover { background: color-mix(in srgb, var(--ink) 18%, transparent); color: var(--ink); }
+  .saved-search-status {
+    margin: -8px 0 14px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  body.dark-copy .saved-search input[type="search"] { background: var(--shell-bar, #10161c); }
   .saved-card {
     background: var(--paper);
     border: 1px solid var(--line);
@@ -1444,7 +1740,10 @@
       </div>
       <div class="toolbar-group" data-toolbar-group="app">
         <span class="toolbar-group-label">Application</span>
-        <div class="toolbar-group-primary" style="display: none;"></div>
+        <div class="toolbar-group-actions">
+          <button class="btn ghost" type="button" onclick="saveToCloudClick(this)" aria-label="Save to Cloud" title="Save to Cloud"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zM12 12c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"/></svg></button>
+          <button class="btn ghost" type="button" onclick="showSaved()" aria-label="Saved applications" title="Saved applications"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7-7-7-7-7zm-1 4v5l4.28 2.54.72-1.21-3.5-2.08V7H12z"/></svg></button>
+        </div>
         <div class="toolbar-group-options">
           <div class="toolbar-more-wrap">
             <button type="button" class="btn ghost toolbar-more-trigger" aria-haspopup="dialog" aria-label="More application actions" title="More actions"><svg class="toolbar-more-dots" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg></button>
@@ -1453,8 +1752,6 @@
                 <button class="btn ghost" type="button" data-toolbar-switch="cv" onclick="showDoc('cv'); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H6V4h7v5h5v11z"/></svg>Open CV</button>
                 <button class="btn ghost" type="button" data-toolbar-switch="letter" hidden onclick="showDoc('letter'); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H6V4h7v5h5v11z"/></svg>Open cover letter</button>
                 <button class="btn ghost" type="button" onclick="openSettings(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>Settings</button>
-                <button class="btn ghost" type="button" onclick="saveToCloudClick(this); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path fill="currentColor" d="M17 21v-8H7v8M7 3v5h8"/></svg>Save to cloud</button>
-                <button class="btn ghost" type="button" onclick="showSaved(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>Saved applications</button>
                 <button class="btn ghost" type="button" onclick="backToEditor(); closeToolbarDialog('toolbarMoreApp')"><svg class="toolbar-more-dialog-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back to editor</button>
               </div>
             </dialog>
@@ -1610,6 +1907,42 @@
   </div><!-- /userSettingsPanel -->
 
   <div id="adminSettingsPanel" hidden>
+  <!-- ===== Users & Access ===== -->
+  <div class="set-section" id="usersAccessSection">
+    <h2>Users &amp; Access</h2>
+    <p class="section-hint">Everyone who has signed in with Google. Tick the security groups each user belongs to —
+      a user can hold several (e.g. Admin + PlayerGroup). New sign-ins start in <b>PlayerGroup</b>.</p>
+    <div class="users-access-list" id="usersAccessList"><p class="users-access-empty">Loading…</p></div>
+    <div class="users-bulk-bar" id="usersBulkBar" hidden>
+      <span class="users-bulk-count" id="usersBulkCount">0 selected</span>
+      <span class="users-bulk-label">Assign groups:</span>
+      <span class="users-bulk-groups" id="usersBulkGroups"></span>
+      <button type="button" class="btn" onclick="applyBulkGroups('set')">Set to</button>
+      <button type="button" class="btn ghost" onclick="applyBulkGroups('add')">Add</button>
+      <button type="button" class="btn ghost" onclick="applyBulkGroups('remove')">Remove</button>
+      <span class="perm-status" id="usersBulkStatus" hidden></span>
+    </div>
+    <div class="users-access-actions" style="margin-top:10px">
+      <button type="button" class="btn ghost" id="usersAccessReload">Refresh</button>
+    </div>
+  </div>
+
+  <!-- ===== Group permissions ===== -->
+  <div class="set-section" id="groupPermsSection">
+    <h2>Group permissions</h2>
+    <p class="section-hint">Decide what each security group can reach. Changes apply to every user in that group
+      the next time they load the app — no redeploy needed. The <b>Admin</b> group must always keep <b>admin</b>.</p>
+    <div class="perm-matrix" id="permMatrix"><p class="users-access-empty">Loading…</p></div>
+    <div class="perm-actions">
+      <button type="button" class="btn" id="permSave">Save permissions</button>
+      <button type="button" class="btn ghost" id="permReset">Reset to defaults</button>
+      <span class="perm-status" id="permStatus" hidden></span>
+    </div>
+    <h3 class="perm-answers-title">Generated answers — what each group can access</h3>
+    <p class="section-hint">Derived live from the matrix above. This is the access a member of each group actually gets.</p>
+    <div class="perm-answers" id="permAnswers"></div>
+  </div>
+
   <!-- ===== Content ===== -->
   <div class="set-section">
     <h2>Content</h2>
@@ -1749,13 +2082,18 @@
       <div class="wtd-stat"><strong id="wtdTotalRuns">0</strong><span>Completed runs</span></div>
     </div>
 
+    <footer class="wtd-footer no-print">
+    
+    <div class="wtd-footer-actions">
+      <div class="wtd-footer-help">
+        <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only wtd-game-help-btn" type="button" id="wtdGameHelpBtn" aria-label="Game help and rules" title="Help / rules" aria-controls="wtdGameHelpModal" aria-haspopup="dialog"><span class="appgen-nav-icon wtd-game-help-icon" aria-hidden="true">?</span><span class="appgen-nav-label">Help</span></button>
+      </div>
+    </div>
+    </footer>
+
   <main class="wtd-main" id="wtdMain">
     <div class="wtd-shell form-card">
       <div class="wtd-toolbar">
-        <div class="wtd-player-row">
-          <label for="wtdPlayerName">Display name <small>(leaderboard)</small></label>
-          <input type="text" id="wtdPlayerName" maxlength="40" placeholder="e.g. Ilia" autocomplete="nickname">
-        </div>
         <div class="intake-mode-tabs" role="tablist" aria-label="Training mode">
           <button type="button" class="intake-mode-tab on" id="wtdTab2d" role="tab" aria-selected="true" aria-controls="wtdPanel2d" onclick="AppgenWtd.setWtdMode('2d')">Mini Games</button>
           <button type="button" class="intake-mode-tab" id="wtdTab3d" role="tab" aria-selected="false" aria-controls="wtdPanel3d" onclick="AppgenWtd.setWtdMode('3d')">Memory Trainer</button>
@@ -1766,10 +2104,12 @@
         <div class="wtd-layout">
           <aside class="wtd-sidebar" aria-labelledby="wtdLevelsHeading">
             <h2 id="wtdLevelsHeading">Training levels</h2>
-            <p class="wtd-sidebar-hint">Pick a level to read the science blurb and start.</p>
+            <p class="wtd-sidebar-hint">Pick a card to start training.</p>
             <div id="wtdLevelList" class="wtd-level-list"></div>
           </aside>
-          <div class="wtd-primary">
+          <!-- Detail/arena column is no longer shown: clicking a card starts training.
+               #wtdArena must stay in the DOM — the session modal borrows it (nodeIds). -->
+          <div class="wtd-primary" hidden>
             <section class="wtd-2d-play" aria-label="Cognitive Training mini-games">
               <div id="wtd2dHud" class="wtd-3d-hud"></div>
               <section class="wtd-arena-section" aria-label="Active training game">
@@ -1789,7 +2129,8 @@
       </div>
 
       <div id="wtdPanelChess" class="wtd-panel wtd-chess-panel intake-panel" role="tabpanel" aria-label="Chess tutor" tabindex="0" hidden>
-        <section id="wtdChessPlay" class="wtd-chess-play wtd-3d-light" aria-label="Chess tutor game">
+        <header id="wtdChessControls" class="wtd-3d-controls"></header>
+      <section id="wtdChessPlay" class="wtd-chess-play wtd-3d-light" aria-label="Chess tutor game">
           <div id="wtdChessHud" class="wtd-3d-hud"></div>
           <div class="wtd-chess-layout">
             <div id="wtdChessBoard" class="wtd-3d-canvas-host wtd-3d-light" aria-label="Chess board (3D)"></div>
@@ -1822,21 +2163,23 @@
             </aside>
           </div>
           <div id="wtdChessMobileStep" class="wtd-chess-mobile-step wtd-chess-mobile-step--collapsed" hidden aria-label="Curriculum step">
-            <button type="button" id="wtdChessMobileStepToggle" class="btn ghost wtd-chess-mobile-step-toggle" aria-expanded="false" aria-controls="wtdChessMobileStepBody" aria-label="Expand lesson details" title="Lesson details">
-              <svg class="wtd-chess-btn-svg wtd-chess-mobile-step-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div id="wtdChessMobileStepBody" class="wtd-chess-mobile-step-body" hidden>
-              <div class="wtd-chess-mobile-step-main">
+            <div class="wtd-chess-mobile-step-head">
+              <button type="button" id="wtdChessMobileStepToggle" class="btn ghost wtd-chess-mobile-step-toggle" aria-expanded="false" aria-controls="wtdChessMobileStepBody" aria-label="Expand lesson details" title="Lesson details">
+                <svg class="wtd-chess-btn-svg wtd-chess-mobile-step-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="wtd-chess-mobile-step-copy">
                 <span id="wtdChessMobileStepBadge" class="wtd-chess-mobile-step-badge">1/20</span>
-                <div class="wtd-chess-mobile-step-copy">
-                  <span id="wtdChessMobileStepTitle" class="wtd-chess-mobile-step-title">Winning strategies</span>
-                  <p id="wtdChessMobileCoach" class="wtd-chess-mobile-coach"></p>
-                </div>
+                <span id="wtdChessMobileStepTitle" class="wtd-chess-mobile-step-title">Winning strategies</span>
               </div>
-              <div id="wtdChessMobileStepActions" class="wtd-chess-mobile-step-actions"></div>
+              <div class="wtd-chess-mobile-step-nav">
+                <button type="button" id="wtdChessMobileStepBack" class="btn ghost wtd-chess-next-lesson-btn wtd-chess-step-nav-btn" hidden aria-label="Back" title="Back" data-next-kind="game" data-next-id=""><span class="wtd-chess-btn-label">Back</span></button>
+                <div id="wtdChessMobileStepActions" class="wtd-chess-mobile-step-actions"></div>
+              </div>
+            </div>
+            <div id="wtdChessMobileStepBody" class="wtd-chess-mobile-step-body" hidden>
+              <p id="wtdChessMobileCoach" class="wtd-chess-mobile-coach"></p>
             </div>
           </div>
-          <div id="wtdChessControls" class="wtd-3d-controls"></div>
           <div id="wtdChess101Panel" class="wtd-chess-101-panel" hidden aria-label="Chess 101 practice drills"></div>
         </section>
         <div id="wtdChessEnvModal" class="wtd-chess-env-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wtdChessEnvModalTitle">
@@ -1847,17 +2190,19 @@
               <button type="button" class="btn ghost wtd-chess-env-modal-x" data-wtd-chess-env-close aria-label="Close">×</button>
             </header>
             <div id="wtdChessEnvSettingsBody" class="wtd-chess-env-settings-body"></div>
-            <footer class="wtd-chess-env-modal-footer">
+            <footer class="wtd-chess-env-modal-footer wtd-chess-env-footer--actions">
               <div class="wtd-chess-env-modal-footer-start">
-                <button type="button" class="btn ghost" id="wtdChessEnvExport">Export settings</button>
-                <button type="button" class="btn ghost" id="wtdChessEnvImport">Import settings</button>
+                <button type="button" class="btn ghost" data-wtd-chess-env-close>Cancel</button>
+              </div>
+              <div class="wtd-chess-env-modal-footer-center">
+                <button type="button" class="btn ghost wtd-chess-env-icon-btn" id="wtdChessEnvExport" aria-label="Export settings" title="Export settings"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button>
+                <button type="button" class="btn ghost wtd-chess-env-icon-btn" id="wtdChessEnvImport" aria-label="Import settings" title="Import settings"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg></button>
                 <input type="file" id="wtdChessEnvImportFile" accept="application/json,.json" hidden>
               </div>
-              <p id="wtdChessEnvStatus" class="wtd-chess-env-status" role="status" aria-live="polite"></p>
               <div class="wtd-chess-env-modal-footer-end">
-                <button type="button" class="btn ghost" data-wtd-chess-env-close>Cancel</button>
                 <button type="button" class="btn big" id="wtdChessEnvModalApply">Apply changes</button>
               </div>
+              <p id="wtdChessEnvStatus" class="wtd-chess-env-status" role="status" aria-live="polite"></p>
             </footer>
           </div>
         </div>
@@ -1991,14 +2336,6 @@
 
   </div>
 
-  <footer class="wtd-footer no-print">
-    <p class="wtd-footnote">Scores sync to a shared cloud leaderboard (display name, level, time, and points only — no CogniFit or employer identifiers). Sign-in is required to enter the lab; your Google name is used on the leaderboard. Walk the Dragon Team View stays aggregate in production; this demo shows habit mechanics, not performance management. Spatial 3D reports an efficiency index.</p>
-    <div class="wtd-footer-actions">
-      <div class="wtd-footer-help">
-        <button class="btn ghost appgen-nav-btn appgen-nav-btn--icon-only wtd-game-help-btn" type="button" id="wtdGameHelpBtn" aria-label="Game help and rules" title="Help / rules" aria-controls="wtdGameHelpModal" aria-haspopup="dialog"><span class="appgen-nav-icon wtd-game-help-icon" aria-hidden="true">?</span><span class="appgen-nav-label">Help</span></button>
-      </div>
-    </div>
-  </footer>
 
   <aside id="wtdLeaderboardAside" class="wtd-leaderboard-aside" aria-labelledby="wtdBoardTitle" aria-hidden="true">
     <header class="wtd-leaderboard-aside__head">
@@ -2084,8 +2421,14 @@
   </header>
   <div class="saved-head">
     <h1>Saved applications</h1>
+    <div class="saved-search">
+      <svg class="saved-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="search" id="savedSearchInput" placeholder="Search saved applications… (space = OR)" aria-label="Search saved applications" autocomplete="off" spellcheck="false">
+      <button type="button" id="savedSearchClear" class="saved-search-clear" aria-label="Clear search" title="Clear search" hidden>×</button>
+    </div>
   </div>
   <div class="saved-msg" id="savedMsg" hidden></div>
+  <p class="saved-search-status" id="savedSearchStatus" hidden></p>
   <div id="savedList"></div>
 </div>
 
@@ -2102,13 +2445,13 @@
 </script>
 <script src="appgen/assets/appgen-kb.js"></script>
 <script src="appgen/assets/appgen-weave.js"></script>
-<script src="appgen/assets/appgen-auth.js?v=20261025-header-settings-v1"></script>
+<script src="appgen/assets/appgen-auth.js?v=20261026-card-art-centre-v1"></script>
 <script src="appgen/assets/appgen-pwa.js?v=20261025-remove-rainbow-v1"></script>
-<script src="appgen/assets/appgen-wtd-session-modal.js?v=20261025-header-settings-v1"></script>
-<script src="appgen/assets/appgen-wtd.js?v=20261025-header-settings-v1"></script>
+<script src="appgen/assets/appgen-wtd-session-modal.js?v=20261025-level-autostart-header-v1"></script>
+<script src="appgen/assets/appgen-wtd.js?v=20261026-mem-3d-icons-v1"></script>
 <script type="module" src="appgen/assets/appgen-wtd-store.js?v=20261025-remove-rainbow-v1"></script>
-<script type="module" src="appgen/assets/appgen-wtd-3d.js?v=20261025-header-settings-v1"></script>
-<script type="module" src="appgen/assets/appgen-wtd-chess.js?v=20261025-remove-rainbow-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-3d.js?v=20261025-chess-chrome-v1"></script>
+<script type="module" src="appgen/assets/appgen-wtd-chess.js?v=20261025-chess-chrome-v1"></script>
 <script type="module" src="appgen/assets/appgen-wtd-snl.js?v=20261025-remove-rainbow-v1"></script>
 <script>
 "use strict";
@@ -3215,6 +3558,23 @@ function userSettingsForCloud() {
   };
 }
 
+/** Settings for an account that has never saved: Google identity only, no KB bleed. */
+function settingsForNewAccount(u) {
+  const who = u || (window.AppgenAuth && window.AppgenAuth.getUser ? window.AppgenAuth.getUser() : null);
+  const next = clone(DEFAULT_SETTINGS);
+  next.profile = {
+    name: (who && who.name) || "",
+    location: "",
+    mobile: "",
+    whatsapp: "",
+    linkedin: "",
+    github: "",
+    email: (who && who.email) || "",
+    photo: (who && who.picture) || ""
+  };
+  return next;
+}
+
 function validateUserCloudSettingsShape(s) {
   if (!s || typeof s !== "object" || Array.isArray(s)) return false;
   if (s.content !== undefined) return false;
@@ -3259,6 +3619,24 @@ async function pullSettingsFromCloud() {
       applyAppearance();
       if ($("settingsView") && !$("settingsView").hidden) populateSettings();
       return { ok: true, loaded: true };
+    }
+    /* Brand-new account (GET returned settings: null).
+       Build settings from THIS Google identity only — never from KB.profile,
+       which is the owner's own details. Do not push anything to the cloud:
+       the onboarding modal owns the first save. */
+    if (!data.settings) {
+      settings = settingsForNewAccount(u);
+      settingsTouched = false;
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        storageOk = true;
+      } catch (e) {
+        storageOk = false;
+      }
+      applyAppearance();
+      if ($("settingsView") && !$("settingsView").hidden) populateSettings();
+      syncAppgenOnboarding();
+      return { ok: true, loaded: false, fresh: true };
     }
     if (settingsTouched) await pushSettingsToCloud();
     return { ok: true, loaded: false };
@@ -4934,13 +5312,64 @@ function appgenIsAdmin() {
   );
 }
 
+/* Security groups come from /api/auth/me (lib/security-groups.js).
+   applicant = CV + cover letters · cognitive = Cognitive Training hub · game = the games. */
+function appgenGrants() {
+  const a = window.AppgenAuth;
+  if (!a || typeof a.hasAccess !== "function") return { applicant: false, cognitive: false, game: false };
+  return {
+    applicant: a.hasAccess("applicant"),
+    cognitive: a.hasAccess("cognitive"),
+    game: a.hasAccess("game")
+  };
+}
+
+/** Hide the app tiles / hub tabs a signed-in user has no grant for. */
+function syncAppgenLabAccess() {
+  const signedIn = appgenSignedIn();
+  const g = signedIn ? appgenGrants() : { applicant: false, cognitive: false, game: false };
+  document.querySelectorAll("[data-appgen-lab]").forEach((el) => {
+    const key = el.getAttribute("data-appgen-lab");
+    let allowed;
+    let label = null;
+    if (key === "cognitive") {
+      /* CognitiveGroup/Admin get the training hub; a game-only user gets the same
+         console labelled "Games" so PlayerGroup can still reach Mini Games. */
+      allowed = g.cognitive || g.game;
+      label = g.cognitive ? "Cognitive Training" : "Games";
+    } else {
+      allowed = g.game; /* chess, snaks & ladders, any future game tile */
+    }
+    el.hidden = !allowed;
+    if (label) {
+      const textNode = Array.prototype.find.call(el.childNodes, (n) => n.nodeType === 3 && n.textContent.trim());
+      if (textNode) textNode.textContent = " " + label;
+      else el.setAttribute("aria-label", label);
+    }
+  });
+  const tab2d = $("wtdTab2d");
+  const tab3d = $("wtdTab3d");
+  if (tab2d) tab2d.hidden = !g.game;
+  if (tab3d) tab3d.hidden = !g.cognitive;
+  if (tab3d && tab3d.hidden && window.AppgenWtd && typeof window.AppgenWtd.setWtdMode === "function") {
+    try { window.AppgenWtd.setWtdMode("2d"); } catch (_) { /* ignore */ }
+  }
+}
+
 function syncAppgenAccess() {
   const admin = appgenIsAdmin();
   const signedIn = appgenSignedIn();
+  const g = signedIn ? appgenGrants() : { applicant: false, cognitive: false, game: false };
   document.body.classList.toggle("appgen-admin", admin);
   document.body.classList.toggle("appgen-signed-in", signedIn);
+  document.body.classList.toggle("appgen-g-applicant", g.applicant);
+  document.body.classList.toggle("appgen-g-cognitive", g.cognitive);
+  document.body.classList.toggle("appgen-g-game", g.game);
   document.body.classList.remove("appgen-access-pending");
-  if (admin) {
+  syncAppgenLabAccess();
+  syncAppgenOnboarding();
+  /* Applications (CV + cover letters) open for the applicant grant — Admin holds it too. */
+  if (g.applicant) {
     routeAppgenHash();
     return;
   }
@@ -4967,6 +5396,98 @@ function syncAppgenAccess() {
   else $("wtdView").hidden = false;
 }
 
+/* ===== Profile onboarding — blocking until a new account saves its own details ===== */
+function appgenOnboardingNeeded() {
+  const a = window.AppgenAuth;
+  return !!(
+    a &&
+    a.isSignedIn && a.isSignedIn() &&
+    a.isSessionReady && a.isSessionReady() &&
+    a.isProfileComplete && !a.isProfileComplete()
+  );
+}
+
+function syncAppgenOnboarding() {
+  const el = $("appgenOnboardModal");
+  if (!el) return;
+  const need = appgenOnboardingNeeded();
+  const wasOpen = !el.hidden;
+  el.hidden = !need;
+  document.body.classList.toggle("appgen-onboarding", need);
+  if (need && !wasOpen) {
+    const u = window.AppgenAuth && window.AppgenAuth.getUser ? window.AppgenAuth.getUser() : null;
+    const prof = (settings && settings.profile) || {};
+    $("onbName").value = prof.name || (u && u.name) || "";
+    $("onbLocation").value = prof.location || "";
+    $("onbEmail").value = prof.email || (u && u.email) || "";
+    $("onbMobile").value = prof.mobile || "";
+    $("onbLinkedin").value = prof.linkedin || "";
+    $("onbGithub").value = prof.github || "";
+    $("appgenOnboardError").hidden = true;
+    setTimeout(function () { var f = $("onbName"); if (f) f.focus(); }, 60);
+  }
+}
+
+function appgenOnboardFail(message) {
+  const box = $("appgenOnboardError");
+  if (!box) return;
+  box.hidden = false;
+  box.textContent = message;
+}
+
+async function saveAppgenOnboarding() {
+  const name = ($("onbName").value || "").trim();
+  const loc = ($("onbLocation").value || "").trim();
+  const errBox = $("appgenOnboardError");
+  if (!name || !loc) {
+    appgenOnboardFail("Full name and location are required.");
+    (!name ? $("onbName") : $("onbLocation")).focus();
+    return;
+  }
+  if (errBox) errBox.hidden = true;
+  const btn = $("appgenOnboardSave");
+  if (btn) btn.disabled = true;
+  settings.profile = Object.assign({}, settings.profile, {
+    name: name,
+    location: loc,
+    mobile: ($("onbMobile").value || "").trim(),
+    whatsapp: (settings.profile && settings.profile.whatsapp) || "",
+    linkedin: ($("onbLinkedin").value || "").trim(),
+    github: ($("onbGithub").value || "").trim(),
+    email: ($("onbEmail").value || "").trim(),
+    photo: (settings.profile && settings.profile.photo) || ""
+  });
+  settingsTouched = true;
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (_) { /* ignore */ }
+  const res = await pushSettingsToCloud();
+  if (!res.ok) {
+    if (btn) btn.disabled = false;
+    appgenOnboardFail(res.error || "Could not save your profile — try again.");
+    return;
+  }
+  try {
+    if (window.AppgenAuth && typeof window.AppgenAuth.refresh === "function") {
+      await window.AppgenAuth.refresh();
+    }
+  } catch (_) { /* ignore */ }
+  if (btn) btn.disabled = false;
+  syncAppgenAccess();
+  populateSettings();
+}
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest && e.target.closest("#appgenOnboardSave")) {
+    e.preventDefault();
+    saveAppgenOnboarding();
+  }
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && e.target && e.target.closest && e.target.closest("#appgenOnboardModal") && e.target.tagName === "INPUT") {
+    e.preventDefault();
+    saveAppgenOnboarding();
+  }
+});
+
 function settingsHashForArea(area) {
   return area === "admin" ? "#admin-settings" : "#user-settings";
 }
@@ -4974,7 +5495,7 @@ function settingsHashForArea(area) {
 function syncSettingsNavBackLabel() {
   const btn = $("settingsNavBack");
   if (!btn) return;
-  const backToWtd = settingsReturnTo === "wtd" || !appgenIsAdmin();
+  const backToWtd = settingsReturnTo === "wtd" || !(window.AppgenAuth && window.AppgenAuth.hasAccess && window.AppgenAuth.hasAccess("applicant"));
   const label = backToWtd ? "Back to WTD" : "Back to applications";
   btn.setAttribute("aria-label", label);
   btn.setAttribute("title", label);
@@ -5013,12 +5534,201 @@ function renderUserActivity() {
   put("activityRuns", stats ? String(stats.runs) : "—");
 }
 
+/* ===== Admin: Users & Access (GET/PUT /api/admin/users) ===== */
+function appgenEscapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function escapeAttr(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+}
+
+function formatLastSeen(ts) {
+  if (!ts) return "never";
+  const diff = Date.now() - Number(ts);
+  if (diff < 60000) return "just now";
+  if (diff < 3600000) return Math.round(diff / 60000) + "m ago";
+  if (diff < 86400000) return Math.round(diff / 3600000) + "h ago";
+  return Math.round(diff / 86400000) + "d ago";
+}
+
+async function loadUsersAccess() {
+  const box = $("usersAccessList");
+  if (!box) return;
+  if (!appgenIsAdmin()) {
+    box.innerHTML = '<p class="users-access-empty">Admin access required.</p>';
+    return;
+  }
+  box.innerHTML = '<p class="users-access-empty">Loading…</p>';
+  try {
+    const res = await fetch("/api/admin/users", { credentials: "same-origin" });
+    const data = await res.json().catch(function () { return {}; });
+    if (!res.ok || !data.ok) throw new Error(data.error || "HTTP " + res.status);
+    renderUsersAccess(data);
+  } catch (e) {
+    box.innerHTML = '<p class="users-access-error">Could not load users: ' +
+      appgenEscapeHtml(String((e && e.message) || e)) + "</p>";
+  }
+}
+
+/* Track which users are ticked for bulk assignment (session-only). */
+let usersAccessSelected = {};
+let usersAccessGroups = [];
+
+function usersAccessSelectedIds() {
+  return Object.keys(usersAccessSelected).filter(function (k) { return usersAccessSelected[k]; });
+}
+
+function syncUsersAccessBulkBar() {
+  const bar = $("usersBulkBar");
+  const count = usersAccessSelectedIds().length;
+  if (!bar) return;
+  bar.hidden = count === 0;
+  const label = $("usersBulkCount");
+  if (label) label.textContent = count + " selected";
+}
+
+function renderUsersAccess(data) {
+  const box = $("usersAccessList");
+  if (!box) return;
+  const groups = data.groups || [];
+  const users = data.users || [];
+  usersAccessGroups = groups;
+  usersAccessSelected = {};
+  syncUsersAccessBulkBar();
+  /* Fill the bulk-assign group picker once. */
+  const bulkGroups = $("usersBulkGroups");
+  if (bulkGroups && !bulkGroups.childElementCount) {
+    bulkGroups.innerHTML = groups.map(function (g) {
+      return '<label><input type="checkbox" value="' + escapeAttr(g) + '"> ' + appgenEscapeHtml(g) + "</label>";
+    }).join("");
+  }
+  if (!users.length) {
+    box.innerHTML = '<p class="users-access-empty">No Google sign-ins yet.</p>';
+    return;
+  }
+  const allBox = '<label class="user-access-selectall"><input type="checkbox" id="usersSelectAll"> Select all</label>';
+  box.innerHTML = users.map(function (u) {
+    const held = u.groups || [];
+    const avatar = u.picture
+      ? '<img src="' + escapeAttr(u.picture) + '" alt="">'
+      : '<span class="user-access-fallback">' +
+          appgenEscapeHtml(String((u.name || u.email || "?").trim().charAt(0) || "?").toUpperCase()) +
+        "</span>";
+    const boxes = groups.map(function (g) {
+      return '<label><input type="checkbox" data-user-groups="' + escapeAttr(u.id) +
+        '" value="' + escapeAttr(g) + '"' + (held.indexOf(g) >= 0 ? " checked" : "") +
+        "> " + appgenEscapeHtml(g) + "</label>";
+    }).join("");
+    return '<div class="user-access-row" data-user-row="' + escapeAttr(u.id) + '">' +
+      '<div class="user-access-pick"><input type="checkbox" data-user-pick="' + escapeAttr(u.id) + '" aria-label="Select user"></div>' +
+      '<div class="user-access-id">' + avatar + "</div>" +
+      '<div><div class="user-access-name">' + appgenEscapeHtml(u.name || "(no name)") + "</div>" +
+      '<div class="user-access-email">' + appgenEscapeHtml(u.email || "") + "</div></div>" +
+      '<div class="user-access-groups">' + boxes + "</div>" +
+      '<div class="user-access-meta">' + (u.profileCompleted ? "profile ✓" : "profile —") +
+      "<br>last seen " + appgenEscapeHtml(formatLastSeen(u.lastSeenAt)) + "</div>" +
+      "</div>";
+  }).join("") +
+  '<div class="users-access-actions" style="margin-top:2px">' + allBox + "</div>";
+}
+
+/* Per-row group tick — single user (unchanged behaviour). */
+document.addEventListener("change", async function (e) {
+  const cb = e.target;
+  if (!cb) return;
+
+  /* select-all */
+  if (cb.id === "usersSelectAll") {
+    const on = cb.checked;
+    document.querySelectorAll("[data-user-pick]").forEach(function (p) {
+      p.checked = on;
+      usersAccessSelected[p.getAttribute("data-user-pick")] = on;
+    });
+    syncUsersAccessBulkBar();
+    return;
+  }
+
+  /* row pick -> update bulk bar */
+  if (cb.matches && cb.matches("[data-user-pick]")) {
+    usersAccessSelected[cb.getAttribute("data-user-pick")] = cb.checked;
+    syncUsersAccessBulkBar();
+    return;
+  }
+
+  if (!cb.matches || !cb.matches("[data-user-groups]")) return;
+  const id = cb.getAttribute("data-user-groups");
+  const row = cb.closest("[data-user-row]");
+  const boxes = row ? row.querySelectorAll("[data-user-groups]:checked") : [];
+  const next = Array.prototype.map.call(boxes, function (b) { return b.value; });
+  const status = document.createElement("div");
+  status.className = "user-access-status busy";
+  status.textContent = "Saving…";
+  const oldStatus = row && row.querySelector(".user-access-status");
+  if (oldStatus) oldStatus.remove();
+  if (row) row.appendChild(status);
+  try {
+    const res = await fetch("/api/admin/users", {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: id, groups: next })
+    });
+    const data = await res.json().catch(function () { return {}; });
+    if (!res.ok || !data.ok) throw new Error(data.error || "HTTP " + res.status);
+    status.className = "user-access-status ok";
+    status.textContent = "Saved";
+  } catch (err) {
+    status.className = "user-access-status err";
+    status.textContent = String((err && err.message) || err).slice(0, 40);
+  }
+  setTimeout(function () { if (status.parentNode) status.remove(); }, 2500);
+});
+
+/* Bulk assign the chosen groups to every ticked user. */
+async function applyBulkGroups(mode) {
+  const ids = usersAccessSelectedIds();
+  const picked = ($("usersBulkGroups") ? $("usersBulkGroups").querySelectorAll("input:checked") : []);
+  const groups = Array.prototype.map.call(picked, function (b) { return b.value; });
+  const status = $("usersBulkStatus");
+  if (!ids.length) return;
+  if (!groups.length) {
+    if (status) { status.hidden = false; status.className = "perm-status err"; status.textContent = "Tick at least one group."; }
+    return;
+  }
+  if (status) { status.hidden = false; status.className = "perm-status"; status.textContent = "Saving " + ids.length + " user" + (ids.length === 1 ? "" : "s") + "…"; }
+  try {
+    const res = await fetch("/api/admin/users", {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: ids, groups: groups, mode: mode })
+    });
+    const data = await res.json().catch(function () { return {}; });
+    if (!res.ok || !data.ok) throw new Error(data.error || "HTTP " + res.status);
+    if (status) { status.className = "perm-status ok"; status.textContent = "Updated " + (data.count || ids.length) + " user(s)."; }
+    await loadUsersAccess();
+  } catch (err) {
+    if (status) { status.className = "perm-status err"; status.textContent = String((err && err.message) || err).slice(0, 60); }
+  }
+}
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest && e.target.closest("#usersAccessReload")) {
+    e.preventDefault();
+    loadUsersAccess();
+  }
+});
+
 function updateSettingsAreaUi() {
   const isAdminArea = settingsArea === "admin";
   const admin = appgenIsAdmin();
   if ($("userSettingsPanel")) $("userSettingsPanel").hidden = isAdminArea;
   if ($("adminSettingsPanel")) $("adminSettingsPanel").hidden = !isAdminArea;
   if (!isAdminArea) renderUserActivity();
+  else loadUsersAccess();
   syncSettingsNavBackLabel();
   if ($("settingsPageTitle")) {
     $("settingsPageTitle").textContent = isAdminArea ? "Admin Settings" : "User Settings";
@@ -6038,10 +6748,33 @@ function openAppgenLab(kind) {
   openWtd();
 }
 
+/** Upgrade every picker dropdown into an "Applications" aside: header + icon grid. */
+function ensureAppgenLabAside() {
+  APPGEN_LAB_PICKER_MENU_IDS.forEach((menuId) => {
+    const menu = $(menuId);
+    if (!menu) return;
+    menu.classList.add("appgen-lab-aside");
+    if (menu.querySelector(".appgen-lab-aside__head")) return;
+    const head = document.createElement("div");
+    head.className = "appgen-lab-aside__head";
+    head.innerHTML =
+      '<span class="appgen-lab-aside__title">Applications</span>' +
+      '<button type="button" class="appgen-lab-aside__close" aria-label="Close applications" title="Close">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>' +
+      "</button>";
+    menu.insertBefore(head, menu.firstChild);
+    head.querySelector(".appgen-lab-aside__close").addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeAppgenLabPickerMenus();
+    });
+  });
+}
+
 function ensureAppgenLabPickerBound() {
   if (window.__appgenLabPickerBound) return;
   window.__appgenLabPickerBound = true;
   ensureCognitiveLabPickerRows();
+  ensureAppgenLabAside();
   syncAppgenLabPickerIcons();
   if (window.AppgenPwa && typeof window.AppgenPwa.syncInstallUi === "function") {
     window.AppgenPwa.syncInstallUi();
@@ -6076,6 +6809,28 @@ function ensureAppgenLabPickerBound() {
     if (e.key === "Escape") closeAppgenLabPickerMenus();
   });
 }
+
+/**
+ * Header actions while a training session is open: stop the session and close the
+ * fullscreen popup FIRST, then let the action's own handler load its content.
+ * Capture phase so this runs before the button / delegated handlers; the event path
+ * is fixed at dispatch, so re-parenting the header back into #wtdView mid-click is safe.
+ */
+document.addEventListener(
+  "click",
+  (e) => {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    if (!window.AppgenWtdSessionModal || !window.AppgenWtdSessionModal.isOpen()) return;
+    const action = t.closest(
+      "[data-appgen-lab],[data-auth-settings],[data-auth-admin],[data-auth-logout]," +
+        "#wtdLeaderboardToggle,#wtdBackToAppgen"
+    );
+    if (!action) return;
+    window.AppgenWtdSessionModal.close();
+  },
+  true
+);
 
 /** Legacy `#wtd` → `#chess`; `#snakes&ladders` → `#snakes-ladders`. */
 function appgenNormalizeLegacyWtdHash() {
@@ -9245,5 +10000,26 @@ window.addEventListener("resize", () => {
 
 syncPreviewDocToolbar();
 </script>
+  <!-- ===== Profile onboarding — blocking for new Google accounts ===== -->
+  <div id="appgenOnboardModal" class="appgen-onboard" hidden role="dialog" aria-modal="true" aria-labelledby="appgenOnboardTitle">
+    <div class="appgen-onboard-card">
+      <h2 id="appgenOnboardTitle">Complete your profile</h2>
+      <p class="appgen-onboard-sub">Your account is new, so we start with nothing rather than anyone else's details.
+        Name and location are required — everything else is optional.</p>
+      <div class="set-grid">
+        <div><label for="onbName">Full name <b>*</b></label><input type="text" id="onbName" autocomplete="name"></div>
+        <div><label for="onbLocation">Location <b>*</b></label><input type="text" id="onbLocation" autocomplete="address-level2" placeholder="City, Country"></div>
+        <div><label for="onbEmail">Email</label><input type="email" id="onbEmail" readonly></div>
+        <div><label for="onbMobile">Mobile number</label><input type="tel" id="onbMobile" autocomplete="tel"></div>
+        <div><label for="onbLinkedin">LinkedIn URL</label><input type="url" id="onbLinkedin" placeholder="https://linkedin.com/in/…"></div>
+        <div><label for="onbGithub">GitHub URL</label><input type="url" id="onbGithub" placeholder="https://github.com/…"></div>
+      </div>
+      <p class="appgen-onboard-error" id="appgenOnboardError" hidden></p>
+      <div class="appgen-onboard-actions">
+        <button type="button" class="btn ghost" data-auth-logout>Sign out</button>
+        <button type="button" class="btn primary" id="appgenOnboardSave">Save &amp; continue</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

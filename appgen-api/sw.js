@@ -1,5 +1,5 @@
 /* Cognitive Training Lab — service worker (cache shell + offline-capable game assets). */
-const CACHE = "appgen-lab-v23";
+const CACHE = "appgen-lab-v33";
 const PRECACHE = [
   "/",
   "/index.html",
@@ -25,6 +25,7 @@ const PRECACHE = [
   "/appgen/assets/appgen-wtd-snl-pieces.js",
   "/appgen/assets/appgen-wtd-snl-levels.js",
   "/appgen/assets/appgen-wtd-3d.js",
+  "/appgen/assets/spatial3d-banner.jpg",
   "/appgen/assets/pwa/icon-lab-192.png",
   "/appgen/assets/pwa/icon-lab-512.png",
   "/appgen/assets/pwa/icon-chess-192.png",

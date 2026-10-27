@@ -99,6 +99,20 @@ export default async function handler(req, res) {
         addRandomSuffix: false,
         allowOverwrite: true
       });
+      /* A profile with a name + location = onboarding done -> unlock the app.
+         Stored on the user record (the settings blob is profile/appearance only). */
+      const prof = (payload && payload.profile) || {};
+      if (prof.name && String(prof.name).trim() && prof.location && String(prof.location).trim()) {
+        try {
+          const { markProfileComplete } = await import("../lib/user-directory.js");
+          await markProfileComplete(auth.user.id, {
+            name: prof.name,
+            location: prof.location
+          });
+        } catch (e) {
+          console.error("user-settings markProfileComplete", e);
+        }
+      }
       return json(res, 200, { ok: true, ts });
     } catch (e) {
       console.error("user-settings PUT", e);

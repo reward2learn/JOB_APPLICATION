@@ -2,7 +2,7 @@
 .wtd-view {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 12px 16px calc(48px + env(safe-area-inset-bottom, 0px));
+  padding: 0px 16px calc(48px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -105,6 +105,172 @@ body.dark-copy .appgen-top-bar {
 }
 
 /* App header — icon-only through tablet width (matches mobile chess lab breakpoint) */
+/* ============================================================
+   Chess curriculum step bar — layout at EVERY width.
+   The bar lives inside #wtdChessPlay, which the session modal
+   moves OUT of #wtdView, so these rules must not be media-scoped
+   (at >=721px inside the modal they previously applied nothing and
+   the bar stacked vertically). One row: chevron · badge+title ······
+   Back / Next, with the coach copy in the expandable body.
+   ============================================================ */
+.wtd-chess-mobile-step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px 8px;
+  padding: 8px max(12px, env(safe-area-inset-right, 0px)) 8px
+    max(12px, env(safe-area-inset-left, 0px));
+  background: var(--paper, #fff);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.wtd-chess-mobile-step--collapsed {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.wtd-chess-mobile-step--expanded {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+}
+
+.wtd-chess-mobile-step[hidden] {
+  display: none !important;
+}
+
+.wtd-chess-mobile-step-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px;
+  line-height: 0;
+}
+
+.wtd-chess-mobile-step--expanded .wtd-chess-mobile-step-toggle {
+  order: -1;
+  align-self: flex-start;
+}
+
+.wtd-chess-mobile-step-chevron {
+  transition: transform 0.18s ease;
+}
+
+.wtd-chess-mobile-step--expanded .wtd-chess-mobile-step-chevron {
+  transform: rotate(180deg);
+}
+
+/* Always-visible header: chevron · step + title · Back / Next (Next right-aligned). */
+.wtd-chess-mobile-step-head {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.wtd-chess-mobile-step-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.wtd-chess-step-nav-btn.btn {
+  min-height: 36px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+}
+
+/* flex-basis:100% (not just width) forces the coach copy onto its own row
+   below the header — width alone lets it sit inline beside Back/Next. */
+.wtd-chess-mobile-step-body {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  padding: 2px 4px 6px;
+}
+
+.wtd-chess-mobile-step-body[hidden] {
+  display: none !important;
+}
+
+.wtd-chess-mobile-step-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.wtd-chess-mobile-step-badge {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, #0d9488) 14%, transparent);
+  color: var(--accent, #0d9488);
+}
+
+.wtd-chess-mobile-step-copy {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.wtd-chess-mobile-step-title {
+  display: block;
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--heading, var(--ink));
+}
+
+
+.wtd-chess-mobile-step-actions {
+  flex-shrink: 0;
+}
+
+.wtd-chess-mobile-continue.btn {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 0.88rem;
+}
+
+
+.wtd-chess-mobile-coach {
+  display: block;
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--line, #d7dee7) 75%, transparent);
+  background: color-mix(in srgb, var(--ink, #0f172a) 6%, transparent);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+
 @media (max-width: 720px) {
   .appgen-top-bar .appgen-nav-btn .appgen-nav-label {
     display: none;
@@ -287,24 +453,25 @@ body.wtd-session-modal-open {
 }
 
 /* Footer bar — session title left, ↻ / Exit session right-aligned. */
-.wtd-session-modal-footer {
+/* Session title bar — sits directly under the app header, above the play area. */
+.wtd-session-modal-bar {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px max(16px, env(safe-area-inset-right, 0px))
-    calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  border-top: 1px solid var(--line);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px
+    max(16px, env(safe-area-inset-left, 0px));
+  border-bottom: 1px solid var(--line);
   background: var(--shell-bar);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 -4px 14px rgba(21, 32, 43, 0.05);
+  box-shadow: 0 4px 14px rgba(21, 32, 43, 0.05);
   color: var(--ink);
 }
 
-body.dark-copy .wtd-session-modal-footer {
-  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.35);
+body.dark-copy .wtd-session-modal-bar {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 .wtd-session-modal-title {
@@ -317,19 +484,19 @@ body.dark-copy .wtd-session-modal-footer {
   color: var(--heading, var(--ink));
 }
 
-.wtd-session-modal-footer .btn.ghost,
+.wtd-session-modal-bar .btn.ghost,
 .wtd-3d-hud-actions .btn.ghost {
   color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
-body.dark-copy .wtd-session-modal-footer .btn.ghost,
+body.dark-copy .wtd-session-modal-bar .btn.ghost,
 body.dark-copy .wtd-3d-hud-actions .btn.ghost {
   color: var(--heading, var(--accent));
   border-color: color-mix(in srgb, var(--heading, var(--accent)) 55%, var(--line));
 }
 
-body.dark-copy .wtd-session-modal-footer .btn.ghost:hover,
+body.dark-copy .wtd-session-modal-bar .btn.ghost:hover,
 body.dark-copy .wtd-3d-hud-actions .btn.ghost:hover {
   background: rgba(255, 255, 255, 0.06);
 }
@@ -436,7 +603,7 @@ body.dark-copy .wtd-3d-hud-actions .btn.ghost:hover {
   justify-content: flex-start;
   gap: 10px 12px;
   min-height: 56px;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  padding: 0px 16px calc(12px + env(safe-area-inset-bottom, 0px));
   background: rgba(255, 255, 255, 0.97);
   border-top: 1px solid var(--line);
   box-shadow: 0 -10px 28px rgba(20, 40, 50, 0.1);
@@ -551,6 +718,15 @@ body.dark-copy .wtd-3d-hud-actions .btn.ghost:hover {
 .wtd-3d-controls .wtd-chess-coach-aside-toggle,
 #wtdChessControls .wtd-chess-coach-aside-toggle {
   margin-left: auto;
+}
+
+/* Practice dock: Exit drill is last, so it alone takes the auto margin (flex-end).
+   2-0-0 beats `#wtdChessControls .btn + .btn { margin-left: 0 }` (1-2-0). */
+#wtdChessControls #wtdChessExitPractice {
+  margin-left: auto;
+}
+#wtdChessControls:has(#wtdChessExitPractice) .wtd-chess-coach-aside-toggle {
+  margin-left: 0;
 }
 
 /* Session complete: hide Three.js, results card fills body, CTA in sticky footer */
@@ -774,17 +950,11 @@ body.dark-copy .appgen-auth-admin-badge {
   letter-spacing: 0.04em;
 }
 
+/* Single column — the level cards fill the panel (detail column removed). */
 .wtd-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
-}
-
-@media (min-width: 860px) {
-  .wtd-layout {
-    grid-template-columns: minmax(240px, 280px) 1fr;
-    align-items: start;
-  }
 }
 
 .wtd-sidebar {
@@ -809,29 +979,47 @@ body.dark-copy .appgen-auth-admin-badge {
   line-height: 1.4;
 }
 
+/* Level cards — 4 per row (2 on tablet, 1 on phones). */
 .wtd-level-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
 }
 
+@media (max-width: 1024px) {
+  .wtd-level-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .wtd-level-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Level cards — tapping a card starts the training straight away. */
 .wtd-level-btn {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   width: 100%;
   text-align: left;
-  padding: 10px 12px;
+  padding: 14px 16px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   background: #fff;
   cursor: pointer;
   font-family: inherit;
   font-size: 0.88rem;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 2px rgba(21, 32, 43, 0.06);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
 .wtd-level-btn:hover {
   border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(13, 92, 99, 0.08);
+  box-shadow: 0 6px 18px rgba(13, 92, 99, 0.12);
+  transform: translateY(-1px);
 }
 
 .wtd-level-btn:focus-visible {
@@ -844,19 +1032,42 @@ body.dark-copy .appgen-auth-admin-badge {
   background: var(--accent-soft);
 }
 
+/* Full-bleed banner art at the top of each card. */
+.wtd-lv-art {
+  display: block;
+  margin: -14px -16px 10px;
+  border-radius: 11px 11px 0 0;
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* Art box keeps the SVG's own 320x96 ratio so the whole illustration is
+   visible and centred at every card width (a fixed 84px height forced the
+   viewBox to `slice`, which cropped the icon off narrow cards). */
+.wtd-lv-art svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 320 / 96;
+  display: block;
+}
+
 .wtd-level-btn .wtd-lv-name {
+  display: block;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--ink);
 }
 
 .wtd-level-btn .wtd-lv-domain {
-  font-size: 0.75rem;
+  display: block;
+  font-size: 0.8rem;
   color: var(--muted);
   margin-top: 2px;
 }
 
 .wtd-level-btn .wtd-lv-best {
-  font-size: 0.72rem;
+  display: block;
+  font-size: 0.75rem;
   color: var(--ok);
   margin-top: 4px;
 }
@@ -867,23 +1078,6 @@ body.dark-copy .appgen-auth-admin-badge {
 
 .wtd-arena-section {
   margin: 0;
-}
-
-.wtd-player-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 14px;
-  align-items: center;
-}
-
-.wtd-player-row label {
-  margin: 0;
-  flex: 0 0 auto;
-}
-
-.wtd-player-row input {
-  flex: 1 1 180px;
-  max-width: 280px;
 }
 
 .wtd-arena {
@@ -933,34 +1127,37 @@ body.dark-copy .appgen-auth-admin-badge {
   font-size: clamp(1.8rem, 6vw, 2.4rem);
   font-weight: 800;
   letter-spacing: 0.02em;
+  text-align: center;
 }
 
 .wtd-choices {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .wtd-choice {
-  min-width: 88px;
-  min-height: 44px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  min-width: 104px;
+  min-height: 76px;
+  padding: 14px 18px;
+  border-radius: 12px;
   border: 2px solid var(--line);
   background: #fff;
+  font-size: 2.1rem;
+  line-height: 1;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
 }
 
 .wtd-choice:hover {
-  border-color: var(--accent);
+  border-color: var(--ink);
 }
 
 .wtd-choice:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -985,8 +1182,23 @@ body.dark-copy .appgen-auth-admin-badge {
   user-select: none;
 }
 
+/* Mini-game glyphs are inline <svg> (see ICON_SVGS / SHAPE_SVGS in appgen-wtd.js). */
+.wtd-tile svg,
+.wtd-choice svg,
+.wtd-switch-card svg {
+  width: 40px;
+  height: 40px;
+  display: block;
+  pointer-events: none;
+}
+
+.wtd-switch-card svg {
+  width: 56px;
+  height: 56px;
+}
+
 .wtd-tile.selected {
-  border-color: var(--accent);
+  border-color: var(--ink);
   background: var(--accent-soft);
 }
 
@@ -1007,32 +1219,32 @@ body.dark-copy .appgen-auth-admin-badge {
 }
 
 .wtd-switch-card {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 16px;
-  border-radius: 16px;
+  width: 168px;
+  height: 168px;
+  margin: 0 auto 18px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 5rem;
   border: 3px solid var(--line);
 }
 
 .wtd-matrix {
   display: grid;
-  grid-template-columns: repeat(3, 52px);
-  gap: 6px;
+  grid-template-columns: repeat(3, 62px);
+  gap: 8px;
   justify-content: center;
   margin: 12px auto;
 }
 
 .wtd-matrix-cell {
-  width: 52px;
-  height: 52px;
+  width: 62px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   border-radius: 8px;
   background: #eef1f3;
   border: 1px solid var(--line);
@@ -1044,9 +1256,26 @@ body.dark-copy .appgen-auth-admin-badge {
   color: var(--muted);
 }
 
+/* Narrow arena — short mouse travel between targets.
+   width:100% is required: margin-inline:auto on a column-flex child disables
+   cross-axis stretch, which collapsed the arena to its 2px of border. */
+/* Attention Sprint arena — fills the whole play area (no 640x240 cap).
+   flex:1 lets it take the remaining height inside the flex-column .wtd-arena
+   (session modal); the viewport-relative min-height keeps a solid floor when
+   the parent is a plain block. */
+.wtd-arena {
+  display: flex;
+  flex-direction: column;
+}
+
 .wtd-sprint-arena {
   position: relative;
-  height: 220px;
+  width: 100%;
+  max-width: none;
+  flex: 1 1 auto;
+  height: auto;
+  min-height: clamp(320px, 52vh, 720px);
+  margin: 0;
   border-radius: 12px;
   background: linear-gradient(145deg, #e8f0f2, #dce8ea);
   border: 1px solid var(--line);
@@ -1056,13 +1285,20 @@ body.dark-copy .appgen-auth-admin-badge {
 
 .wtd-sprint-target {
   position: absolute;
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
+}
+
+.wtd-sprint-target svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+
   cursor: pointer;
   border: 2px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -1081,6 +1317,55 @@ body.dark-copy .appgen-auth-admin-badge {
 @keyframes wtd-pop {
   from { transform: scale(0.6); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* Bomb hit — flash, expand and fade out. */
+@keyframes wtd-explode {
+  0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+  35% { transform: scale(1.55); filter: brightness(2.6); }
+  100% { transform: scale(2.2); opacity: 0; filter: brightness(3); }
+}
+
+.wtd-sprint-target.exploding {
+  animation: wtd-explode 0.45s ease-out forwards;
+  pointer-events: none;
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+/* Expanding fireball at the click point. */
+.wtd-sprint-burst {
+  position: absolute;
+  width: 104px;
+  height: 104px;
+  margin: -52px 0 0 -52px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    #fff7ae 0%,
+    #fbbf24 32%,
+    #f97316 58%,
+    rgba(249, 115, 22, 0) 72%
+  );
+  animation: wtd-burst 0.5s ease-out forwards;
+}
+
+@keyframes wtd-burst {
+  from { transform: scale(0.35); opacity: 1; }
+  to { transform: scale(1.7); opacity: 0; }
+}
+
+/* Short arena shake so the blast reads as an impact. */
+@keyframes wtd-boom {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  45% { transform: translate(3px, -2px); }
+  70% { transform: translate(-2px, -1px); }
+}
+
+.wtd-sprint-arena.boom {
+  animation: wtd-boom 0.32s ease-out;
 }
 
 .wtd-result {
@@ -1682,6 +1967,17 @@ body.wtd-leaderboard-open {
   min-width: 0;
 }
 
+/* Intro banner above the 3D session copy. */
+.wtd-3d-banner {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+
 .wtd-3d-hud-body[hidden] {
   display: none !important;
 }
@@ -1864,14 +2160,14 @@ body.dark-copy .wtd-sidebar {
 body.dark-copy .wtd-arena,
 body.dark-copy .wtd-3d-hud,
 body.dark-copy #wtdRainbowHud {
-  background: var(--panel-glass);
+  background: var(--shell-bar);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 body.dark-copy .wtd-level-btn,
 body.dark-copy .wtd-choice,
 body.dark-copy .wtd-tile {
-  background: var(--field-bg);
+  background: var(--shell-bar);
   color: var(--ink);
 }
 
@@ -1884,7 +2180,7 @@ body.dark-copy .wtd-sprint-arena {
 }
 
 body.dark-copy .wtd-sprint-target.good {
-  background: var(--field-bg);
+  background: var(--shell-bar);
 }
 
 body.dark-copy .wtd-breakdown-modal {
@@ -2088,127 +2384,6 @@ body.dark-copy #wtd3dCanvasHost.wtd-3d-canvas-host.wtd-3d-light {
 
   .wtd-chess-coach-aside-toggle {
     display: none !important;
-  }
-
-  .wtd-chess-mobile-step {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 8px max(12px, env(safe-area-inset-right, 0px)) 8px
-      max(12px, env(safe-area-inset-left, 0px));
-    background: var(--paper, #fff);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    flex-shrink: 0;
-  }
-
-  .wtd-chess-mobile-step--collapsed {
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-
-  .wtd-chess-mobile-step--expanded {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px 10px;
-  }
-
-  .wtd-chess-mobile-step[hidden] {
-    display: none !important;
-  }
-
-  .wtd-chess-mobile-step-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    min-width: 36px;
-    min-height: 36px;
-    padding: 6px;
-    line-height: 0;
-  }
-
-  .wtd-chess-mobile-step--expanded .wtd-chess-mobile-step-toggle {
-    order: -1;
-    align-self: flex-start;
-  }
-
-  .wtd-chess-mobile-step-chevron {
-    transition: transform 0.18s ease;
-  }
-
-  .wtd-chess-mobile-step--expanded .wtd-chess-mobile-step-chevron {
-    transform: rotate(180deg);
-  }
-
-  .wtd-chess-mobile-step-body {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px 10px;
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .wtd-chess-mobile-step-body[hidden] {
-    display: none !important;
-  }
-
-  .wtd-chess-mobile-step-main {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    min-width: 0;
-    flex: 1 1 12rem;
-  }
-
-  .wtd-chess-mobile-step-badge {
-    flex-shrink: 0;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--accent, #0d9488) 14%, transparent);
-    color: var(--accent, #0d9488);
-  }
-
-  .wtd-chess-mobile-step-copy {
-    min-width: 0;
-  }
-
-  .wtd-chess-mobile-step-title {
-    display: block;
-    font-size: 0.88rem;
-    font-weight: 650;
-    line-height: 1.25;
-    color: var(--heading, var(--ink));
-  }
-
-  .wtd-chess-mobile-coach {
-    margin: 2px 0 0;
-    font-size: 0.75rem;
-    line-height: 1.35;
-    color: var(--muted);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .wtd-chess-mobile-step-actions {
-    flex-shrink: 0;
-  }
-
-  .wtd-chess-mobile-continue.btn {
-    min-height: 40px;
-    padding: 8px 14px;
-    font-size: 0.88rem;
   }
 
   .wtd-3d-controls .wtd-chess-next-lesson-btn:not(.wtd-chess-mobile-continue) {
@@ -2668,10 +2843,11 @@ body.dark-copy #wtd3dCanvasHost.wtd-3d-canvas-host.wtd-3d-light {
   font-size: 1.05rem;
 }
 
+.btn.ghost.wtd-chess-env-modal-x,
 .wtd-chess-env-modal-x {
-  font-size: 1.35rem;
+  font-size: 2rem; /* 50% larger than 1.35rem */
   line-height: 1;
-  padding: 4px 10px;
+  padding: 2px 12px;
 }
 
 .wtd-chess-env-modal-footer {
@@ -2698,6 +2874,50 @@ body.dark-copy #wtd3dCanvasHost.wtd-3d-canvas-host.wtd-3d-light {
   font-size: 0.85rem;
   color: var(--muted, #666);
   min-height: 1.2em;
+}
+
+/* Chess settings: Cancel (left) · Export/Import icons (centre) · Apply (right). */
+/* Equal 1fr side tracks so the middle slot is centred against the FOOTER,
+   not just inside its own track (auto/1fr/auto left the icons ~84px off-centre). */
+.wtd-chess-env-footer--actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 10px;
+}
+.wtd-chess-env-footer--actions .wtd-chess-env-modal-footer-start {
+  grid-column: 1;
+  justify-self: start;
+  order: 0;
+}
+.wtd-chess-env-footer--actions .wtd-chess-env-modal-footer-center {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  order: 0;
+}
+.wtd-chess-env-footer--actions .wtd-chess-env-modal-footer-end {
+  grid-column: 3;
+  justify-self: end;
+  order: 0;
+}
+.wtd-chess-env-footer--actions .wtd-chess-env-status {
+  grid-column: 1 / -1;
+  order: 0;
+  text-align: center;
+}
+.wtd-chess-env-icon-btn {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.wtd-chess-env-icon-btn svg {
+  display: block;
 }
 
 .wtd-chess-env-status--error {
@@ -3999,7 +4219,7 @@ body.dark-copy .wtd-snl-turn-log {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 8px;
     flex-shrink: 0;
     border-top: none;

@@ -113,6 +113,21 @@ export default async function handler(req, res) {
     secret
   );
 
+  /* Record the sign-in in the user directory (groups + onboarding state).
+     Failure here must never block the sign-in itself. */
+  try {
+    const { upsertUser } = await import("../../lib/user-directory.js");
+    await upsertUser({
+      sub: profile.sub,
+      email: profile.email || "",
+      name: profile.name || profile.given_name || "",
+      picture: profile.picture || "",
+      bumpSignIn: true
+    });
+  } catch (e) {
+    console.error("user-directory callback upsert", e);
+  }
+
   const secure = process.env.VERCEL || process.env.NODE_ENV === "production";
   res.setHeader("Set-Cookie", [
     sessionCookieHeader(sessionToken),
